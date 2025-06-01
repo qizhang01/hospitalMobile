@@ -53,3 +53,40 @@ export default [{
     status: '已执行',
     identification: 'bid'
 }]
+
+export const dropDownList = [{
+    id: 1,
+    name: "药品医嘱",
+    selected: true,
+}, {
+    id: 2,
+    name: "配置医嘱",
+    selected: false,
+}, {
+    id:3,
+    name: "检验医嘱",
+    selected: false,
+}, {
+    id: 4,
+    name: "诊疗医嘱",
+    selected: false,
+}, {
+    id:5,
+    name: "口服",
+    selected: false,
+}]
+
+
+export const periodList = [{
+   id: 1,
+   name: "长期",
+   selected: true
+},{
+    id: 2,
+   name: "临时",
+   selected: false
+},{
+    id: 3,
+   name: "全部",
+   selected: false
+}]

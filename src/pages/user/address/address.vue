@@ -8,13 +8,15 @@
 				</view>
 				<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
 					销量
+					<text class="iconfont iconshang"  :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
 				</view>
-				<view class="rf-top-item" @tap="screen" data-index="2">
-					<text class="iconfont" :class="isList>0? 'iconliebiaoqiehuan':'iconfenlei'"></text>
+				<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="2">
+					未停
+					<text class="iconfont iconshang"  :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
 				</view>
-				<view class="rf-top-item rf-icon-ml" @tap="screen" data-index="3">
-					<text>筛选</text>
-					<!--<rf-icon name="screen" :size="12" color="#333" rf-icon-class="rf-ml" :bold="true"></rf-icon>-->
+				<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="3">
+					全部
+					<text class="iconfont iconshang"  :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
 				</view>
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']" :style="{height:selectH+'upx'}">
@@ -43,20 +45,15 @@
 	</view>
 </template>
 <script>
-	import uniDrawer from '@/components/uni-drawer/drawer';
-	import rfTopDrawer from '@/components/rf-top-drawer';
-	import rfAttrContent from '@/components/rf-attr-content';
+
 	import rfProductList from '@/components/rf-product-list';
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
-	import medicineList from './infoList.js'
+	import medicineList, {dropDownList, periodList} from './infoList.js'
 	/* eslint-disable */
 	export default {
 		components: {
-			uniDrawer,
 			rfProductList,
-			rfAttrContent,
 			rfLoadMore,
-			rfTopDrawer
 		},
 		filters: {
 			filterTotalSales (val) {
@@ -75,20 +72,7 @@
 				tabIndex: 0, //顶部筛选索引
 				selectedName: "药品医嘱",
 				selectH: 0,
-				dropdownList: [{
-					name: "药品医嘱",
-					selected: true,
-					param: {}
-				}, {
-					name: "其他1",
-					selected: false,
-					param: { price: 'asc' }
-				}, {
-					name: "其他2",
-					selected: false,
-					param: { price: 'desc' }
-				}],
-
+				dropdownList: [],
 				productList: medicineList,
 				pageIndex: 1,
 
@@ -105,10 +89,6 @@
 
 		},
 		methods: {
-			showDropdownList() {
-				this.selectH = 246;
-				this.tabIndex = 0;
-			},
 			hideDropdownList() {
 				this.selectH = 0
 			},
@@ -134,32 +114,16 @@
 			screen(e) {
 				let index = parseInt(e.currentTarget.dataset.index, 10);
 				if (index === 0) {
-					this.showDropdownList();
+					this.dropdownList = dropDownList
 				} else if (index === 1) {
-					let params = {}
-					if (this.tabIndex === 1) {
-						this.tabIndex = null;
-						params.total_sales = 'asc';
-					} else {
-						this.tabIndex = 1;
-						params.total_sales = 'desc';
-					}
-					this.page = 1;
-					this.productList = [];
-					this.loading = true;
-				  this.productParams = params;
-					this.getProductList();
+					this.dropdownList = periodList
 				} else if (index === 2) {
-					this.isList = !this.isList
+
 				} else if (index === 3) {
-				  if (this.productCateList.length === 0) {
-						this.getProductCate();
-				  }
-				  if (this.brandList.length === 0) {
-						this.getBrandList();
-				  }
-					this.drawer = true;
+
 				}
+				this.selectH = this.dropdownList.length * 80;
+				this.tabIndex = 0;
 			},
 
 			async getProductList(type) {
@@ -187,32 +151,7 @@
 		font-size: 30upx;
 		word-break: break-all;
 	}
-	.rf-drop-item {
-		color: #333;
-		height: 80upx;
-		font-size: 28upx;
-		padding: 20upx 40upx 20upx 40upx;
-		box-sizing: border-box;
-		display: inline-block;
-		width: 50%;
-	}
-	.rf-drop-btnbox {
-		width: 100%;
-		height: 100upx;
-		position: absolute;
-		left: 0;
-		bottom: 0;
-		box-sizing: border-box;
-		display: flex;
-	}
-	.rf-drop-btn {
-		width: 50%;
-		font-size: 32upx;
-		text-align: center;
-		height: 100upx;
-		line-height: 100upx;
-		border: 0;
-	}
+
 	.rf-dropdownlist {
 		width: 100%;
 		position: absolute;
@@ -262,24 +201,6 @@
 		align-items: center;
 		justify-content: space-between;
 	}
-
-	.rf-flex-attr {
-		flex-wrap: wrap;
-		justify-content: flex-start;
-	}
-	.rf-attr-item {
-		width: 30%;
-		height: 64upx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0 4upx;
-		box-sizing: border-box;
-		border-radius: 32upx;
-		margin-right: 5%;
-		margin-bottom: 5%;
-	}
-
 	.rf-attr-safearea {
 		height: 100upx;
 		display: flex;
@@ -310,64 +231,7 @@
 			height: 0;
 			color: transparent;
 		}
-		.rf-header-box {
-			width: 100%;
-			background: $color-white;
-			position: fixed;
-			z-index: 100;
-			left: 0;
-			top: 0;
-			.rf-header {
-				display: flex;
-				align-items: flex-start;
-				.rf-back {
-					margin-left: 8upx;
-					height: 32px !important;
-					width: 32px !important;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					.iconzuo {
-						font-size: $font-lg + 4upx;
-						font-weight: 500;
-						color: $font-color-dark;
-					}
-				}
-			}
-			.input-box {
-				width: 100%;
-				font-size: $font-sm;
-				box-sizing: border-box;
-				color: #999;
-				display: flex;
-				align-items: center;
-				overflow: hidden;
-				height: 60upx;
-				background-color: $page-color-base;
-				border-radius: 30upx;
-				position: relative;
-				margin: 0 20upx 0 10upx;
-				.iconsousuo2 {
-					z-index: 100;
-					display: flex;
-					align-items: center;
-					position: absolute;
-					top: 0;
-					right: 0;
-					width: 60upx;
-					height: 60upx;
-					font-size: $font-lg + 4upx;
-					color: $font-color-dark;
-				}
-				input {
-					width: 100%;
-					padding-left: 28upx;
-					height: 28upx;
-					color: $font-color-base;
-					font-size: 28upx;
-				}
-			}
-		}
+
 		/*screen*/
 		.rf-header-screen {
 			width: 100%;

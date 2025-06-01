@@ -59,7 +59,7 @@ export default {
 	settingList: [
 		{ icon: 'icongonggao', url: '/pages/index/notice/notice', title: '商城公告', color: '#ff6b81' },
 		{ icon: 'iconyouhuiquan-copy', url: '/pages/user/coupon/list', title: '患者中心', color: '#ff6b81' },
-		{ icon: 'icondizhi1', url: '/pages/user/address/address', title: '地址管理', color: '#ff6b81' },
+		{ icon: 'icondizhi1', url: '/pages/user/address/address', title: '医嘱管理', color: '#ff6b81' },
 		{ icon: 'iconshoucang3', url: '/pages/user/collection/collection', title: '我的收藏', color: '#ff6b81' },
 		{ icon: 'iconfenxiang', url: '', title: '分享', color: '#ff6b81' },
 		{ icon: 'iconzhibo', url: '/pages/marketing/live/list', title: '直播', color: '#ff6b81' },
