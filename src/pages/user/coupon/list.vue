@@ -7,7 +7,7 @@
 					class="row"
 					v-for="(item, index) in couponList"
 					:key="index"
-					@tap.stop="getCoupon(item)"
+					@tap.stop="navTo('/pages/user/account/recharge')"
 				>
 					<view class="carrier">
 						<view class="title">
@@ -16,16 +16,25 @@
 						<view class="term">
 							<text>李金浩</text>
 							<text class="at_least">二级</text>
-						</view>
-						<view class="usage">
 							<text>
 	                            57岁
 							</text>
+							<text>
+	                            男
+							</text>
 							<view>
 								#167899
-								<!-- <text class="last" v-if="item.percentage"
-									>剩余{{ item.percentage }}%</text
-								> -->
+							</view>
+						</view>
+						<view class="">
+							<view class="info">
+								<text>医保: 无保老人</text>
+								<text class="at_least">医生: 王静蕾</text>
+							</view>
+							<text>入院时间: 2023-02-13 12:09</text>
+							<view class="info">
+								<text class="at_least">诊断: 肺恶行肿瘤</text>
+								<text class="at_least">住院时间15天</text>
 							</view>
 						</view>
 					</view>
@@ -121,25 +130,16 @@ export default {
 				});
 		},
 		// 获取优惠券
-		async getCoupon(item) {
-			if (this.type) return;
-			// 优惠券是否可领取 is_get 0 不可领取
-			if (item.is_get === 0) {
-				this.$mHelper.toast('该优惠券不可领取');
-				return;
-			}
-			await this.$http
-				.post(`${couponReceive}`, {
-					id: item.id
-				})
-				.then(() => {
-					this.page = 1;
-					this.couponList.length = 0;
-					this.$mHelper.toast('领取成功');
-					this.getCouponList();
-				});
+		navTo(route) {
+			this.$mRouter.push({ route });
 		}
 	}
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.info {
+	display: flex;
+	width: 100%;
+	 justify-content: space-between;
+}
+</style>

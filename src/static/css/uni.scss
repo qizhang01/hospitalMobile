@@ -682,6 +682,9 @@
 	color: rgba(219, 63, 96, 0.5);
 }
 
+.text-red-color {
+	color: red;
+}
 // navBar样式
 .navbar {
 	display: flex;
@@ -1659,7 +1662,8 @@
 				font-size: 26upx;
 				color: $font-color-light;
 				display: flex;
-				justify-content: space-between;
+				flex-direction: column;
+				// justify-content: space-between;
 
 				.last {
 					margin-left: 6upx;
@@ -2388,4 +2392,8 @@
 		border-bottom: 5upx solid;
 		color: $color-white;
 	}
+}
+
+.small-text {
+	font-size: 12px;
 }

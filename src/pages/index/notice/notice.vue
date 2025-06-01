@@ -62,6 +62,7 @@ export default {
 	},
 	// 下拉刷新
 	onPullDownRefresh() {
+		//
 		this.page = 1;
 		this.announceList.length = 0;
 		this.getNotifyAnnounceIndex('refresh');

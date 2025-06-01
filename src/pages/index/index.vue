@@ -167,7 +167,7 @@
 	import rfFloorIndex from '@/components/rf-floor-index';
 	import rfSearchBar from '@/components/rf-search-bar';
 	import rfSwiperSlide from '@/components/rf-swiper-slide';
-	import rfProductList from '@/components/rf-product-list';
+	import rfProductList from '@/components/rf-product-list/indexcopy';
 	import listCell from '@/components/rf-list-cell';
 	import { mapMutations } from 'vuex';
 	export default {

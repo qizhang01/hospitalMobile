@@ -94,5 +94,7 @@ export default {
 	money: PATH + '/money.png',
 
 	// 微信授权登录
-	moneyBg: PATH + '/money-bg.png'
+	moneyBg: PATH + '/money-bg.png',
+
+	tabNotifyBlue: PATH + '/tab-notify-blue.png'
 };

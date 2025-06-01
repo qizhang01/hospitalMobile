@@ -16,7 +16,7 @@
  *@date 2020/01/08 11:28:39
  */
 import { guessYouLikeList } from '@/api/product';
-import rfProductList from '@/components/rf-product-list';
+import rfProductList from '@/components/rf-product-list/indexcopy';
 export default {
 	name: 'rfRecommend',
 	components: { rfProductList },

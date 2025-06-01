@@ -9,7 +9,7 @@
 					<input
 						v-model="keyword"
 						@confirm="search"
-						placeholder="请输入关键字"
+						placeholder="请输入关键字11"
 						placeholder-style="font-size: 24upx; color:#ccc;"
 						type="text" />
 					<text class="icon iconfont iconsousuo2" @tap.stop="search"></text>
@@ -140,7 +140,7 @@
 	import uniDrawer from '@/components/uni-drawer/drawer';
 	import rfTopDrawer from '@/components/rf-top-drawer';
 	import rfAttrContent from '@/components/rf-attr-content';
-	import rfProductList from '@/components/rf-product-list';
+	import rfProductList from '@/components/rf-product-list/indexcopy';
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 	import { cartItemCount, cartItemCreate, productDetail, productList, productCate, brandIndex } from '@/api/product';
 	import { mapMutations } from 'vuex';

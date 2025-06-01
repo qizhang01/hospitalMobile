@@ -11,6 +11,7 @@
 		>
 			<!-- 遮罩层 -->
 			<view class="mask" @tap="hide"></view>
+			//
 			<view class="share-bg">
 				<image :src="appServiceQr"></image>
 			</view>
