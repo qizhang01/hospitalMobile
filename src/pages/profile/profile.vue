@@ -24,9 +24,6 @@
 			</view>
 			<!--vip信息-->
 			<view class="vip-card-box">
-				<view class="b-btn" @tap="navTo('/pages/user/account/level')">
-					{{ userInfo.memberLevel | filterMemberLevel }}
-				</view>
 				<view class="tit">
 					<i class="iconfont iconzuanshi" />
 					{{appName}}尊享会员
@@ -130,13 +127,13 @@ export default {
 			];
 		}
   },
-	// 小程序分享
-	onShareAppMessage() {
-		return {
-			title: `欢迎来到${this.appName}`,
-			path: '/pages/index/index'
-		};
-	},
+	// // 小程序分享
+	// onShareAppMessage() {
+	// 	return {
+	// 		title: `欢迎来到${this.appName}`,
+	// 		path: '/pages/index/index'
+	// 	};
+	// },
 	async onShow() {
 		// 初始化数据
 		await this.initData();

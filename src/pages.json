@@ -431,15 +431,6 @@
 					}
 				},
 
-
-
-				// 会员等级
-				{
-					"path": "account/level",
-					"style": {
-						"navigationBarTitleText": "会员等级"
-					}
-				},
 				// 我的账户
 				{
 					"path": "account/account",
