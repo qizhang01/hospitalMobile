@@ -1,7 +1,7 @@
 {
-	"name" : "RF商城",
+	"name" : "文书录入系统",
 	"appid" : "", // 自行更换uniapp appid 可登录查看uniapp提供的用户统计 https://tongji.dcloud.net.cn/
-	"description" : "RF商城",
+	"description" : "文书录入系统",
 	"versionName" : "1.2.9",
 	"versionCode" : 1,
 	"transformPx" : false,

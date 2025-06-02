@@ -29,7 +29,7 @@ export default {
 		path: '/pages/category/category'
 	},
 	cart: {
-		name: '购物车',
+		name: '体温单',
 		path: '/pages/cart/cart'
 	},
 	login: {
