@@ -79,18 +79,6 @@
 					}}</view>
 				</picker>
 			</view>
-			<view class="input-item">
-				<text class="tit">Q　Q</text>
-				<input
-					type="number"
-					v-model="profileInfo.qq"
-					placeholder="请输入您的QQ"
-				/>
-			</view>
-			<view class="input-item">
-				<text class="tit">邮　箱</text>
-				<input v-model="profileInfo.email" placeholder="请输入您的邮箱" />
-			</view>
 			<button
 				class="confirm-btn"
 				:class="'bg-' + themeColor.name"
@@ -114,13 +102,7 @@
 </template>
 
 <script>
-/**
- * @des 修改用户信息
- *
- * @author stav stavyan@qq.com
- * @date 2020-01-10 14:28
- * @copyright 2019
- */
+
 import { memberInfo, memberUpdate, uploadImage } from '@/api/userInfo';
 import avatar from '@/components/rf-avatar/rf-avatar';
 import moment from '@/common/moment';

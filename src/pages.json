@@ -36,13 +36,7 @@
 				}
 			}
 		},
-		// 公告详情
-		{
-			"path": "pages/index/notice/detail",
-			"style": {
-				"navigationBarTitleText": "公告详情"
-			}
-		},
+
 		// 商品搜索
 		{
 			"path": "pages/index/search/search",
@@ -142,21 +136,6 @@
 					"path": "set",
 					"style": {
 						"navigationBarTitleText": "设置"
-					}
-				},
-				// 授权管理
-				{
-					"path": "authorization/list",
-					"style": {
-						"enablePullDownRefresh": true,
-						"navigationBarTitleText": "授权列表",
-						"app-plus": {
-							"pullToRefresh": {
-								"support": true,
-								"color": "#fa436a",
-								"style": "default"
-							}
-						}
 					}
 				},
 				// 反馈列表
@@ -434,58 +413,6 @@
 						"navigationBarTitleText": "修改资料"
 					}
 				},
-				// 我的收藏
-				{
-					"path": "collection/collection",
-					"style": {
-						"enablePullDownRefresh": true,
-						"navigationBarTitleText": "我的收藏",
-						"app-plus": {
-							"pullToRefresh": {
-								"support": true,
-								"color": "#fa436a",
-								"style": "default"
-							}
-						}
-					}
-				},
-				// 我的优惠券
-				{
-					"path": "coupon/coupon",
-					"style": {
-						"enablePullDownRefresh": true,
-						"navigationBarTitleText": "我的优惠券",
-						"app-plus": {
-							"pullToRefresh": {
-								"support": true,
-								"color": "#fa436a",
-								"style": "default"
-							}
-						}
-					}
-				},
-				// 优惠券详情
-				{
-					"path": "coupon/detail",
-					"style": {
-						"navigationBarTitleText": "优惠券详情"
-					}
-				},
-				// 领券中心
-				{
-					"path": "coupon/list",
-					"style": {
-						"enablePullDownRefresh": true,
-						"navigationBarTitleText": "患者信息",
-						"app-plus": {
-							"pullToRefresh": {
-								"support": true,
-								"color": "#fa436a",
-								"style": "default"
-							}
-						}
-					}
-				},
 				// 收货地址
 				{
 					"path": "address/address",
@@ -501,36 +428,9 @@
 						}
 					}
 				},
-				// 收货地址管理
-				{
-					"path": "address/manage",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				// 支付
-				{
-					"path": "money/pay",
-					"style": {
-						"navigationBarTitleText": "支付",
-						"navigationStyle": "custom"
-					}
-				},
-				// 支付成功
-				{
-					"path": "money/success",
-					"style": {
-						"navigationBarTitleText": "支付成功",
-						"navigationStyle": "custom"
-					}
-				},
-				// 充值中心
-				{
-					"path": "account/recharge",
-					"style": {
-						"navigationBarTitleText": "充值中心"
-					}
-				},
+
+
+
 				// 会员等级
 				{
 					"path": "account/level",
@@ -544,32 +444,10 @@
 					"style": {
 						"navigationBarTitleText": "我的账户"
 					}
-				},
-				// 账单明细
-				{
-					"path": "account/bill",
-					"style": {
-						"enablePullDownRefresh": true,
-						"navigationBarTitleText": "账单明细",
-						"app-plus": {
-							"pullToRefresh": {
-								"support": true,
-								"color": "#fa436a",
-								"style": "default"
-							}
-						}
-					}
-				},
-				// 积分详情
-				{
-					"path": "account/integral",
-					"style": {
-						"navigationBarTitleText": "积分详情"
-					}
 				}
 			]
 		}
-		// 商户
+
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
