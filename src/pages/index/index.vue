@@ -10,9 +10,7 @@
 			:merchantData="merchantData"
 			:placeholder="hotSearchDefault"
 		/>
-		<view :style="{
-			paddingTop: merchantShow ? (isOpenIndexCate ? 134 + statusBar + 'px' : 85 + statusBar + 'px' )  : (isOpenIndexCate ? 98 + statusBar + 'px' : 55 + statusBar + 'px' )
-		}">
+		<view class="container">
 			<block v-if="currentCate === 0">
 				<!-- 轮播图1 -->
 				<view class="swiper">
@@ -67,83 +65,7 @@
 					</view>
 				</rf-swiper-slide>
 				<!-- 爆款推荐 -->
-				<view class="hot-recommend">
-					<view class="left">
-						<image class="hot-recommend-image" @tap="navTo(hotRecommendList[0].url)" :src="hotRecommendList[0].icon"></image>
-					</view>
-					<view class="right">
-						<image class="hot-recommend-image" @tap.stop="navTo(hotRecommendList[1].url)" :src="hotRecommendList[1].icon"></image>
-						<image class="hot-recommend-image" @tap.stop="navTo(hotRecommendList[2].url)" :src="hotRecommendList[2].icon"></image>
-					</view>
-				</view>
-				<!--新品上市-->
-				<rf-floor-index
-					icon="iconxinpin2"
-					:list="newProductList"
-					@toBanner="indexTopToDetailPage"
-					@toList="
-					navTo(`/pages/product/list?param=${JSON.stringify({ is_new: 1 })}`)
-				"
-					:header="{ title: '新品上市', desc: 'New Products Listed' }"
-					@detail="navToDetailPage"
-					:banner="carouselList.index_new && carouselList.index_new[0]"
-				/>
-				<!--推荐商品-->
-				<rf-floor-index
-					icon="icontuijian21"
-					:list="recommendProductList"
-					:header="{ title: '推荐商品', desc: 'Recommend Product' }"
-					@toBanner="indexTopToDetailPage"
-					@toList="
-					navTo(
-						`/pages/product/list?param=${JSON.stringify({ is_recommend: 1 })}`
-					)
-				"
-					@detail="navToDetailPage"
-					:banner="carouselList.index_recommend && carouselList.index_recommend[0]"
-				/>
-				<!--热门商品-->
-				<rf-floor-index
-					icon="iconremen2"
-					:list="hotProductList"
-					:header="{ title: '热门商品', desc: 'Hot Product' }"
-					@toBanner="indexTopToDetailPage"
-					@toList="
-					navTo(`/pages/product/list?param=${JSON.stringify({ is_hot: 1 })}`)
-				"
-					@detail="navToDetailPage"
-					:banner="carouselList.index_hot && carouselList.index_hot[0]"
-				/>
-				<!--猜您喜欢-->
-				<rf-floor-index
-					v-if="guessYouLikeProductList.length > 0"
-					icon="iconcainixihuan2"
-					:list="guessYouLikeProductList"
-					:isLink="false"
-					:header="{ title: '猜您喜欢', desc: 'Guess You Like It' }"
-					@detail="navToDetailPage"
-					:bannerShow="false"
-				/>
-				<!--网站备案号-->
-				<!--#ifdef H5-->
-				<view class="copyright" v-if="config.web_site_icp">
-					{{ config.copyright_desc }}
-					<a href="http://www.beian.miit.gov.cn">{{ config.web_site_icp }}</a>
-				</view>
-				<!-- #endif -->
 			</block>
-			<view v-else class="index-cate-product-list">
-				<rf-product-list :bottom="bottom" :list="categoryProductList"></rf-product-list>
-				<rf-load-more
-					:status="loadingType"
-					v-if="categoryProductList.length > 0"
-				></rf-load-more>
-				<rf-empty
-					:bottom="bottom"
-					:info="'暂无该分类产品~'"
-					v-if="categoryProductList.length === 0 && !productLoading"
-				></rf-empty>
-			</view>
 		</view>
 		<!--页面加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
@@ -151,14 +73,9 @@
 		<rf-back-home></rf-back-home>
 	</view>
 </template>
+
 <script>
-	/**
-	 * @des 微商城首页
-	 *
-	 * @author stav stavyan@qq.com
-	 * @date 2020-01-08 14:14
-	 * @copyright 2019
-	 */
+
 	import {
 		indexList,
 		productList
@@ -246,31 +163,7 @@
 				return result;
 			}
 		},
-		onShareAppMessage() {
-			let shareParams = { title: this.share.share_title || `欢迎来到${this.appName}`, path: '/pages/index/index' };
-			return shareParams;
-		},
-		filters: {
-			filterDiscountPrice(val) {
-				const price = val.product && (val.product.price * val.discount) / 100;
-				switch (val.decimal_reservation_number) {
-					case 0:
-						return (Math.floor(price * 100) / 100).toFixed(2);
-					case 1:
-						return (Math.floor(price * 100) / 100).toFixed(0);
-					case 2:
-						return (Math.floor(price * 100) / 100).toFixed(1);
-					default:
-						return (Math.floor(price * 100) / 100).toFixed(2);
-				}
-			},
-			filterTotalSales(val) {
-				if (val > 10000) {
-					val = `${(val / 10000).toFixed(2)}w`;
-				}
-				return val;
-			}
-		},
+
 		// 下拉刷新
 		onPullDownRefresh() {
 			this.getIndexList('refresh');
@@ -383,7 +276,6 @@
 			initIndexData(data) {
 				this.announceList = data.announce;
 				this.productCateList = data.cate;
-				this.categoryList = [{ id: 0, title: '首页' }, ...this.productCateList];
 				this.carouselList = data.adv;
 				this.search = data.search;
 				this.share = data.share;
@@ -501,27 +393,7 @@
 				}
 			}
 		}
-		/* 爆款推荐 */
-		.hot-recommend {
-			background-color: $color-white;
-			display: flex;
-			padding: $spacing-base $spacing-lg 0;
-			.hot-recommend-image {
-				width: 100%;
-				height: 100%;
-			}
-			.left {
-				flex: 3;
-				height: 350upx;
-				margin-right: 15upx;
-			}
-			.right {
-				flex: 4;
-				.hot-recommend-image {
-					height: 170upx;
-				}
-			}
-		}
+
 		/*轮播图2*/
 		.swiper-item-text {
 			position: absolute;
@@ -578,140 +450,8 @@
 				}
 			}
 		}
-		/*版权显示*/
-		.copyright {
-			margin: 10upx 0;
-			width: 100%;
-			text-align: center;
-			color: #666;
-
-			a {
-				display: block;
-				color: #666;
-				text-decoration: none;
-			}
-		}
-		/*限时抢购*/
-		.order-item {
-			display: flex;
-			flex-direction: column;
-			background: #fff;
-			padding: 0 30upx;
-			margin-bottom: 20upx;
-
-			.goods-box-single {
-				display: flex;
-				padding: 40upx 10upx 10upx;
-				height: 330upx;
-				border-radius: 12upx;
-				margin-top: 20upx;
-				box-shadow: 2px 2px 10px rgba(66, 135, 193, 0.2); // 阴影
-				border-bottom: 1px solid rgba(0, 0, 0, 0.05); // 边框
-				position: relative;
-
-				.goods-img {
-					display: block;
-					border-radius: 12upx;
-					width: 190upx;
-					height: 200upx;
-				}
-
-				.right {
-					flex: 1;
-					display: flex;
-					flex-direction: column;
-					padding: 0 30upx 0 24upx;
-					overflow: hidden;
-
-					.title {
-						font-weight: bold;
-						line-height: 1.2;
-						margin: 10upx 0;
-					}
-
-					.attr-box {
-						line-height: 1.2;
-						margin-bottom: 8upx;
-						margin-left: 10upx;
-					}
-
-					.last-line {
-						margin-top: 3upx;
-						display: flex;
-						justify-content: space-between;
-						align-items: center; /* 垂直居中 */
-						.red {
-							margin-right: 4upx;
-						}
-					}
-
-					.price {
-						font-size: $font-lg;
-						line-height: 1;
-						.m-price {
-							margin-left: 8upx;
-							color: $font-color-light;
-							font-size: $font-sm;
-							text-decoration: line-through;
-						}
-					}
-
-					.triangle-wrapper {
-						position: absolute;
-						overflow: hidden;
-						top: 0;
-						right: 0;
-						border-radius: 12upx;
-
-						.triangle {
-							color: #5eba8f;
-							width: 0;
-							height: 0;
-							border-top: 120upx solid;
-							opacity: 0.8;
-							border-left: 120upx solid transparent;
-						}
-
-						.triangle-content {
-							position: absolute;
-							top: 28upx;
-							right: 0;
-							transform: rotate(45deg);
-							font-size: $font-sm - 2upx;
-							color: #fff;
-						}
-					}
-				}
-			}
-
-			.action-box {
-				display: flex;
-				justify-content: flex-end;
-				align-items: center;
-				height: 90upx;
-				position: relative;
-
-				.discount-time {
-					font-size: $font-sm;
-					color: $uni-color-success;
-					margin-right: 20upx;
-				}
-			}
-		}
-		.index-cate-product-list {
-			padding-top: $spacing-sm;
-			background-color: $page-color-base;
-			.no-data {
-				margin: 48upx 0;
-				color: $font-color-light;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				.iconfont {
-					margin-right: 20upx;
-					font-size: $font-lg + 16upx;
-				}
-			}
-		}
+	}
+	.container {
+		padding-top: 70px;
 	}
 </style>
