@@ -48,105 +48,6 @@
 			@touchend="coverTouchend"
 		>
 			<image class="arc" :src="arc"></image>
-			<!--余额 优惠券 积分信息-->
-			<view class="promotion-center">
-				<list-cell
-					icon="iconqianbao"
-					:iconColor="themeColor.color"
-					@eventClick="navTo('/pages/user/account/account')"
-					:title="_i18n.t('profile.myAccount')"
-				></list-cell>
-				<view class="tj-sction">
-					<view
-						class="tj-item"
-						v-for="item in amountList"
-						:key="item.title"
-						@tap="navTo(item.url)"
-					>
-						<text class="num" :class="item.value > 0 ? 'text-'+themeColor.name : ''">
-							{{ item.value }}
-						</text>
-						<text>{{ item.title }}</text>
-					</view>
-				</view>
-			</view>
-			<!-- 我的订单 -->
-			<view class="promotion-center">
-				<list-cell
-					icon="iconicon1"
-					:iconColor="themeColor.color"
-					@eventClick="
-						navTo(`/pages/order/order?state=-1`)
-					"
-					title="全部订单"
-				></list-cell>
-				<view class="order-section">
-					<view
-						class="order-item"
-						v-for="item in orderSectionList"
-						:key="item.title"
-						@tap="navTo(item.url)"
-						hover-class="common-hover"
-						:hover-stay-time="50"
-					>
-						<i class="iconfont" :class="[item.icon, 'text-'+themeColor.name]" />
-						<text>{{ item.title }}</text>
-						<rf-badge
-							v-if="item.num > 0"
-							type="error"
-							size="small"
-							class="badge"
-							:text="item.num"
-						></rf-badge>
-					</view>
-				</view>
-			</view>
-			<!-- 浏览历史 -->
-			<view class="history-section">
-				<list-cell
-					icon="iconzuji"
-					:iconColor="themeColor.color"
-					@eventClick="navTo('/pages/user/footprint/footprint')"
-					title="我的足迹"
-				></list-cell>
-				<view v-if="hasLogin">
-					<scroll-view scroll-x class="h-list-history" v-if="footPrintList.length > 0">
-						<view class="h-item-history" v-for="item in footPrintList" :key="item.id" @tap.stop="navToProduct(item.marketing_type, item.product.id)">
-							<image
-								:src="item.product.picture"
-								class="h-item-img"
-								:preview="false"
-								mode="aspectFill"
-							></image>
-							<image
-								v-if="item.marketing_type"
-								class="tag"
-								:src="item.marketing_type | marketingTypeTag"
-								mode="aspectFill"
-							></image>
-							<view class="h-item-text">
-								<text class="in2line">{{ item.product.name }}</text>
-							</view>
-						</view>
-					</scroll-view>
-					<view
-						class="no-foot-print"
-						v-else-if="footPrintList.length === 0"
-						@tap="navTo('/pages/product/list')"
-					>
-						<i class="iconfont iconshare no-foot-print-icon" :class="'text-'+themeColor.name" />
-						先去浏览一些吧~
-					</view>
-				</view>
-				<view
-					class="no-foot-print"
-					v-else
-					@tap="navTo('/pages/user/footprint/footprint')"
-				>
-					<i class="iconfont iconmima no-foot-print-icon" :class="'text-'+themeColor.name" />
-					登录后查看
-				</view>
-			</view>
 			<!--我的服务-->
 			<view class="promotion-center">
 				<list-cell
@@ -162,10 +63,9 @@
 							class="category"
 							v-for="(item, index) in settingList"
 							:key="index"
-							:style="{display: settingItemShowFilter(item.title)}"
 							@tap.stop="navTo(item.url)"
 						>
-							<view v-if="item.title !== '分享'">
+							<view >
 								<view class="img">
 									<text
 										class="iconfont"
@@ -174,30 +74,6 @@
 								</view>
 								<view class="text">{{ item.title }}</view>
 							</view>
-							<button
-								class="share-btn"
-								open-type="share"
-								@tap="share"
-								v-else
-							>
-								<view class="img">
-									<text
-										class="iconfont"
-										:class="[item.icon, 'text-'+themeColor.name]"
-									></text>
-								</view>
-								<view class="text">{{ item.title }}</view>
-							</button>
-						</view>
-<!--						不需要国际化的 注释下面 view 就行-->
-						<view class="category" @tap="switchLanguage">
-							<view class="img">
-								<text
-									class="iconfont iconyuyanqiehuan"
-									:class="['text-'+themeColor.name]"
-								></text>
-							</view>
-							<view class="text">{{ currentLanguage }}</view>
 						</view>
 					</view>
 				</view>
@@ -208,13 +84,7 @@
 	</view>
 </template>
 <script>
-/**
- * @des 个人中心
- *
- * @author stav stavyan@qq.com
- * @date 2020-01-10 11:41
- * @copyright 2019
- */
+
 import { footPrintList, memberInfo, notifyUnRreadCount } from '@/api/userInfo';
 import listCell from '@/components/rf-list-cell';
 import { mapMutations } from 'vuex';
@@ -242,49 +112,16 @@ export default {
 				// 用户信息
 				promoter: null // 分销商信息
 			},
-			footPrintList: [], // 足迹列表
 			loading: true,
 			appName: this.$mSettingConfig.appName,
 			hasLogin: false,
 			currentLanguage: this._i18n.locale === 'zh' ? 'English' : '中文'
 		};
 	},
-	filters: {
-		filterMemberLevel(val) {
-      if (!val) return '普通用户';
-			return val.name;
-		},
-		marketingTypeTag(marketingType) {
-			let tag;
-			switch (marketingType) {
-				case 'discount':
-					tag = $mAssetsPath.discountTag;
-					break;
-				case 'bargain':
-					tag = $mAssetsPath.bargainTag;
-					break;
-				case 'group_buy':
-					tag = $mAssetsPath.groupTag;
-					break;
-				case 'wholesale':
-					tag = $mAssetsPath.wholesaleTag;
-					break;
-			}
-			return tag;
-		}
-	},
+
   computed: {
     // 判断推广中心是否显示 当有分销商信息的时候显示
     settingItemShowFilter() {
-      return function (val) {
-        let type = 'block';
-        if (val === '推广中心' && this.userInfo.promoter) {
-          type = 'none';
-        } else if (val === '直播' && !this.isOpenLiveStreaming) {
-          type = 'none';
-        }
-        return type;
-      };
     },
 		settingList() {
 			return [
@@ -292,9 +129,6 @@ export default {
 				{ icon: 'iconyouhuiquan-copy', url: '/pages/user/coupon/list', title: this._i18n.t('profile.couponCenter'), color: '#ff6b81' },
 				{ icon: 'icondizhi1', url: '/pages/user/address/address', title: this._i18n.t('profile.addressManage'), color: '#ff6b81' },
 				{ icon: 'iconshoucang3', url: '/pages/user/collection/collection', title: this._i18n.t('profile.myCollection'), color: '#ff6b81' },
-				{ icon: 'iconfenxiang', url: '', title: this._i18n.t('profile.share'), color: '#ff6b81' },
-				{ icon: 'iconzhibo', url: '/pages/marketing/live/list', title: this._i18n.t('profile.live'), color: '#ff6b81' },
-				{ icon: 'iconshezhi3', url: '/pages/set/set', title: this._i18n.t('profile.setting'), color: '#ff6b81' }
 			];
 		}
   },
@@ -329,36 +163,9 @@ export default {
 	},
 	// #endif
 	methods: {
-		// 切换语言
-		switchLanguage() {
-			if (this._i18n.locale === 'zh') {
-				this._i18n.locale = 'en';
-				this.currentLanguage = '中文';
-			} else if (this._i18n.locale === 'en') {
-				this._i18n.locale = 'zh';
-				this.currentLanguage = 'English';
-			}
-			this.initData();
-			this.$mStore.commit('setLocale', this._i18n.locale);
-			uni.setNavigationBarTitle({ title: this._i18n.t('menu.my') });
-			uni.setTabBarItem({ index: 0, text: this._i18n.t('menu.index') });
-			uni.setTabBarItem({ index: 1, text: this._i18n.t('menu.category') });
-			uni.setTabBarItem({ index: 2, text: this._i18n.t('menu.notify') });
-			uni.setTabBarItem({ index: 3, text: this._i18n.t('menu.cart') });
-			uni.setTabBarItem({ index: 4, text: this._i18n.t('menu.my') });
-		},
+
 		...mapMutations(['setNotifyNum', 'setCartNum']),
 		// 分享
-    share() {
-			const url = `${this.$mConfig.hostUrl}/pages/index/index`;
-      // #ifdef H5
-			this.$mHelper.h5Copy(url);
-			// #endif
-      // #ifdef APP-PLUS
-			const shareImg = `${this.$mSettingConfig.appLogo}`;
-			this.$mHelper.handleAppShare(url, this.appName, `欢迎来到${this.appName}`, shareImg);
-			// #endif
-		},
 		...mapMutations(['login']),
 		// 数据初始化
 		async initData() {
@@ -406,20 +213,7 @@ export default {
         this.setNotifyNum(r.data.count);
       });
     },
-		// 清空个人中心的各模块状态
-		resetSectionData() {
-			this.userInfo = {};
-			uni.removeTabBarBadge({ index: this.$mConstDataConfig.cartIndex });
-			uni.removeTabBarBadge({ index: this.$mConstDataConfig.notifyIndex });
-			this.amountList[0].value = 0;
-			this.amountList[1].value = 0;
-			this.amountList[2].value = 0;
-			this.orderSectionList[0].num = 0;
-			this.orderSectionList[1].num = 0;
-			this.orderSectionList[2].num = 0;
-			this.orderSectionList[3].num = 0;
-			this.orderSectionList[4].num = 0;
-		},
+
 		// 给个人中心的各模块赋值
 		setSectionData(data) {
 			const orderSynthesizeNumArr = [];
@@ -453,13 +247,7 @@ export default {
 				this.$mRouter.push({ route });
 			}
 		},
-		/**
-		 *  会员卡下拉和回弹
-		 *  1.关闭bounce避免ios端下拉冲突
-		 *  2.由于touchmove事件的缺陷（以前做小程序就遇到，比如20跳到40，h5反而好很多），下拉的时候会有掉帧的感觉
-		 *    transition设置0.1秒延迟，让css来过渡这段空窗期
-		 *  3.回弹效果可修改曲线值来调整效果，推荐一个好用的bezier生成工具 http://cubic-bezier.com/
-		 */
+
 		coverTouchstart(e) {
 			if (pageAtTop === false) {
 				return;
@@ -724,68 +512,6 @@ page {
 			}
 		}
 
-		.history-section {
-			background: #fff;
-			margin-bottom: $spacing-sm;
-			.h-list-history {
-				margin: 0;
-				border-radius: 10upx;
-				white-space: nowrap;
-				background-color: $page-color-base;
-				.h-item-history {
-					background-color: $color-white;
-					display: inline-block;
-					font-size: $font-sm;
-					color: $font-color-base;
-					width: 180upx;
-					margin: $spacing-sm $spacing-sm 0 0;
-					border-radius: 10upx;
-					position: relative;
-					top: 0;
-					overflow: hidden;
-					.h-item-img {
-						width: 180%;
-						height: 200upx;
-						border-top-left-radius: 12upx;
-						border-top-right-radius: 12upx;
-						border-bottom: 1upx solid rgba(0, 0, 0, 0.01);
-					}
-					.tag {
-						position: absolute;
-						border-top-left-radius: 12upx;
-						left: 0;
-						right: 0;
-						width: 60upx;
-						height: 60upx;
-					}
-					.h-item-text {
-						font-size: $font-sm;
-						margin: $spacing-sm 4upx;
-					}
-				}
-			}
-			.no-foot-print {
-				text-align: center;
-				padding: 48upx 0;
-
-				.no-foot-print-icon {
-					font-size: $font-lg + 2upx;
-					margin-right: 10upx;
-				}
-			}
-			.share-btn {
-				height: 102upx;
-				text-align: left;
-				background: none;
-				padding: 0;
-				margin: 0;
-			}
-
-			.share-btn:after {
-				border: none;
-				border-radius: none;
-			}
-		}
 	}
 }
 %flex-center {

@@ -159,13 +159,6 @@
 						}
 					}
 				},
-				// 反馈详情
-				{
-					"path": "feedback/detail",
-					"style": {
-						"navigationBarTitleText": "意见反馈详情"
-					}
-				},
 				// 反馈列表
 				{
 					"path": "feedback/list",
@@ -181,74 +174,9 @@
 						}
 					}
 				},
-				// 反馈
-				{
-					"path": "feedback/feedback",
-					"style": {
-						"navigationBarTitleText": "意见反馈"
-					}
-				},
 				// 关于
 				{
 					"path": "about/about",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				// 关于详情
-				{
-					"path": "about/detail",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				// 站点帮助
-				{
-					"path": "helper/index",
-					"style": {
-						"navigationBarTitleText": "站点帮助"
-					}
-				},
-				// 站点帮助详情
-				{
-					"path": "helper/detail",
-					"style": {
-						"navigationBarTitleText": "站点帮助详情"
-					}
-				},
-				// 开票历史列表
-				{
-					"path": "invoice/list",
-					"style": {
-						"enablePullDownRefresh": true,
-						"navigationBarTitleText": "开票历史",
-						"app-plus": {
-							"pullToRefresh": {
-								"support": true,
-								"color": "#fa436a",
-								"style": "default"
-							}
-						}
-					}
-				},
-				// 开票列表
-				{
-					"path": "invoice/invoice",
-					"style": {
-						"enablePullDownRefresh": true,
-						"navigationBarTitleText": "发票管理",
-						"app-plus": {
-							"pullToRefresh": {
-								"support": true,
-								"color": "#fa436a",
-								"style": "default"
-							}
-						}
-					}
-				},
-				// 开票管理
-				{
-					"path": "invoice/manage",
 					"style": {
 						"navigationBarTitleText": ""
 					}
@@ -519,13 +447,6 @@
 								"style": "default"
 							}
 						}
-					}
-				},
-				// 我的足迹
-				{
-					"path": "footprint/footprint",
-					"style": {
-						"navigationBarTitleText": "我的足迹"
 					}
 				},
 				// 我的优惠券

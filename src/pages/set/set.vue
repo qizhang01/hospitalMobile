@@ -2,7 +2,6 @@
 	<view class="set">
 		<view
 			class="list-cell b-b"
-			:class="{ 'm-t': item.class === 'mT' }"
 			v-for="item in setList"
 			:key="item.title"
 			@tap="navTo(item.url)"
