@@ -98,8 +98,6 @@ export default {
 	},
 	data() {
 		return {
-			orderSectionList: this.$mConstDataConfig.orderSectionList,
-			amountList: this.$mConstDataConfig.amountList,
 			isOpenLiveStreaming: this.$mSettingConfig.isOpenLiveStreaming,
 			headImg: this.$mAssetsPath.headImg,
 			vipCardBg: this.$mAssetsPath.vipCardBg,
@@ -158,7 +156,7 @@ export default {
 				index
 			});
 			// #endif
-			this.$mRouter.switchTab({ route: '/pages/notify/notify' });
+			this.$mRouter.switchTab({ route: '/pages/public/login' });
 		}
 	},
 	// #endif
@@ -220,12 +218,6 @@ export default {
 			for (let item in data.order_synthesize_num) {
 				orderSynthesizeNumArr.push(data.order_synthesize_num[item]);
 			}
-			for (let i = 0; i < this.orderSectionList.length; i++) {
-				this.orderSectionList[i].num = orderSynthesizeNumArr[i].toString();
-			}
-			this.amountList[0].value = data.account.user_money || 0;
-			this.amountList[1].value = data.coupon_num || 0;
-			this.amountList[2].value = data.account.user_integral || 0;
 			// 更新userInfo缓存
 			uni.setStorageSync('userInfo', data);
 		},

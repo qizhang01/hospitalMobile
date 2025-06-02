@@ -46,7 +46,7 @@
 		},
 		// 消息中心
 		{
-			"path": "pages/notify/notify",
+			"path": "pages/public/login",
 			"style": {
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "登录",
@@ -389,19 +389,7 @@
 				}
 			]
 		},
-		// 营销
-		{
-			"root": "pages/marketing",
-			"pages": [
-				// 注册
-				{
-					"path": "live/list",
-					"style": {
-						"navigationBarTitleText": "直播"
-					}
-				}
-			]
-		},
+
 		// 我的
 		{
 			"root": "pages/user",
@@ -411,6 +399,20 @@
 					"path": "userinfo/userinfo",
 					"style": {
 						"navigationBarTitleText": "修改资料"
+					}
+				},
+				{
+					"path": "coupon/list",
+					"style": {
+						"enablePullDownRefresh": true,
+						"navigationBarTitleText": "患者信息",
+						"app-plus": {
+							"pullToRefresh": {
+								"support": true,
+								"color": "#fa436a",
+								"style": "default"
+							}
+						}
 					}
 				},
 				// 收货地址
@@ -474,7 +476,7 @@
 				"text": "文书"
 			},
 			{
-				"pagePath": "pages/notify/notify",
+				"pagePath": "pages/public/login",
 				"iconPath": "static/tab-notify.png",
 				"selectedIconPath": "static/tab-notify-rf.png",
 				"text": "登录"
