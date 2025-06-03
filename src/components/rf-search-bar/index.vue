@@ -36,6 +36,11 @@
 	</view>
 </template>
 <script>
+	// #ifdef H5
+	import jweixin from '@/common/jweixin';
+	// #endif
+	import { productVirtualVerificationVerify } from '@/api/userInfo';
+
 	export default {
 		props: {
 			headerShow: {
@@ -144,6 +149,40 @@
 						_this.$mHelper.toast('扫描失败：' + res.errMsg);
 					}
 				});
+				/*  #endif  */
+				/*  #ifdef H5  */
+				if (this.$mPayment.isWechat()) {
+					jweixin.ready(() => {
+						jweixin.scanQRCode({
+							needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+							success(res) {
+								if (res.result.indexOf('http') !== -1) {
+									if (res.result.indexOf(_this.$mConfig.hostUrl) !== -1) {
+										if (
+											res.result.indexOf('/pages/profile/profile') !== -1 ||
+											res.result.indexOf('/pages/cart/cart') !== -1 ||
+											res.result.indexOf('/pages/index/index') !== -1 ||
+											res.result.indexOf('/pages/notify/notify') !== -1 ||
+											res.result.indexOf('/pages/category/category') !== -1
+										) {
+											_this.$mRouter.reLaunch({ route: res.result.substring(_this.$mConfig.hostUrl.length) });
+										} else {
+											_this.$mRouter.redirectTo({ route: res.result.substring(_this.$mConfig.hostUrl.length) });
+										}
+									} else {
+										_this.$mHelper.toast('不能识别该二维码');
+									}
+								}
+							},
+							fail(res) {
+								// 支付成功后的回调函数
+								_this.$mHelper.toast('扫描失败：' + res.errMsg);
+							}
+						});
+					});
+				} else {
+					this.$mHelper.toast('请在微信H5进行相关操作');
+				}
 				/*  #endif  */
 			},
 			async toSearch() {

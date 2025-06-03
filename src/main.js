@@ -15,6 +15,7 @@ import { http } from '@/utils/request';
 import $mGraceChecker from '@/utils/graceChecker';
 import $mHelper from '@/utils/helper';
 import $mRouter from '@/utils/router';
+import $mPayment from '@/utils/payment';
 // 全局组件
 import rfImage from '@/components/rf-image/rf-image';
 import rfEmpty from '@/components/rf-empty';
@@ -54,6 +55,7 @@ Vue.prototype.$mSettingConfig = $mSettingConfig;
 Vue.prototype.$mGraceChecker = $mGraceChecker;
 Vue.prototype.$mHelper = $mHelper;
 Vue.prototype.$mRouter = $mRouter;
+Vue.prototype.$mPayment = $mPayment;
 
 Vue.component('rfImage', rfImage);
 Vue.component('rfEmpty', rfEmpty);
