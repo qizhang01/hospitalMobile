@@ -7,7 +7,7 @@
 			<view class="user-info-box">
 				<view
 					class="portrait-box"
-					@tap="navTo(userInfo ? '/pages/user/userinfo/userinfo' : 'login')"
+					@tap="toLogin"
 				>
 					<image
 						class="portrait"
@@ -17,7 +17,7 @@
 						{{
 							userInfo.nickname ||
 							userInfo.realname ||
-								'登录/注册'
+								'登录'
 						}}
 					</text>
 				</view>
@@ -227,16 +227,13 @@ export default {
 		// 统一跳转接口,拦截未登录路由
 		navTo(route) {
 			if (!route) return;
-			if (route === '/pages/index/notice/notice') {
-				this.$mRouter.push({ route });
-			} else if (!this.hasLogin) {
-				uni.removeStorageSync('backToPage');
-				this.$mRouter.push({ route: '/pages/public/logintype' });
-			} else {
-				this.$mRouter.push({ route });
-			}
+			this.$mRouter.push({ route });
+			
 		},
-
+        
+		toLogin(){
+			this.$mRouter.switchTab({ route: '/pages/public/login' });
+		},
 		coverTouchstart(e) {
 			if (pageAtTop === false) {
 				return;

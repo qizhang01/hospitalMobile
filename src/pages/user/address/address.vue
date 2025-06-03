@@ -3,20 +3,20 @@
 		<view class="rf-header-screen">
 			<view class="rf-screen-top">
 				<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
-					<text>{{selectedName}}</text>
-					<text class="iconfont" :class="selectH>0?'iconshang':'iconxia'" :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
+					<text>{{selectedAdviceName}}</text>
+					<text class="iconfont" :class="tabIndex==0?'iconshang':'iconxia'"></text>
 				</view>
 				<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
-					销量
-					<text class="iconfont iconshang"  :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
+					<text>{{ selectedPeriodName }}</text>
+					<text class="iconfont" :class="tabIndex==1?'iconshang':'iconxia'"></text>
 				</view>
 				<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="2">
-					未停
-					<text class="iconfont iconshang"  :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
+					<text>{{ selectedStatusName }}</text>
+					<text class="iconfont " :class="tabIndex==2?'iconshang':'iconxia'"></text>
 				</view>
 				<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="3">
-					全部
-					<text class="iconfont iconshang"  :style="{color: tabIndex==0? themeColor.color:'#444'}"></text>
+					<text>{{ selectedTotalName }}</text>
+					<text class="iconfont " :class="tabIndex==3?'iconshang':'iconxia'"></text>
 				</view>
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']" :style="{height:selectH+'upx'}">
@@ -48,7 +48,7 @@
 
 	import rfProductList from '@/components/rf-product-list';
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
-	import medicineList, {dropDownList, periodList} from './infoList.js'
+	import medicineList, {doctorAdviceList, periodList} from './infoList.js'
 	/* eslint-disable */
 	export default {
 		components: {
@@ -70,12 +70,16 @@
 				loadingType: 'more',
 				loading: true,
 				tabIndex: 0, //顶部筛选索引
-				selectedName: "药品医嘱",
+				selectedAdviceName: "药品医嘱",
+				selectedPeriodName: '长期',
+				selectedStatusName: '未停',
+				selectedTotalName: '全部',
 				selectH: 0,
 				dropdownList: [],
+				doctorAdviceList,
+				periodList,
 				productList: medicineList,
 				pageIndex: 1,
-
 			}
 		},
 		onLoad(options) {
@@ -103,27 +107,28 @@
 					}
 				}
 				this.dropdownList = arr;
-				this.selectedName = index === 0 ? '综合' : index === 1 ? '价格升序' : '价格降序';
+				if(this.tabIndex===0){
+					this.doctorAdviceList = arr
+					this.selectedAdviceName = arr[index].name;
+				}else if(this.tabIndex===1){
+                    this.periodList = arr
+					this.selectedPeriodName = arr[index].name;
+				}
 				this.selectH = 0;
-				this.page = 1;
-				this.productList = [];
-				this.loading = true;
-				this.productParams = this.dropdownList[index].param;
-				this.getProductList();
 			},
 			screen(e) {
 				let index = parseInt(e.currentTarget.dataset.index, 10);
 				if (index === 0) {
-					this.dropdownList = dropDownList
+					this.dropdownList = this.doctorAdviceList
 				} else if (index === 1) {
-					this.dropdownList = periodList
+					this.dropdownList = this.periodList
 				} else if (index === 2) {
 
 				} else if (index === 3) {
 
 				}
 				this.selectH = this.dropdownList.length * 80;
-				this.tabIndex = 0;
+				this.tabIndex = index;
 			},
 
 			async getProductList(type) {

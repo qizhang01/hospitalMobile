@@ -48,7 +48,7 @@ export default {
 		uni.removeTabBarBadge({ index: mConstDataConfig.cartIndex });
 		uni.removeTabBarBadge({ index: mConstDataConfig.notifyIndex });
 		await mStore.commit('logout');
-		mRouter.push({ route: '/pages/public/logintype' });
+		this.$mRouter.switchTab({ route: '/pages/public/login' });
 	},
 	/**
 	 * 返回上一页携带参数

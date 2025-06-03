@@ -344,18 +344,6 @@
 		{
 			"root": "pages/public",
 			"pages": [
-				// 注册
-				{
-					"path": "register",
-					"style": {
-						"navigationBarTitleText": "注册",
-						"navigationStyle": "custom",
-						"app-plus": {
-							"titleNView": false,
-							"animationType": "slide-in-bottom"
-						}
-					}
-				},
 				// 登录
 				{
 					"path": "login",
@@ -366,13 +354,6 @@
 							"titleNView": false,
 							"animationType": "slide-in-bottom"
 						}
-					}
-				},
-				// 登录类型
-				{
-					"path": "logintype",
-					"style": {
-						"navigationBarTitleText": "登录"
 					}
 				},
 				// 修改密码
@@ -437,6 +418,12 @@
 					"style": {
 						"navigationBarTitleText": "我的账户"
 					}
+				},
+				{
+					"path": "account/recharge",
+						"style": {
+							"navigationBarTitleText": "详细信息"
+						}
 				}
 			]
 		}

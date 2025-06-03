@@ -40,8 +40,4 @@ export default {
 		name: '注册',
 		path: '/pages/public/register'
 	},
-	loginType: {
-		name: '登录类型',
-		path: '/pages/public/logintype'
-	}
 };

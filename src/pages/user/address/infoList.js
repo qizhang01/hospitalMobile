@@ -54,7 +54,7 @@ export default [{
     identification: 'bid'
 }]
 
-export const dropDownList = [{
+export const doctorAdviceList = [{
     id: 1,
     name: "药品医嘱",
     selected: true,
