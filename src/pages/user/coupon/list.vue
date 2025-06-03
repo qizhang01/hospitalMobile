@@ -1,7 +1,26 @@
 <template>
 	<view class="coupon-center">
-		<view class="coupon-list">
-			<!-- 优惠券列表 -->
+
+			<view class="rf-header-screen">
+				<view class="rf-screen-top">
+					<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
+						<text>{{selectedName}}</text>
+						<text class="iconfont" :class="tabIndex==0?'iconshang':'iconxia'"></text>
+					</view>
+					<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
+						<text>{{ selectedGroupName }}</text>
+						<text class="iconfont" :class="tabIndex==1?'iconshang':'iconxia'"></text>
+					</view>
+					<!--下拉选择列表--综合-->
+					<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']" :style="{height:selectH+'upx'}">
+						<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in dropdownList" :key="index" @tap.stop="dropdownItem" :data-index="index">
+							<text class="rf-ml rf-middle">{{item.name}}</text>
+							<text class="iconfont icongouxuan" :class="'text-' + themeColor.name" v-if="item.selected"></text>
+						</view>
+					</view>
+					<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
+				</view>
+			</view>
 			<view class="sub-list valid">
 				<view
 					class="row"
@@ -44,7 +63,7 @@
 				:status="loadingType"
 				v-if="couponList.length > 0"
 			></rf-load-more>
-		</view>
+
 		<rf-empty
 			:info="errorInfo || '暂无患者信息'"
 			v-if="couponList.length === 0 && !loading"
@@ -55,16 +74,12 @@
 </template>
 
 <script>
-/**
- * @des 领取中心
- *
- * @author stav stavyan@qq.com
- * @date 2020-01-13 11:28
- * @copyright 2019
- */
+
 import { couponList, couponReceive } from '@/api/userInfo';
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import moment from '@/common/moment';
+import {selectList, groupList} from './infoList.js'
+
 export default {
 	components: {
 		rfLoadMore
@@ -77,7 +92,15 @@ export default {
 			page: 1,
 			loading: true,
 			moneySymbol: this.moneySymbol,
-			errorInfo: ''
+			errorInfo: '',
+
+			selectH: 0,
+			dropdownList: [],
+			selectedName: "其他筛选",
+			selectedGroupName: "患者分组",
+			tabIndex: 0,
+			selectList,
+			groupList
 		};
 	},
 	filters: {
@@ -105,6 +128,44 @@ export default {
 		// 数据初始化
 		initData() {
 			this.getCouponList();
+		},
+		hideDropdownList() {
+			this.selectH = 0
+		},
+		screen(e) {
+			let index = parseInt(e.currentTarget.dataset.index, 10);
+			if (index === 0) {
+				this.dropdownList = this.selectList
+			} else if (index === 1) {
+				this.dropdownList = this.groupList
+			} else if (index === 2) {
+
+			} else if (index === 3) {
+
+			}
+			this.selectH = this.dropdownList.length * 80;
+			this.tabIndex = index;
+		},
+
+		dropdownItem(e) {
+			let index = parseInt(e.currentTarget.dataset.index, 10);
+			let arr = this.dropdownList;
+			for (let i = 0; i < arr.length; i++) {
+				if (i === index) {
+					arr[i].selected = true;
+				} else {
+					arr[i].selected = false;
+				}
+			}
+			this.dropdownList = arr;
+			if(this.tabIndex===0){
+				this.doctorAdviceList = arr
+				this.selectedAdviceName = arr[index].name;
+			}else if(this.tabIndex===1){
+				this.periodList = arr
+				this.selectedPeriodName = arr[index].name;
+			}
+			this.selectH = 0;
 		},
 		// 获取收货地址列表
 		async getCouponList(type) {
@@ -142,4 +203,144 @@ export default {
 		width: 100%;
 		justify-content: space-between;
 	}
+	.rf-dropdownlist {
+		width: 100%;
+		position: absolute;
+		background: $color-white;
+		border-bottom-left-radius: 24upx;
+		border-bottom-right-radius: 24upx;
+		overflow: hidden;
+		box-sizing: border-box;
+		padding-top: 10upx;
+		padding-bottom: 26upx;
+		left: 0;
+		top: 88upx;
+		visibility: hidden;
+		transition: all 0.2s ease-in-out;
+		z-index: 99;
+		.icongouxuan {
+			font-size: $font-lg;
+			line-height: 88upx;
+		}
+	}
+	.rf-dropdownlist-show {
+		visibility: visible;
+	}
+	.rf-dropdownlist-mask {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.6);
+		z-index: -1;
+		transition: all 0.2s ease-in-out;
+		opacity: 0;
+		visibility: hidden;
+	}
+	.rf-mask-show {
+		opacity: 1;
+		visibility: visible;
+	}
+	.rf-dropdownlist-item {
+		color: #333;
+		height: 70upx;
+		font-size: 28upx;
+		padding: 0 40upx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+		.rf-header-screen {
+			width: 100%;
+			background: $color-white;
+			position: fixed;
+			top: 45px;
+			z-index: 99;
+			.rf-screen-top,
+			.rf-screen-bottom {
+				border: none;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				font-size: 28upx;
+				color: #333;
+			}
+			.rf-screen-top {
+				height: 88upx;
+				line-height: 88upx;
+				position: relative;
+				background: $color-white;
+			}
+			.rf-top-item {
+				height: 28upx;
+				line-height: 28upx;
+				flex: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				.iconfont {
+					font-size: $font-lg + 4upx;
+					font-weight: 500;
+				}
+			}
+			.rf-screen-bottom {
+				height: 100upx;
+				padding: 0 30upx;
+				box-sizing: border-box;
+				font-size: 24upx;
+				align-items: center;
+				overflow: hidden;
+			}
+			.rf-bottom-text {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			.rf-bottom-item {
+				flex: 1;
+				width: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0 12upx;
+				box-sizing: border-box;
+				margin-right: 20upx;
+				white-space: nowrap;
+				height: 60upx;
+				border-radius: 40upx;
+			}
+			.rf-bottom-item:last-child {
+				margin-right: 0;
+			}
+			.rf-bold {
+				font-weight: bold;
+			}
+			.rf-active {
+				color: $base-color;
+			}
+			.rf-icon-ml .rf-icon-class {
+				margin-left: 6upx;
+			}
+			.rf-ml {
+				margin-left: 6upx;
+			}
+			.rf-seizeaseat-20 {
+				height: 20upx;
+			}
+			.rf-seizeaseat-30 {
+				height: 30upx;
+			}
+			.rf-icon-middle .rf-icon-class {
+				vertical-align: middle;
+			}
+			.rf-middle {
+				vertical-align: middle;
+			}
+		}
+		.sub-list {
+			margin-top: 100upx;
+		}
+
 </style>

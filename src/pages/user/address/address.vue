@@ -145,17 +145,6 @@
 	page {
 		background: $page-color-base;
 	}
-	/*顶部下拉选择 属性*/
-	.rf-scroll-box {
-		width: 100%;
-		height: 480upx;
-		box-sizing: border-box;
-		position: relative;
-		z-index: 99;
-		color: $color-white;
-		font-size: 30upx;
-		word-break: break-all;
-	}
 
 	.rf-dropdownlist {
 		width: 100%;
