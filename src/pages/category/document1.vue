@@ -1,5 +1,6 @@
 <template>
-	<view class="input-box">
+	<view>
+		<view class="input-box">
         <input
             @tap.stop=""
             disabled={false}
@@ -7,7 +8,22 @@
             style="color:#888;"
             placeholder-style="color:#ccc;"
         />
-
+		</view>
+        <uni-section title="单选" type="line">
+			<view class="uni-px-5 uni-pb-5">
+				<uni-data-checkbox v-model="radio1" :localdata="sex"></uni-data-checkbox>
+			</view>
+		</uni-section>
+		<uni-section title="多选"  type="line">
+			<view class="uni-px-5 uni-pb-5">
+				<uni-data-checkbox multiple v-model="checkbox1" :localdata="hobby"></uni-data-checkbox>
+			</view>
+		</uni-section>
+		<uni-section title="更多样式 - tag"  type="line">
+			<view class="uni-px-5 uni-pb-5">
+				<uni-data-checkbox mode="tag" multiple v-model="checkbox2" :localdata="hobby"></uni-data-checkbox>
+			</view>
+		</uni-section>
 		<!--加载动画-->
 		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
 		<!-- 规格-模态层弹窗 -->
@@ -15,13 +31,41 @@
 </template>
 
 <script>
+import uniDataSelect from '@dcloudio/uni-ui/lib/uni-data-select/uni-data-select.vue'
+import uniSection from '@dcloudio/uni-ui/lib/uni-section/uni-section.vue'
+import uniDataCheckbox from '@dcloudio/uni-ui/lib/uni-data-checkbox/uni-data-checkbox.vue'
 export default {
 	components: {
-
+uniDataCheckbox,
+uniSection,
+uniDataSelect,
 	},
 	data() {
 		return {
-hotSearchDefault: ''
+			hotSearchDefault: '',
+			radio1: 0,
+			checkbox1: [0],
+			checkbox2: [0],
+			sex: [{
+					text: '男',
+					value: 0
+				}, {
+					text: '女',
+					value: 1
+				}, {
+					text: '未知',
+					value: 2
+				}],
+				hobby: [{
+					text: '足球',
+					value: 0
+				}, {
+					text: '篮球',
+					value: 1
+				}, {
+					text: '游泳',
+					value: 2
+				}],
 		};
 	},
 	computed: {

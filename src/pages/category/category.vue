@@ -33,15 +33,12 @@
 			</scroll-view>
 			<!--右侧子导航-->
 			<scroll-view scroll-y="true" class="right">
-				<document2></document2>
-				<!-- <document1 v-if="showCategoryIndex===0"></document1> -->
-				 <!-- <view v-if="showCategoryIndex===0">
+				 <view v-if="showCategoryIndex===0">
 					<document1></document1>
-				 </view> -->
-<!-- 				<view v-else-if="showCategoryIndex===1">
+				 </view>
+				<view v-else-if="showCategoryIndex===1">
 				  <document2 ></document2>
-				</view> -->
-
+				</view>
 			</scroll-view>
 		</view>
 		<!--加载动画-->

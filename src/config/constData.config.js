@@ -48,28 +48,6 @@ export default {
 	],
 
 
-	// 热门推荐
-	hotRecommendList: [
-		{
-			url: '/pages/marketing/bargain/list',
-			icon: '/static/kj.png',
-			title: '我要砍价',
-			desc: '淘到理想好物'
-		},
-		{
-			url: '/pages/marketing/group/list',
-			icon: '/static/tg.png',
-			title: '团购专区',
-			desc: '发现品质好物'
-		},
-		{
-			url: '/pages/marketing/discount/list',
-			icon: '/static/zk.png',
-			title: '限时折扣',
-			desc: '抢到就是赚到'
-		}
-	],
-
 	// 主题列表
 	themeList: [
 				{
