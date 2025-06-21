@@ -39,6 +39,9 @@
 				<view v-else-if="showCategoryIndex===1">
 				  <document2 ></document2>
 				</view>
+				<view v-else-if="showCategoryIndex===2">
+				  <document3 ></document3>
+				</view>
 			</scroll-view>
 		</view>
 		<!--加载动画-->
@@ -69,6 +72,7 @@ import rfSearchBar from '@/components/rf-search-bar';
 import rfAttrContent from '@/components/rf-attr-content';
 import document1 from './document1.vue';
 import document2 from './document2.vue';
+import document3 from './document3.vue';
 import { mapMutations } from 'vuex';
 import {documentList} from './document.js'
 export default {
@@ -76,7 +80,8 @@ export default {
 		rfSearchBar,
 		rfAttrContent,
 		document1,
-		document2
+		document2,
+		document3
 	},
 	data() {
 		return {

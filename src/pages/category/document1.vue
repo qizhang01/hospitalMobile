@@ -19,7 +19,7 @@
 				<uni-data-checkbox multiple v-model="checkbox1" :localdata="hobby"></uni-data-checkbox>
 			</view>
 		</uni-section>
-		<uni-section title="更多样式 - tag"  type="line">
+		<uni-section title="标签"  type="line">
 			<view class="uni-px-5 uni-pb-5">
 				<uni-data-checkbox mode="tag" multiple v-model="checkbox2" :localdata="hobby"></uni-data-checkbox>
 			</view>
@@ -52,9 +52,6 @@ uniDataSelect,
 				}, {
 					text: '女',
 					value: 1
-				}, {
-					text: '未知',
-					value: 2
 				}],
 				hobby: [{
 					text: '足球',

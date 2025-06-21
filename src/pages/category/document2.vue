@@ -8,7 +8,7 @@
         :clear="false"
       ></uni-data-select>
     </uni-section>
-		<uni-section title="名字"  type="line" padding>
+		<uni-section title="名字"  type="line">
 			<uni-easyinput class="uni-mt-5" trim="all" v-model="inputValue" placeholder="请输入内容" @input="input"></uni-easyinput>
 		</uni-section>
     <uni-section title="日期" type="line"></uni-section>
@@ -74,7 +74,5 @@ import uniDatetimePicker from '@dcloudio/uni-ui/lib/uni-datetime-picker/uni-date
   .uni-pb-5 {
     padding-bottom: 10px;
   }
-  .date-picker {
-    margin-top: 10upx;
-  }
+
 </style>

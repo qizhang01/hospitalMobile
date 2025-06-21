@@ -1,16 +1,8 @@
 <template>
   <view>
-    <uni-section title="是否可清除已选项" type="line">
-      <uni-data-select
-        v-model="value"
-        :localdata="range"
-        @change="change"
-        :clear="false"
-      ></uni-data-select>
+    <uni-section title="名字"  type="line" padding>
+        <uni-easyinput class="uni-mt-5" trim="all" v-model="inputValue" placeholder="请输入内容" @input="input"></uni-easyinput>
     </uni-section>
-		<uni-section title="名字"  type="line" padding>
-			<uni-easyinput class="uni-mt-5" trim="all" v-model="inputValue" placeholder="请输入内容" @input="input"></uni-easyinput>
-		</uni-section>
     <uni-section title="日期" type="line"></uni-section>
     <view class="date-picker">
 			<uni-datetime-picker type="date" :clear-icon="false" v-model="single" @maskClick="maskClick" />
@@ -35,7 +27,6 @@ import uniDatetimePicker from '@dcloudio/uni-ui/lib/uni-datetime-picker/uni-date
       return {
         inputValue: '',
         single: '',
-        value: 1,
         range: [
           { value: 0, text: "篮球" },
           { value: 1, text: "足球" },
