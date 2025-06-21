@@ -2,11 +2,6 @@
 import mRouter from '@/utils/router';
 import mConstDataConfig from '@/config/constData.config';
 import mStore from '@/store';
-import appShare from '@/utils/share';
-// #ifdef H5
-import jweixin from '@/common/jweixin';
-import $mPayment from '@/utils/payment';
-// #endif
 import { http } from '@/utils/request';
 import { advView } from '@/api/basic';
 //常用方法集合
@@ -274,56 +269,7 @@ export default {
 		const msg = result ? '复制成功' : '复制失败';
 		this.toast(msg);
 	},
-	/**
-	 * app分享
-	 */
-	handleAppShare(shareUrl, shareTitle, shareContent, shareImg) {
-		let shareData = {
-			shareUrl,
-			shareTitle,
-			shareContent,
-			shareImg
-		};
-		appShare(shareData, res => {});
-	},
 
-  async handleWxH5Share(title, desc, link, imgUrl) {
-		// #ifdef H5
-    if ($mPayment.isWechat()) {
-      if (uni.getSystemInfoSync().platform === 'android') {
-        await $mPayment.wxConfigH5(link);
-      }
-      jweixin.ready(function () {
-        // eslint-disable-next-line
-        jweixin.updateAppMessageShareData({
-          title, // 分享标题
-          desc, // 分享描述
-          link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl, // 分享图标
-          success: function () {
-            // 用户确认分享后执行的回调函数
-          },
-          cancel: function () {
-            // 用户取消分享后执行的回调函数
-          }
-        });
-        // eslint-disable-next-line
-        jweixin.updateTimelineShareData({
-          title, // 分享标题
-          desc, // 分享描述
-          link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl, // 分享图标
-          success: function () {
-            // 用户确认分享后执行的回调函数
-          },
-          cancel: function () {
-            // 用户取消分享后执行的回调函数
-          }
-        });
-      });
-    }
-		// #endif
-  },
 
   // 去掉字符串中的空格
   trim(str){
@@ -355,42 +301,6 @@ export default {
     } else return false;
   },
 
-	platformGroupFilter () {
-		let platformGroup = 'tinyShop';
-		// #ifdef H5
-		if ($mPayment.isWechat()) {
-			platformGroup = 'tinyShopWechat';
-		} else {
-			platformGroup = 'tinyShopH5';
-		}
-		// #endif
-		// #ifdef MP-QQ
-		platformGroup = 'tinyShopQqMp';
-		// #endif
-		// #ifdef MP-WEIXIN
-		platformGroup = 'tinyShopWechatMp';
-		// #endif
-		// #ifdef MP-ALIPAY
-		platformGroup = 'tinyShopAliMp';
-		// #endif
-		// #ifdef MP-QQ
-		platformGroup = 'tinyShopQqMp';
-		// #endif
-		// #ifdef MP-BAIDU
-		platformGroup = 'tinyShopBaiduMp';
-		// #endif
-		// #ifdef APP-PLUS
-		switch(uni.getSystemInfoSync().platform){
-			case 'android':
-				 platformGroup = 'tinyShopAndroid';
-				 break;
-			case 'ios':
-				 platformGroup = 'tinyShopIos';
-				 break;
-		}
-		// #endif
-		return platformGroup;
-	},
 
   // 广告图跳转封装
   handleBannerNavTo(data, id, advId) {
