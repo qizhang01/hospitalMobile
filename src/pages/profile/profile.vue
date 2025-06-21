@@ -123,7 +123,6 @@ export default {
 				{ icon: 'icongonggao', url: '/pages/index/notice/notice', title: this._i18n.t('profile.notice'), color: '#ff6b81' },
 				{ icon: 'iconyouhuiquan-copy', url: '/pages/user/coupon/list', title: this._i18n.t('profile.couponCenter'), color: '#ff6b81' },
 				{ icon: 'icondizhi1', url: '/pages/user/address/address', title: this._i18n.t('profile.addressManage'), color: '#ff6b81' },
-				{ icon: 'iconshoucang3', url: '/pages/user/collection/collection', title: this._i18n.t('profile.myCollection'), color: '#ff6b81' },
 			];
 		}
   },

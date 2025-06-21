@@ -33,14 +33,17 @@
 			</scroll-view>
 			<!--右侧子导航-->
 			<scroll-view scroll-y="true" class="right">
-				<view>32323</view>
+				<document2></document2>
+				<!-- <document1 v-if="showCategoryIndex===0"></document1> -->
+				 <!-- <view v-if="showCategoryIndex===0">
+					<document1></document1>
+				 </view> -->
+<!-- 				<view v-else-if="showCategoryIndex===1">
+				  <document2 ></document2>
+				</view> -->
+
 			</scroll-view>
 		</view>
-		<rf-empty
-			:bottom="bottom"
-			:info="'暂无产品分类~'"
-			v-if="categoryList.length === 0 && !loading"
-		></rf-empty>
 		<!--加载动画-->
 		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
 		<!-- 规格-模态层弹窗 -->
@@ -67,13 +70,16 @@
 import { productCate, productList, productDetail, cartItemCount, cartItemCreate } from '@/api/product';
 import rfSearchBar from '@/components/rf-search-bar';
 import rfAttrContent from '@/components/rf-attr-content';
-import { advList } from '@/api/basic';
+import document1 from './document1.vue';
+import document2 from './document2.vue';
 import { mapMutations } from 'vuex';
 import {documentList} from './document.js'
 export default {
 	components: {
 		rfSearchBar,
-		rfAttrContent
+		rfAttrContent,
+		document1,
+		document2
 	},
 	data() {
 		return {
