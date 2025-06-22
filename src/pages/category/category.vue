@@ -220,24 +220,6 @@ page {
 			width: 76%;
 			left: 24%;
 			background-color: #fff;
-			.second-category {
-				z-index: 10;
-				white-space: nowrap;
-				width: 100%;
-				margin: $spacing-sm $spacing-sm $spacing-base;
-				.second-category-tag {
-					margin-right: $spacing-base;
-					padding: 5upx $spacing-lg;
-					display: inline-block;
-					border-radius: 8upx;
-					font-size: $font-sm + 2upx;
-				}
-				.second-category-normal {
-					color: $font-color-dark;
-					border: none;
-					background-color: $page-color-light;
-				}
-			}
 			.category {
 				width: 100%;
 				padding: 0 15upx $spacing-base;
@@ -340,16 +322,6 @@ page {
 				}
 			}
 		}
-	}
-
-	.category-product-list {
-		margin-bottom: 15upx;
-		padding-bottom: 15upx;
-		border-bottom: 1upx solid rgba(0, 0, 0, 0.08);
-	}
-	.category-product-list:last-child {
-		border-bottom: none;
-		background-color: #007aff;
 	}
 
 	.input-box {

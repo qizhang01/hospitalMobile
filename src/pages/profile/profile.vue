@@ -464,36 +464,6 @@ page {
 				color: $base-color;
 			}
 		}
-
-		.order-section {
-			@extend %section;
-			padding: 28upx 0;
-
-			.order-item {
-				@extend %flex-center;
-				width: 120upx;
-				height: 120upx;
-				border-radius: 10upx;
-				font-size: $font-sm;
-				color: $font-color-dark;
-				position: relative;
-			}
-
-			.badge {
-				position: absolute;
-				top: 0;
-				right: 4upx;
-			}
-
-			.iconfont {
-				font-size: 48upx;
-			}
-
-			.icon-shouhoutuikuan {
-				font-size: 44upx;
-			}
-		}
-
 	}
 }
 %flex-center {
