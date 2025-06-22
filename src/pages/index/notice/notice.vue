@@ -2,7 +2,7 @@
 	<view clas="notice">
 		暂无商城公告
 		<!--加载动画-->
-		<rfLoading isFullScreen :active="loading"></rfLoading>
+		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
 	</view>
 </template>
 

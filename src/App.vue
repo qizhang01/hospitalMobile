@@ -36,11 +36,6 @@ export default {
 				const info = plus.push.getClientInfo();
 				// #endif
 			}
-			// #ifdef H5
-			if (this.$mPayment.isWechat()) {
-				await this.$mPayment.wxConfigH5(window.location.href);
-			}
-			// #endif
 		},
 		// 初始化系统信息
 		initSystemInfo() {

@@ -90,14 +90,14 @@ export default {
 		};
 	},
 	onShow() {
-		if (this.$mStore.getters.hasLogin) {
-			this.$mRouter.reLaunch({ route: '/pages/index/index' });
-		}
+		// if (this.$mStore.getters.hasLogin) {
+		// 	this.$mRouter.reLaunch({ route: '/pages/index/index' });
+		// }
 	},
 	onLoad(options) {
-		this.loginParams.mobile = uni.getStorageSync('loginMobile') || '';
-		this.loginParams.password = uni.getStorageSync('loginPassword') || '';
-		this.userInfo = uni.getStorageSync('wechatUserInfo');
+		// this.loginParams.mobile = uni.getStorageSync('loginMobile') || '';
+		// this.loginParams.password = uni.getStorageSync('loginPassword') || '';
+		// this.userInfo = uni.getStorageSync('wechatUserInfo');
 	},
 	methods: {
 		loginTest(mobile, password) {

@@ -219,7 +219,6 @@
                     await this.getMemberInfo();
                 } else {
                     this.loading = false;
-                    this.resetSectionData();
                 }
             },
             // 设置购物车数量角标
@@ -247,22 +246,10 @@
                 }).catch(() => {
                 	  this.hasLogin = false;
                 	  this.userInfo = {};
-                    this.resetSectionData();
                     this.loading = false;
                 });
             },
-            // 清空个人中心的各模块状态
-            resetSectionData() {
-                uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
-                this.amountList[0].value = 0;
-                this.amountList[1].value = 0;
-                this.amountList[2].value = 0;
-                this.orderSectionList[0].num = 0;
-                this.orderSectionList[1].num = 0;
-                this.orderSectionList[2].num = 0;
-                this.orderSectionList[3].num = 0;
-                this.orderSectionList[4].num = 0;
-            },
+
             // 给个人中心的各模块赋值
             setSectionData(data) {
                 const orderSynthesizeNumArr = [];

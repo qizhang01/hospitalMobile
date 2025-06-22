@@ -6,7 +6,7 @@
 			title="扫一扫"
 			icon="iconsaomiao"
 			@tab="tabClick"
-			:categoryList="categoryList"
+			:categoryList="[]"
 			:merchantData="merchantData"
 			:placeholder="hotSearchDefault"
 		/>
@@ -22,10 +22,6 @@
 
 <script>
 
-	import {
-		indexList,
-		productList
-	} from '@/api/product';
 	import rfSearchBar from '@/components/rf-search-bar';
 	import { mapMutations } from 'vuex';
 	export default {

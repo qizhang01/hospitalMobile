@@ -62,27 +62,12 @@ export default {
 			loading: false,
 			providerList: [],
 			payTypeList: {},
-			isWechat: this.$mPayment.isWechat(),
 			pageLoading: false,
 			code: ''
 		};
 	},
 	onLoad(options) {
 		this.initData(options);
-			/*  #ifdef H5  */
-			this.code = options.code && options.code.split(',')[options.code.split(',').length - 1];
-			if (this.$mPayment.isWechat()) {
-				if (!this.code) {
-						const href = window.location.href;
-						window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?
-																appid=${this.$mConfig.weixinAppId}&
-																redirect_uri=${href}&
-																response_type=code&
-																scope=snsapi_userinfo&
-																state=STATE#wechat_redirect`;
-				}
-			}
-			/*  #endif  */
 	},
 methods:{
 	navTo(route) {

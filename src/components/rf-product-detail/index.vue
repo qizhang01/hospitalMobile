@@ -769,19 +769,6 @@
       hide() {
         this.kefuShow = false;
       },
-      // 分享商品
-      share() {
-        // #ifdef H5
-        if (this.$mPayment.isWechat()) {
-          this.shareClass = 'show';
-        } else {
-          this.$mHelper.h5Copy(this.url);
-        }
-        // #endif
-        // #ifdef APP-PLUS
-				this.$mHelper.handleAppShare(this.url, this.appName, this.product.name, this.product.picture);
-				// #endif
-			},
 			// 通用跳转
 			navTo(route) {
 				if (this.appServiceType === '1' && route === '/pages/product/service/index') {

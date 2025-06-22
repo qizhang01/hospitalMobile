@@ -77,7 +77,7 @@
 			</view>
 		</view>
 		<!--页面加载动画-->
-		<rfLoading isFullScreen :active="loading"></rfLoading>
+		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
 	</view>
 </template>
 <script>
@@ -178,7 +178,6 @@ export default {
 				await this.getMemberInfo();
 			} else {
 				this.loading = false;
-				this.resetSectionData();
 			}
 		},
 		// 获取用户信息
@@ -197,7 +196,6 @@ export default {
 				.catch(() => {
 					this.hasLogin = false;
 					this.userInfo = {};
-					this.resetSectionData();
 					this.loading = false;
 				});
 		},
@@ -227,7 +225,6 @@ export default {
 		navTo(route) {
 			if (!route) return;
 			this.$mRouter.push({ route });
-			
 		},
         
 		toLogin(){

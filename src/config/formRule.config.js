@@ -55,27 +55,6 @@ export default {
 		errorMsg: '手机号格式不正确'
 	}],
 
-	/* 编辑新增个人发票 */
-	pInvoiceRule: [{
-		name: 'title',
-		checkType: 'notnull',
-		checkRule: '',
-		errorMsg: '发票抬头不能为空'
-	}],
-
-	/* 编辑新增公司发票 */
-	cInvoiceRule: [{
-		name: 'title',
-		checkType: 'notnull',
-		checkRule: '',
-		errorMsg: '发票抬头不能为空'
-	}, {
-		name: 'duty_paragraph',
-		checkType: 'notnull',
-		checkRule: '',
-		errorMsg: '发票税号不能为空'
-	}],
-
 	/* 用户注册 */
 	registerRule: [{
 		name: 'mobile',
