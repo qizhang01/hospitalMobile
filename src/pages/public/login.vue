@@ -131,20 +131,11 @@ export default {
 			if (this.loginByPass) {
 				loginApi = loginByPass;
 				this.reqBody['password'] = this.loginParams['password'];
-				cheRes = this.$mGraceChecker.check(
-					this.reqBody,
-					this.$mFormRule.loginByPassRule
-				);
 			} else {
 				this.reqBody['code'] = this.loginParams['code'];
 				loginApi = loginBySmsCode;
-				cheRes = this.$mGraceChecker.check(
-					this.reqBody,
-					this.$mFormRule.loginByCodeRule
-				);
 			}
 			if (!cheRes) {
-				this.$mHelper.toast(this.$mGraceChecker.error);
 				return;
 			}
 			this.reqBody.group = this.$mHelper.platformGroupFilter();

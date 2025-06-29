@@ -12,7 +12,6 @@ import $mConstDataConfig from '@/config/constData.config.js';
 import $mSettingConfig from '@/config/setting.config.js';
 // 引入全局方法
 import { http } from '@/utils/request';
-import $mGraceChecker from '@/utils/graceChecker';
 import $mHelper from '@/utils/helper';
 import $mRouter from '@/utils/router';
 // 全局组件
@@ -51,7 +50,6 @@ Vue.prototype.$mRoutesConfig = $mRoutesConfig;
 Vue.prototype.$mConstDataConfig = $mConstDataConfig;
 Vue.prototype.$mSettingConfig = $mSettingConfig;
 
-Vue.prototype.$mGraceChecker = $mGraceChecker;
 Vue.prototype.$mHelper = $mHelper;
 Vue.prototype.$mRouter = $mRouter;
 
