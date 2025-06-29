@@ -75,9 +75,8 @@
 
 <script>
 
-import { couponList, couponReceive } from '@/api/userInfo';
+import { couponList } from '@/api/userInfo';
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
-import moment from '@/common/moment';
 import {selectList, groupList} from './infoList.js'
 
 export default {
@@ -91,9 +90,7 @@ export default {
 			loadingType: 'more',
 			page: 1,
 			loading: true,
-			moneySymbol: this.moneySymbol,
 			errorInfo: '',
-
 			selectH: 0,
 			dropdownList: [],
 			selectedName: "其他筛选",
@@ -104,9 +101,7 @@ export default {
 		};
 	},
 	filters: {
-		time(val) {
-			return moment(val * 1000).format('YYYY-MM-DD HH:mm');
-		}
+
 	},
 	onLoad(options) {
 		this.type = options.type;
@@ -120,7 +115,7 @@ export default {
 	},
 	// 加载更多
 	onReachBottom() {
-  if (this.loadingType === 'nomore') return;
+		if (this.loadingType === 'nomore') return;
 		this.page++;
 		this.getCouponList();
 	},
@@ -252,95 +247,84 @@ export default {
 		align-items: center;
 		justify-content: space-between;
 	}
-		.rf-header-screen {
-			width: 100%;
+	.rf-header-screen {
+		width: 100%;
+		background: $color-white;
+		position: fixed;
+		top: 45px;
+		z-index: 99;
+		.rf-screen-top,
+		.rf-screen-bottom {
+			border: none;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-size: 28upx;
+			color: #333;
+		}
+		.rf-screen-top {
+			height: 88upx;
+			line-height: 88upx;
+			position: relative;
 			background: $color-white;
-			position: fixed;
-			top: 45px;
-			z-index: 99;
-			.rf-screen-top,
-			.rf-screen-bottom {
-				border: none;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				font-size: 28upx;
-				color: #333;
-			}
-			.rf-screen-top {
-				height: 88upx;
-				line-height: 88upx;
-				position: relative;
-				background: $color-white;
-			}
-			.rf-top-item {
-				height: 28upx;
-				line-height: 28upx;
-				flex: 1;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				.iconfont {
-					font-size: $font-lg + 4upx;
-					font-weight: 500;
-				}
-			}
-			.rf-screen-bottom {
-				height: 100upx;
-				padding: 0 30upx;
-				box-sizing: border-box;
-				font-size: 24upx;
-				align-items: center;
-				overflow: hidden;
-			}
-			.rf-bottom-text {
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-			.rf-bottom-item {
-				flex: 1;
-				width: 0;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				padding: 0 12upx;
-				box-sizing: border-box;
-				margin-right: 20upx;
-				white-space: nowrap;
-				height: 60upx;
-				border-radius: 40upx;
-			}
-			.rf-bottom-item:last-child {
-				margin-right: 0;
-			}
-			.rf-bold {
-				font-weight: bold;
-			}
-			.rf-active {
-				color: $base-color;
-			}
-			.rf-icon-ml .rf-icon-class {
-				margin-left: 6upx;
-			}
-			.rf-ml {
-				margin-left: 6upx;
-			}
-			.rf-seizeaseat-20 {
-				height: 20upx;
-			}
-			.rf-seizeaseat-30 {
-				height: 30upx;
-			}
-			.rf-icon-middle .rf-icon-class {
-				vertical-align: middle;
-			}
-			.rf-middle {
-				vertical-align: middle;
+		}
+		.rf-top-item {
+			height: 28upx;
+			line-height: 28upx;
+			flex: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.iconfont {
+				font-size: $font-lg + 4upx;
+				font-weight: 500;
 			}
 		}
-		.sub-list {
-			margin-top: 100upx;
+		.rf-screen-bottom {
+			height: 100upx;
+			padding: 0 30upx;
+			box-sizing: border-box;
+			font-size: 24upx;
+			align-items: center;
+			overflow: hidden;
 		}
+		.rf-bottom-text {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.rf-bottom-item {
+			flex: 1;
+			width: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0 12upx;
+			box-sizing: border-box;
+			margin-right: 20upx;
+			white-space: nowrap;
+			height: 60upx;
+			border-radius: 40upx;
+		}
+		.rf-bottom-item:last-child {
+			margin-right: 0;
+		}
+		.rf-bold {
+			font-weight: bold;
+		}
+		.rf-active {
+			color: $base-color;
+		}
+		.rf-ml {
+			margin-left: 6upx;
+		}
+
+		.rf-middle {
+			vertical-align: middle;
+		}
+	}
+	.sub-list {
+		margin-top: 100upx;
+	}
 
 </style>

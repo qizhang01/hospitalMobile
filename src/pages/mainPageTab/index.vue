@@ -70,7 +70,7 @@
 			// 通用跳转
 			navToSearch() {
 				this.$mRouter.push({
-					route: `/pages/index/search/search?data=${JSON.stringify(this.search)}`
+					route: `/pages/mainPageTab/search/search?data=${JSON.stringify(this.search)}`
 				});
 			},
 
