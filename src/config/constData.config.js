@@ -18,14 +18,6 @@ export default {
 	singleSkuText: '基础款',
 
 
-	// 个人中心-设置中心菜单 e07472 ff4757 ff6b81
-	settingList: [
-		{ icon: 'icongonggao', url: '/pages/index/notice/notice', title: '医院公告', color: '#ff6b81' },
-		{ icon: 'iconyouhuiquan-copy', url: '/pages/user/coupon/list', title: '患者中心', color: '#ff6b81' },
-		{ icon: 'icondizhi1', url: '/pages/user/address/address', title: '医嘱管理', color: '#ff6b81' },
-		{ icon: 'iconshoucang3', url: '/pages/user/collection/collection', title: '我的收藏', color: '#ff6b81' },
-	],
-
 	// 设置-设置中心
 	setList: [
 		{

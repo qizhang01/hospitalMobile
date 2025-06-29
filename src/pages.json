@@ -28,6 +28,23 @@
 				}
 			}
 		},
+		//患者信息
+
+		{
+			"path": "pages/patientInfoTab/list",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "患者信息",
+				"app-plus": {
+					"pullToRefresh": {
+						"support": true,
+						"color": "#fa436a",
+						"style": "default"
+					}
+				}
+			}
+		},
+
 		// 公告
 		{
 			"path": "pages/index/notice/notice",
@@ -44,14 +61,14 @@
 			}
 		},
 
-		// 商品搜索
+		// 搜索
 		{
 			"path": "pages/index/search/search",
 			"style": {
 				"navigationBarTitleText": "搜索"
 			}
 		},
-		// 消息中心
+		// 登录
 		{
 			"path": "pages/public/login",
 			"style": {
@@ -67,21 +84,10 @@
 				}
 			}
 		},
-		// 分类
-		{
-			"path": "pages/category/category",
-			"style": {
-				"navigationBarTitleText": "分类",
-				"onReachBottomDistance": 50,
-				"app-plus": {
-					"bounce": "none",
-					"titleNView": false
-				}
-			}
-		},
+
 		// 购物车
 		{
-			"path": "pages/cart/cart",
+			"path": "pages/temperature/index",
 			"style": {
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "体温单",
@@ -98,6 +104,35 @@
 				}
 			}
 		},
+						{
+					"path": "pages/document/index",
+					"style": {
+						"enablePullDownRefresh": true,
+						"navigationBarTitleText": "患者信息",
+						"app-plus": {
+							"pullToRefresh": {
+								"support": true,
+								"color": "#fa436a",
+								"style": "default"
+							}
+						}
+					}
+				},
+				// 医嘱管理
+				{
+					"path": "pages/doctorTipsTab/index",
+					"style": {
+						"enablePullDownRefresh": true,
+						"navigationBarTitleText": "医嘱管理",
+						"app-plus": {
+							"pullToRefresh": {
+								"support": true,
+								"color": "#fa436a",
+								"style": "default"
+							}
+						}
+					}
+				},
 		// 我的
 		{
 			"path": "pages/profile/profile",
@@ -211,35 +246,6 @@
 						"navigationBarTitleText": "修改资料"
 					}
 				},
-				{
-					"path": "coupon/list",
-					"style": {
-						"enablePullDownRefresh": true,
-						"navigationBarTitleText": "患者信息",
-						"app-plus": {
-							"pullToRefresh": {
-								"support": true,
-								"color": "#fa436a",
-								"style": "default"
-							}
-						}
-					}
-				},
-				// 收货地址
-				{
-					"path": "address/address",
-					"style": {
-						"enablePullDownRefresh": true,
-						"navigationBarTitleText": "医嘱管理",
-						"app-plus": {
-							"pullToRefresh": {
-								"support": true,
-								"color": "#fa436a",
-								"style": "default"
-							}
-						}
-					}
-				},
 
 				// 我的账户
 				{
@@ -277,10 +283,10 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/category/category",
+				"pagePath": "pages/patientInfoTab/list",
 				"iconPath": "static/tab-cate.png",
 				"selectedIconPath": "static/tab-cate-rf.png",
-				"text": "文书"
+				"text": "患者信息"
 			},
 			{
 				"pagePath": "pages/public/login",
@@ -289,7 +295,7 @@
 				"text": "登录"
 			},
 			{
-				"pagePath": "pages/cart/cart",
+				"pagePath": "pages/temperature/index",
 				"iconPath": "static/tab-cart.png",
 				"selectedIconPath": "static/tab-cart-rf.png",
 				"text": "体温单"

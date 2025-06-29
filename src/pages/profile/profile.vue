@@ -121,8 +121,8 @@ export default {
 		settingList() {
 			return [
 				{ icon: 'icongonggao', url: '/pages/index/notice/notice', title: this._i18n.t('profile.notice'), color: '#ff6b81' },
-				{ icon: 'iconyouhuiquan-copy', url: '/pages/user/coupon/list', title: this._i18n.t('profile.couponCenter'), color: '#ff6b81' },
-				{ icon: 'icondizhi1', url: '/pages/user/address/address', title: this._i18n.t('profile.addressManage'), color: '#ff6b81' },
+				{ icon: 'iconyouhuiquan-copy', url: '/pages/document/index', title: "文书", color: '#ff6b81' },
+				{ icon: 'icondizhi1', url: '/pages/doctorTipsTab/index', title: this._i18n.t('profile.addressManage'), color: '#ff6b81' },
 			];
 		}
   },
