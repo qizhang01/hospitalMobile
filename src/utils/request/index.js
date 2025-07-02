@@ -1,6 +1,5 @@
 /* eslint-disable */
 import Request from './request';
-import { refreshToken } from '@/api/login';
 import indexConfig from '@/config/index.config';
 import mHelper from '@/utils/helper';
 import store from '@/store';

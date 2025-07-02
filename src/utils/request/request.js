@@ -1,6 +1,6 @@
 export default class Request {
 	config = {
-		baseUrl: '',
+		baseUrl: '/',
 		header: {
 			'content-type': 'application/json'
 		},
@@ -32,11 +32,11 @@ export default class Request {
 	}
 
 	requestComFun(response) {
-		return response;
+
 	}
 
 	requestComFail(response) {
-		return response;
+		
 	}
 
 	setConfig(f) {
