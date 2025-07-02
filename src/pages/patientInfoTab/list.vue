@@ -164,26 +164,36 @@ export default {
 		},
 		// 获取收货地址列表
 		async getCouponList(type) {
-			await this.$http
-				.get(`${couponList}`, {
-					page: this.page
-				})
-				.then(r => {
+			const res = await this.$http
+				.get("/api/ward/2901/inpatients")
+				
+             console.log(11111111, res)
+			 if(res){
 					this.loading = false;
 					if (type === 'refresh') {
 						uni.stopPullDownRefresh();
 					}
-					this.loadingType = r.data.length === 10 ? 'more' : 'nomore';
-					this.couponList = [...this.couponList, ...r.data];
-				})
-				.catch(err => {
-					this.couponList.length = 0;
-					this.errorInfo = err;
-					this.loading = false;
-					if (type === 'refresh') {
-						uni.stopPullDownRefresh();
-					}
-				});
+					this.loadingType = res.length === 10 ? 'more' : 'nomore';
+					this.couponList = res;
+			 }
+				// .then(r => {
+				// 	console.log(11111111)
+				// 	this.loading = false;
+				// 	if (type === 'refresh') {
+				// 		uni.stopPullDownRefresh();
+				// 	}
+				// 	this.loadingType = r.data.length === 10 ? 'more' : 'nomore';
+				// 	this.couponList = [...this.couponList, ...r.data];
+				// })
+				// .catch(err => {
+				// 	console.log(34343434)
+				// 	this.couponList.length = 0;
+				// 	this.errorInfo = err;
+				// 	this.loading = false;
+				// 	if (type === 'refresh') {
+				// 		uni.stopPullDownRefresh();
+				// 	}
+	
 		},
 		// 获取优惠券
 		navTo(route) {

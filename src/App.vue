@@ -25,16 +25,9 @@ export default {
 			const token = uni.getStorageSync('accessToken');
 			// 获取系统title高度
 			await this.initSystemInfo();
-			if (token) {
-				await this.handleVerifyAccessToken(token);
-			}
+
 			if (this.$mStore.getters.hasLogin) {
-				// 初始化购物车数量
-				this.setCartNum(uni.getStorageSync('cartNum') || 0);
-				this.setNotifyNum(uni.getStorageSync('notifyNum') || 0);
-				// #ifdef APP-PLUS
-				const info = plus.push.getClientInfo();
-				// #endif
+
 			}
 		},
 		// 初始化系统信息
@@ -49,28 +42,17 @@ export default {
 						Vue.prototype.CustomBar = e.statusBarHeight + 43;
 					}
 					// #endif
-					// #ifdef MP-WEIXIN
-					Vue.prototype.StatusBar = e.statusBarHeight;
-					// eslint-disable-next-line
-					const custom = wx.getMenuButtonBoundingClientRect();
-					Vue.prototype.Custom = custom;
-					Vue.prototype.CustomBar = custom.top - e.statusBarHeight;
-					// #endif
-					// #ifdef MP-ALIPAY
-					Vue.prototype.StatusBar = e.statusBarHeight;
-					Vue.prototype.CustomBar = e.statusBarHeight + e.titleBarHeight;
-					// #endif
 				}
 			});
 		},
 		// 检验token是否有效
 		async handleVerifyAccessToken (token) {
-      await this.$http.post(verifyAccessToken, { token }).then(r => {
-        if (!r.data.token) {
-					this.$mStore.commit('logout');
-        }
-      });
-    }
+			// await this.$http.post(verifyAccessToken, { token }).then(r => {
+			// 	if (!r.data.token) {
+			// 				this.$mStore.commit('logout');
+			// 	}}
+			// );
+    	}
 	}
 };
 </script>

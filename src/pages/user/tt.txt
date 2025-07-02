@@ -1,0 +1,76 @@
+curl -H "API_KEY: bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m," \
+-H "Content-Type: application/json" https://192.168.3.10:8443/api/ward/2901/inpatients
+curl -H "API_KEY: bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m," \
+-H "Content-Type: application/json" https://192.168.3.10:8443/api/ward/2903/inpatients
+curl -H "API_KEY: bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m," \
+-H "Content-Type: application/json" https://192.168.3.10:8443/api/ward/2906/inpatients
+
+
+
+
+	PatientId                int64           `json:"patient_id"`                     // 住院号，按入院时间
+	Mrn                      string          `json:"mrn"`                            // 病案号
+	VisitCardNo              string          `json:"visit_card_no"`                  // 就诊卡号
+	BedNo                    string          `json:"bed_no"`                         //
+	Name                     string          `json:"name"`                           //
+	IdNumber                 string          `json:"id_number"`                      // 身份证
+	PhysiSexCode             int             `json:"physi_sex_code"`                 // 性别 1\2
+	PhysiSexName             string          `json:"physi_sex_name"`                 // 男\女
+	BirthDate                *time.Time      `json:"birth_date"`                     //
+	MobileNo                 string          `json:"mobile_no"`                      //
+	WardCode                 int             `json:"ward_code"`                      //
+	WardName                 string          `json:"ward_name"`                      //
+	DeptCode                 int             `json:"dept_code"`                      //
+	DeptName                 string          `json:"dept_name"`                      //
+	AdmissionTime            time.Time       `json:"admission_time"`                 //
+	AdmitSituation           int             `json:"admit_situation"`                // 1\2
+	AdmitWayCode             int             `json:"admit_way_code"`                 // 入院方式:1/2/3
+	AdmitWayName             string          `json:"admit_way_name"`                 // 门诊/急诊/其他医疗机构转入
+	AdmissionWardTime        *time.Time      `json:"admission_ward_time"`            // 入病区时间
+	DischargeTime            *time.Time      `json:"discharge_time"`                 // 出院
+	DiagnosisCode            string          `json:"diagnosis_code"`                 // 诊断
+	DiagnosisName            string          `json:"diagnosis_name"`                 //
+	NursingClass             int             `json:"nursing_class"`                  // 护理等级 NULL/0/2/3
+	PatientPathogeneticCondi *int            `json:"patient_pathogenetic_condition"` // 病人病情 NULL/1
+	ChargeTypeCode           int             `json:"charge_type_code"`               // 医保类型
+	ChargeTypeName           string          `json:"charge_type_name"`               //
+	TotalCost                decimal.Decimal `json:"total_cost"`                     // 总花费
+	PrePayment               decimal.Decimal `json:"pre_payment"`                    // 预付
+	SelfPayment              decimal.Decimal `json:"self_payment"`                   // 自付
+	Balance                  decimal.Decimal `json:"balance"`                        // 余额
+	ArrearFlag               int             `json:"arrear_flag"`                    // 欠费标志
+	Diet                     *int            `json:"diet"`                           // 饮食
+	ReceptTreatDrCode        string          `json:"recept_treat_dr_code"`           // 接诊医生
+	ReceptTreatDrName        string          `json:"recept_treat_dr_name"`           //
+	InhospDrCode             string          `json:"inhosp_dr_code"`                 // 住院医生
+	InhospDrName             string          `json:"inhosp_dr_name"`                 //
+	AttendDrCode             string          `json:"attend_dr_code"`                 //
+	AttendDrName             string          `json:"attend_dr_name"`                 //
+	ChiefDrCoDe              string          `json:"chief_dr_code"`                  // 主治医生
+	ChiefDrName              string          `json:"chief_dr_name"`                  //
+	TreatProcessDescr        int             `json:"treat_process_descr"`            // 治疗过程?
+	AdmissionDeptCode        int             `json:"admission_dept_code"`            // 入院科室
+	AdmissionDeptName        string          `json:"admission_dept_name"`            //
+	AdmissionWardCode        int             `json:"admission_ward_code"`            // 入院病区
+	AdmissionWardName        string          `json:"admission_ward_name"`            //
+	LeaveHospitalDeptCode    int             `json:"leave_hospital_dept_code"`       //
+	LeaveHospitalDeptName    string          `json:"leave_hospital_dept_name"`       //
+	LeaveHospitalWardCode    int             `json:"leave_hospital_ward_code"`       //
+	LeaveHospitalWardName    string          `json:"leave_hospital_ward_name"`       //
+	DischargeStatus          string          `json:"discharge_status"`               // DISCHARGE/INHOSPITA
+	DischargeDate            *time.Time      `json:"discharge_date"`                 //
+	DischargeDiagCode        string          `json:"discharge_diag_code"`            //
+	DischargeDiagName        string          `json:"discharge_diag_name"`            //
+	OutcomeCode              int             `json:"outcome_code"`                   // 转归情况：0/1/2/3/4/5
+	OutcomeName              string          `json:"outcome_name"`                   // NULL/治愈/好转/未愈/死亡/其他
+	DiseasesReportedFlag     string          `json:"diseases_reported_flag"`         // in/out
+	Wristband                int             `json:"wrist_band"`                      // 腕带
+}
+
+
+curl -H "API_KEY: bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m," \
+-H "Content-Type: application/json" https://infusion.us.to:8443/api/ward/2901/inpatients
+curl -H "API_KEY: bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m," \
+-H "Content-Type: application/json" https://infusion.us.to:8443/api/ward/2903/inpatients
+curl -H "API_KEY: bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m," \
+-H "Content-Type: application/json" https://infusion.us.to:8443/api/ward/2906/inpatients
