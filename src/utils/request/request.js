@@ -76,12 +76,10 @@ export default class Request {
 	}
 
 	get(url, params = {}) {
-		const options = {};
-		options.params = params;
 		return this.request({
 			url,
 			method: 'GET',
-			...options
+			...params
 		});
 	}
 
