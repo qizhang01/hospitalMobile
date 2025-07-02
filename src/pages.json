@@ -249,13 +249,7 @@
 					}
 				},
 
-				// 我的账户
-				{
-					"path": "account/account",
-					"style": {
-						"navigationBarTitleText": "我的账户"
-					}
-				},
+
 				{
 					"path": "account/recharge",
 						"style": {
