@@ -26,9 +26,6 @@ import rfNavDetail from '@/components/rf-nav-detail';
 import cuCustom from '@/components/cu-custom';
 import rfBackHome from '@/components/rf-back-home';
 
-// 引入国际化语言包
-import zh from '@/utils/languages/zh/zh.js';
-import en from '@/utils/languages/en/en.js';
 
 // 网络状态监听
 uni.getNetworkType({
@@ -124,7 +121,7 @@ Vue.mixin({
 		}
 	}
 });
-Vue.use(VueI18n);
+
 Vue.prototype.moneySymbol = $mConstDataConfig.moneySymbol;
 Vue.prototype.singleSkuText = $mConstDataConfig.singleSkuText;
 
@@ -133,19 +130,9 @@ Vue.filter('keepTwoDecimal', value => {
   return (Math.floor((value || 0) * 100) / 100).toFixed(2);
 });
 
-const i18n = new VueI18n({
-	locale: store.getters.locale || 'zh',
-	messages: {
-		// eslint-disable-next-line
-		'zh': zh,
-		// eslint-disable-next-line
-		'en': en
-	}
-});
 
 const app = new Vue({
 	...App,
 	store,
-	i18n
 });
 app.$mount();

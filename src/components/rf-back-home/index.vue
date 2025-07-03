@@ -25,24 +25,7 @@
 			};
 		},
 		methods: {
-			// 切换语言
-			switchLanguage() {
-				if (this._i18n.locale === 'zh') {
-					this._i18n.locale = 'uyghur';
-					this.currentLanguage = '切换语言';
-				} else if (this._i18n.locale === 'uyghur') {
-					this._i18n.locale = 'zh';
-					this.currentLanguage = 'تىل ئالماشتۇرۇش';
-				}
-				this.$mStore.commit('setLocale', this._i18n.locale);
-				uni.setNavigationBarTitle({ title: this._i18n.t('menu.my') });
-				uni.setTabBarItem({ index: 0, text: this._i18n.t('menu.index') });
-				uni.setTabBarItem({ index: 1, text: this._i18n.t('menu.category') });
-				uni.setTabBarItem({ index: 2, text: this._i18n.t('menu.notify') });
-				uni.setTabBarItem({ index: 3, text: this._i18n.t('menu.cart') });
-				uni.setTabBarItem({ index: 4, text: this._i18n.t('menu.my') });
-				this.homeActive = true;
-			},
+
 			open() {
 				this.homeActive = !this.homeActive;
 			},

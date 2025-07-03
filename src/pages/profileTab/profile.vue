@@ -51,7 +51,7 @@
 					icon="iconfuwu"
 					:iconColor="themeColor.color"
 					@eventClick="navTo('/pages/set/set')"
-					:title="_i18n.t('profile.myService')"
+					title="服务"
 				></list-cell>
 				<view class="tj-sction">
 					<!-- 分类列表 -->
@@ -110,7 +110,6 @@ export default {
 			loading: true,
 			appName: this.$mSettingConfig.appName,
 			hasLogin: false,
-			currentLanguage: this._i18n.locale === 'zh' ? 'English' : '中文'
 		};
 	},
 
@@ -120,7 +119,7 @@ export default {
     },
 		settingList() {
 			return [
-				{ icon: 'icongonggao', url: '/pages/index/notice/notice', title: this._i18n.t('profile.notice'), color: '#ff6b81' },
+				{ icon: 'icongonggao', url: '/pages/index/notice/notice', title: "公告", color: '#ff6b81' },
 				{ icon: 'iconyouhuiquan-copy', url: '/pages/document/index', title: "文书", color: '#ff6b81' },
 				{ icon: 'icondizhi1', url: '/pages/temperature/index', title: "体温单", color: '#ff6b81' },
 			];
