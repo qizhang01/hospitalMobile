@@ -30,29 +30,29 @@
 				>
 					<view class="carrier">
 						<view class="title">
-							<text class="cell-title">床位号: 165</text>
+							<text class="cell-title">床位号: {{ item.bed_no }}</text>
 						</view>
 						<view class="term">
-							<text>李金浩</text>
-							<text class="at_least">二级</text>
+							<text>{{ item.name }}</text>
+							<text class="at_least">{{ item.admit_situation }}级</text>
 							<text>
-	                            57岁
+	                           {{ getAgeFromBirthDate(item.birth_date) }}岁
 							</text>
 							<text>
-	                            男
+	                            {{ item.physi_sex_name }}
 							</text>
 							<view>
-								#167899
+								#{{ item.wrist_band}}
 							</view>
 						</view>
 						<view class="">
 							<view class="info">
-								<text>医保: 无保老人</text>
-								<text class="at_least">医生: 王静蕾</text>
+								<text>医保: {{ item.charge_type_name }}</text>
+								<text class="at_least">医生: {{item.attend_dr_name}}</text>
 							</view>
-							<text>入院时间: 2023-02-13 12:09</text>
+							<text>入院时间: {{ getWardTime(item.admission_ward_time) }}</text>
 							<view class="info">
-								<text class="at_least">诊断: 肺恶行肿瘤</text>
+								<text class="at_least">诊断: {{ item.diagnosis_name }}</text>
 								<text class="at_least">住院时间15天</text>
 							</view>
 						</view>
@@ -77,7 +77,7 @@
 
 import { couponList } from '@/api/userInfo';
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
-import {selectList, groupList} from './infoList.js'
+import {selectList, groupList} from './infoList.js';
 
 export default {
 	components: {
@@ -100,9 +100,14 @@ export default {
 			groupList
 		};
 	},
+	computed:{
+
+	},
 	filters: {
 
 	},
+    
+
 	onLoad(options) {
 		this.type = options.type;
 		this.initData();
@@ -169,12 +174,12 @@ export default {
 				
              console.log(11111111, res)
 			 if(res){
-					this.loading = false;
-					if (type === 'refresh') {
-						uni.stopPullDownRefresh();
-					}
-					this.loadingType = res.length === 10 ? 'more' : 'nomore';
-					this.couponList = res;
+				this.loading = false;
+				if (type === 'refresh') {
+					uni.stopPullDownRefresh();
+				}
+				this.loadingType = res.length === 10 ? 'more' : 'nomore';
+				this.couponList = res;
 			 }
 				// .then(r => {
 				// 	console.log(11111111)
@@ -195,9 +200,18 @@ export default {
 				// 	}
 	
 		},
-		// 获取优惠券
+
 		navTo(route) {
 			this.$mRouter.push({ route });
+		},
+
+		getAgeFromBirthDate( birthDate ){
+        	//1941-11-03T00:00:00Z
+			return new Date().getFullYear()- Number(birthDate.substr(0,4));
+		},
+		
+		getWardTime(date){
+            return date.substr(0, date.length - 4).replace("T"," ");
 		}
 	}
 };
