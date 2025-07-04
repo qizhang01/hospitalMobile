@@ -23,14 +23,17 @@ export const selectList = [{
 
 export const groupList = [{
    id: 1,
-   name: "患者分组",
+   name: "肿瘤科",
+   value: "2901",
    selected: true
 },{
     id: 2,
-   name: "临时",
+   name: "肠胃科",
+      value: "2903",
    selected: false
 },{
     id: 3,
-   name: "全部",
+   name: "肝胆科",
+    value: "2906",
    selected: false
 }]

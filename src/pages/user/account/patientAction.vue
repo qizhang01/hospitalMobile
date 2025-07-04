@@ -2,12 +2,12 @@
 	<view class="recharge">
 		<view class="block">
 			<view class="title">
-				<text class="cell-title">床位号: 165</text>
-				<text>李金浩</text>
-				<text class="at_least">二级</text>
-				<text>57岁</text>
-				<text>男</text>
-				<view>#167899</view>
+				<text class="cell-title">床位号: {{ patientInfo.bed_no }}</text>
+				<text>{{ patientInfo.name }}</text>
+				<text class="at_least">{{ patientInfo.admit_situation }}级</text>
+				<text>{{ patientInfo.age }}岁</text>
+				<text>{{ patientInfo.physi_sex_name }}</text>
+				<view>#{{ patientInfo.wrist_band }}</view>
 			</view>
 		</view>
 		<view class="block">
@@ -24,11 +24,11 @@
 					<button class = "button">查询</button>
 			</view>
 			<view class="other">
-                <view class="item" @tap.stop="navTo('/pages/product/list?cate_id=1423')">	
+                <view class="item" @tap.stop="navTo('/pages/patientInfoTab/originAdvice/index')">	
 					<image :src="record2" class="img"></image>	
 					<text class="button" >原始医嘱查询</text>
 				</view>
-				<view class="item">	
+				<view class="item" @tap.stop="navTo('/pages/patientInfoTab/involveDetail/index')">	
 					<image :src="record2" class="img"></image>		
 					<text class="button">执行明细查询</text>
 				</view>
@@ -40,40 +40,33 @@
 			</view>
 		</view>
 		<!--加载动画-->
-		<rfLoading isFullScreen :active="pageLoading"></rfLoading>
+		<!-- <rfLoading isFullScreen :active="pageLoading"></rfLoading> -->
 	</view>
 </template>
 
 <script>
 import { memberInfo, rechargeConfigIndex } from '@/api/userInfo';
 import { configList } from '@/api/basic';
-import $mAssetsPath from '@/config/assets.config';
+import { mapState } from 'vuex';
+
 export default {
+	computed: mapState(['patientInfo']),
 	data() {
 		return {
 			appServiceQr: this.$mSettingConfig.appServiceQr,
 			record1: this.$mAssetsPath.tabNotifyBlue,
 			record2: this.$mAssetsPath.tabNotifyBlue,
-			inputAmount: 0, // 金额
-			inputAmountGive: 0, // 金额
-			amountList: [], // 预设3个可选快捷金额
-			payType: 1, // 支付类型
-			userInfo: {},
-			loading: false,
-			providerList: [],
-			payTypeList: {},
 			pageLoading: false,
-			code: ''
 		};
 	},
 	onLoad(options) {
-		this.initData(options);
+
 	},
-methods:{
-	navTo(route) {
-		this.$mRouter.push({ route });
+	methods:{
+		navTo(route) {
+			this.$mRouter.push({ route });
+		}
 	}
-}
 };
 </script>
 

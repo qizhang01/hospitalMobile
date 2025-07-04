@@ -171,6 +171,23 @@
 		}
 	],
 	"subPackages": [
+				
+		{
+			"root": "pages/patientInfoTab",
+			"pages": [
+				{
+					"path": "originAdvice/index",
+					"style": {
+							"navigationBarTitleText": "原始医嘱"
+						}
+				},{
+					"path": "/involveDetail/index",
+					"style": {
+							"navigationBarTitleText": "执行明细"
+					}
+				}
+			]
+		},
 		// 设置
 		{
 			"root": "pages/set",
@@ -251,7 +268,7 @@
 
 
 				{
-					"path": "account/recharge",
+					"path": "account/patientAction",
 						"style": {
 							"navigationBarTitleText": "详细信息"
 						}

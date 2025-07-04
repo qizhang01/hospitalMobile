@@ -26,7 +26,7 @@
 					class="row"
 					v-for="(item, index) in couponList"
 					:key="index"
-					@tap.stop="navTo('/pages/user/account/recharge')"
+					@tap.stop="handleClick(item)"
 				>
 					<view class="carrier">
 						<view class="title">
@@ -78,6 +78,7 @@
 import { couponList } from '@/api/userInfo';
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import {selectList, groupList} from './infoList.js';
+import { mapMutations } from 'vuex';
 
 export default {
 	components: {
@@ -94,7 +95,7 @@ export default {
 			selectH: 0,
 			dropdownList: [],
 			selectedName: "其他筛选",
-			selectedGroupName: "患者分组",
+			selectedGroupName: "科室1",
 			tabIndex: 0,
 			selectList,
 			groupList
@@ -107,7 +108,6 @@ export default {
 
 	},
     
-
 	onLoad(options) {
 		this.type = options.type;
 		this.initData();
@@ -125,6 +125,7 @@ export default {
 		this.getCouponList();
 	},
 	methods: {
+		...mapMutations(['setPatientInfo']),
 		// 数据初始化
 		initData() {
 			this.getCouponList();
@@ -138,11 +139,7 @@ export default {
 				this.dropdownList = this.selectList
 			} else if (index === 1) {
 				this.dropdownList = this.groupList
-			} else if (index === 2) {
-
-			} else if (index === 3) {
-
-			}
+			} 
 			this.selectH = this.dropdownList.length * 80;
 			this.tabIndex = index;
 		},
@@ -160,17 +157,18 @@ export default {
 			this.dropdownList = arr;
 			if(this.tabIndex===0){
 				this.doctorAdviceList = arr
-				this.selectedAdviceName = arr[index].name;
+				this.selectedName = arr[index].name;
 			}else if(this.tabIndex===1){
 				this.periodList = arr
-				this.selectedPeriodName = arr[index].name;
+				this.selectedGroupName = arr[index].name;
+                this.getCouponList("", arr[index].value)
 			}
 			this.selectH = 0;
 		},
 		// 获取收货地址列表
-		async getCouponList(type) {
+		async getCouponList(type="", selectedValue="2901") {
 			const res = await this.$http
-				.get("/api/ward/2901/inpatients")
+				.get(`/api/ward/${selectedValue}/inpatients`)
 				
              console.log(11111111, res)
 			 if(res){
@@ -209,9 +207,18 @@ export default {
         	//1941-11-03T00:00:00Z
 			return new Date().getFullYear()- Number(birthDate.substr(0,4));
 		},
-		
+
 		getWardTime(date){
             return date.substr(0, date.length - 4).replace("T"," ");
+		},
+
+		handleClick(item){
+			this.setPatientInfo(
+				{...item,
+					age: this.getAgeFromBirthDate(item.birth_date)
+				}
+			)
+			this.navTo('/pages/user/account/patientAction')	
 		}
 	}
 };
@@ -277,21 +284,20 @@ export default {
 		position: fixed;
 		top: 45px;
 		z-index: 99;
-		.rf-screen-top,
-		.rf-screen-bottom {
+		.rf-screen-top
+		{
 			border: none;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			font-size: 28upx;
 			color: #333;
-		}
-		.rf-screen-top {
 			height: 88upx;
 			line-height: 88upx;
 			position: relative;
 			background: $color-white;
 		}
+
 		.rf-top-item {
 			height: 28upx;
 			line-height: 28upx;
@@ -304,41 +310,10 @@ export default {
 				font-weight: 500;
 			}
 		}
-		.rf-screen-bottom {
-			height: 100upx;
-			padding: 0 30upx;
-			box-sizing: border-box;
-			font-size: 24upx;
-			align-items: center;
-			overflow: hidden;
-		}
-		.rf-bottom-text {
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-		.rf-bottom-item {
-			flex: 1;
-			width: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 0 12upx;
-			box-sizing: border-box;
-			margin-right: 20upx;
-			white-space: nowrap;
-			height: 60upx;
-			border-radius: 40upx;
-		}
-		.rf-bottom-item:last-child {
-			margin-right: 0;
-		}
 		.rf-bold {
 			font-weight: bold;
 		}
-		.rf-active {
-			color: $base-color;
-		}
+
 		.rf-ml {
 			margin-left: 6upx;
 		}
