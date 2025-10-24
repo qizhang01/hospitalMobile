@@ -72,7 +72,7 @@ export const doctorAdviceList = [{
     selected: false,
 }, {
     id:5,
-    name: "口服",
+    name: "中药医嘱",
     selected: false,
 }]
 
@@ -90,3 +90,69 @@ export const periodList = [{
    name: "全部",
    selected: false
 }]
+
+export const stopList = [{
+    id: 1,
+    name: "未停",
+    selected: true
+},{
+    id: 2,
+    name: "已停",
+    selected: false
+},{
+    id: 3,
+    name: "已撤销",
+    selected: false
+},{
+    id: 4,
+    name: "全部",
+    selected: false
+}]
+
+export const allOptionsList=[
+    {
+        id: 1,
+        name: "全部",
+        selected: true
+    },{
+        id: 2,
+        name: "静滴",
+        selected: false
+    },{
+        id: 3,
+        name: "静推",
+        selected: false
+    },{
+        id: 4,
+        name: "肌注",
+        selected: false
+    },{
+        id: 5,
+        name: "口服",
+        selected: false
+    },{
+        id: 6,
+        name: "皮下注射",
+        selected: false
+    },{
+        id: 7,
+        name: "微泵",
+        selected: false
+    },{
+        id: 8,
+        name: "雾化",
+        selected: false
+    },{
+        id: 9,
+        name: "外用",
+        selected: false
+    },{
+        id: 10,
+        name: "皮试",
+        selected: false
+    },{
+        id: 11,
+        name: "其他",
+        selected: false
+    }
+]

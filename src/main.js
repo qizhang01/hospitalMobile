@@ -2,7 +2,6 @@ import Vue from 'vue';
 import App from './App';
 // 引入全局存储
 import store from '@/store';
-import VueI18n from '@/common/vue-i18n';
 // 引入全局配置
 import $mAssetsPath from '@/config/assets.config.js';
 import $mConfig from '@/config/index.config.js';

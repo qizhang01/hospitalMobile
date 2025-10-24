@@ -48,7 +48,7 @@
 
 	import rfProductList from '@/components/rf-product-list';
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
-	import medicineList, {doctorAdviceList, periodList} from './infoList.js'
+	import medicineList, {doctorAdviceList, periodList, stopList, allOptionsList} from './infoList.js'
 	/* eslint-disable */
 	export default {
 		components: {
@@ -78,6 +78,8 @@
 				dropdownList: [],
 				doctorAdviceList,
 				periodList,
+                stopList,
+                allOptionsList,
 				productList: medicineList,
 				pageIndex: 1,
 			}
@@ -113,7 +115,13 @@
 				}else if(this.tabIndex===1){
                     this.periodList = arr
 					this.selectedPeriodName = arr[index].name;
-				}
+				}else if(this.tabIndex===2){
+                    this.stopList = arr
+					this.selectedStatusName = arr[index].name;
+                }else if(this.tabIndex===3){
+                    this.allOptionsList= arr
+                    this.selectedTotalName = arr[index].name;
+                }
 				this.selectH = 0;
 			},
 			screen(e) {
@@ -123,9 +131,9 @@
 				} else if (index === 1) {
 					this.dropdownList = this.periodList
 				} else if (index === 2) {
-
+                    this.dropdownList = this.stopList
 				} else if (index === 3) {
-
+                    this.dropdownList = this.allOptionsList
 				}
 				this.selectH = this.dropdownList.length * 80;
 				this.tabIndex = index;

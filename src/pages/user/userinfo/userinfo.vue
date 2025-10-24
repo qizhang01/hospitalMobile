@@ -71,14 +71,6 @@
 					</label>
 				</radio-group>
 			</view>
-			<view class="input-item">
-				<text class="tit">生　日</text>
-				<picker mode="date" v-model="date" @change="bindDateChange">
-					<view class="date" style="background: none;">{{
-						date || '请选择日期'
-					}}</view>
-				</picker>
-			</view>
 			<button
 				class="confirm-btn"
 				:class="'bg-' + themeColor.name"
@@ -105,7 +97,7 @@
 
 import { memberInfo, memberUpdate, uploadImage } from '@/api/userInfo';
 import avatar from '@/components/rf-avatar/rf-avatar';
-import moment from '@/common/moment';
+
 
 export default {
 	components: { avatar },
@@ -128,7 +120,7 @@ export default {
 					name: '女'
 				}
 			],
-			date: moment().format('YYYY-MM-DD'),
+			date: '',
 			token: null,
 			loading: true,
 			headImg: this.$mAssetsPath.headImg,

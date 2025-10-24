@@ -1,0 +1,1 @@
+export const abnormalList=['外出','手术','返回','TEST','TEST1','其他']

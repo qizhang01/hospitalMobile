@@ -96,7 +96,6 @@
 
 <script>
 import { smsCode, updatePassword } from '@/api/login';
-import moment from '@/common/moment';
 export default {
 	data() {
 		return {
@@ -118,18 +117,7 @@ export default {
 		};
 	},
 	onLoad(options) {
-		const time =
-			moment().valueOf() / 1000 - uni.getStorageSync('pwdSmsCodeTime');
-		if (time < 60) {
-			this.codeSeconds =
-				this.$mConstDataConfig.sendCodeTime - parseInt(time, 10);
-			this.handleSmsCodeTime(this.codeSeconds);
-		} else {
-			this.codeSeconds = this.$mConstDataConfig.sendCodeTime;
-			this.smsCodeBtnDisabled = false;
-			uni.removeStorageSync('pwdSmsCodeTime');
-		}
-		this.type = options.type;
+
 	},
 	methods: {
 		// 获取手机验证码
@@ -155,8 +143,6 @@ export default {
 						this.$mHelper.toast('验证码已发送.');
 					}
 					this.smsCodeBtnDisabled = true;
-					uni.setStorageSync('pwdSmsCodeTime', moment().valueOf() / 1000);
-					this.handleSmsCodeTime(59);
 				});
 		},
 		handleSmsCodeTime(time) {

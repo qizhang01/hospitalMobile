@@ -582,7 +582,6 @@
 	 *@date 2020/05/15 16:22:24
 	 */
 	import rfItemPopup from '@/components/rf-item-popup';
-	import moment from '@/common/moment';
 	import rfAttrContent from '@/components/rf-attr-content';
 	import rfRate from '@/components/rf-rate/rf-rate';
 	import rfBadge from '@/components/rf-badge/rf-badge';
@@ -687,7 +686,7 @@
 		},
 		filters: {
 			time(val) {
-				return moment(val * 1000).format('YYYY-MM-DD HH:mm');
+				return '';
 			},
 			pointExchangeTypeFilter(val) {
 				const type = [

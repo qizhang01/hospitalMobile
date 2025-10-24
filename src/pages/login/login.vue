@@ -69,7 +69,7 @@
 </template>
 <script>
 import { loginByPass, loginBySmsCode, smsCode, authLogin, registerByPass } from '@/api/login';
-import moment from '@/common/moment';
+
 export default {
 	data() {
 		return {

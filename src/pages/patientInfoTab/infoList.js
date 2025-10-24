@@ -16,7 +16,7 @@ export const selectList = [{
     selected: false,
 }, {
     id:5,
-    name: "口服",
+    name: "中药医嘱",
     selected: false,
 }]
 

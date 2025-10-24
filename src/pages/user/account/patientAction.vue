@@ -19,7 +19,7 @@
 			</view>
 			<view class="document">
 					<image :src="appServiceQr" class="img"></image>
-			        <view>体温单</view>
+			        <view>文书</view>
 					<button class="button">录入</button>
 					<button class = "button">查询</button>
 			</view>

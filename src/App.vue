@@ -62,12 +62,7 @@ export default {
 @import '/static/css/colorui/icon.css';
 @import '/static/css/colorui/animation.css';
 // 导入阿里巴巴矢量图标库
-/*#ifdef MP*/
 @import './static/css/iconfont/iconfont.css';
-/*#endif*/
-/*#ifndef MP*/
-@import url('https://at.alicdn.com/t/font_1681579_dwilkcq6mvg.css');
-/*#endif*/
 @import './static/css/reset.scss';
 @import './static/css/uni.scss';
 </style>
