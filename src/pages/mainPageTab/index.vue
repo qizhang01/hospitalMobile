@@ -10,7 +10,7 @@
 			:merchantData="merchantData"
 			:placeholder="hotSearchDefault"
 		/>
-		<scroll-view class="rf-header-screen">
+		<view class="rf-header-screen" >
 			<view class="rf-screen-top">
 				<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" @tap="selectPatientRelationship">
 					<text>{{selectedPatientRelationship}}</text>
@@ -40,8 +40,10 @@
 				<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
 				<!--下拉选择列表--综合-->
 			</view>
-            <patientInfoList :list="patientInfoList"></patientInfoList>
-		</scroll-view>
+            <scroll-view scroll-y="true">
+                <patientInfoList :list="patientInfoList"></patientInfoList>
+            </scroll-view>
+		</view>
         
 		<!--页面加载动画-->
 		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->

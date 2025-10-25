@@ -47,10 +47,10 @@
 
 		// 公告
 		{
-			"path": "pages/mainPageTab/notice/notice",
+			"path": "pages/lifeSignQuery/index",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "公告",
+				"navigationBarTitleText": "体征查询",
 				"app-plus": {
 					"pullToRefresh": {
 						"support": true,
@@ -183,9 +183,22 @@
 				},{
 					"path": "/involveDetail/index",
 					"style": {
-							"navigationBarTitleText": "执行明细"
+							"navigationBarTitleText": "执行明细",
+                            "backgroundColorTop": "#F7F7F7"
 					}
-				}
+				},{
+                    "path": "/houseCheck/index",
+                    "style": {
+							"navigationBarTitleText": "病区巡视",
+                            "backgroundColorTop": "#F7F7F7"
+					}
+                },{
+                    "path": "/lifeSignSurvey/index",
+                    "style": {
+							"navigationBarTitleText": "体征待测",
+                            "backgroundColorTop": "#F7F7F7"
+					}
+                }
 			]
 		},
 		// 设置
