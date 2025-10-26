@@ -98,7 +98,10 @@ export default {
 </script>
 
 
-<style>
+<style lang="scss">
+	page {
+		background: $page-color-base;
+	}
 .patient-info-item {
     border-bottom: 1px solid #606266;
 }

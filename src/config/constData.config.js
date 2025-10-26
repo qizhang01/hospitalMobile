@@ -21,11 +21,6 @@ export default {
 	// 设置-设置中心
 	setList: [
 		{
-			title: '个人资料',
-			url: '/pages/user/userinfo/userinfo',
-			content: ''
-		},
-		{
 			title: '修改密码',
 			url: '/pages/public/password?type=1',
 			content: ''

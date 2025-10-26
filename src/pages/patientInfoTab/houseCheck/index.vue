@@ -127,15 +127,15 @@ export default {
 };
 </script>
 <style lang="scss">
-// .coupon-center {
-//     display: flex;
-//     justify-content: center;
-// }
+
 // .content {
 //     display: flex;
 //     justify-content: center;
 //     flex-direction: column;
 // }
+	page {
+		background: white;
+	}
 .center {
     display: flex;
     justify-content: center;

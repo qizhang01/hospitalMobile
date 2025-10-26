@@ -26,7 +26,7 @@
 			<view class="vip-card-box">
 				<view class="tit">
 					<i class="iconfont iconzuanshi" />
-					{{appName}}尊享会员
+					{{appName}}
 				</view>
 				<text class="e-m">{{appName}} 版权所有</text>
 			</view>
@@ -82,7 +82,6 @@
 </template>
 <script>
 
-import { footPrintList, memberInfo, notifyUnRreadCount } from '@/api/userInfo';
 import listCell from '@/components/rf-list-cell';
 import { mapMutations } from 'vuex';
 import rfBadge from '@/components/rf-badge/rf-badge';
@@ -127,36 +126,11 @@ export default {
 			];
 		}
   },
-	// // 小程序分享
-	// onShareAppMessage() {
-	// 	return {
-	// 		title: `欢迎来到${this.appName}`,
-	// 		path: '/pages/index/index'
-	// 	};
-	// },
 	async onShow() {
 		// 初始化数据
 		await this.initData();
 	},
-	// #ifndef MP
-	onNavigationBarButtonTap(e) {
-		const index = e.index;
-		if (index === 0) {
-			this.navTo('/pages/set/set');
-		} else if (index === 1) {
-			// #ifdef APP-PLUS
-			// eslint-disable-next-line
-			const pages = getCurrentPages();
-			const page = pages[pages.length - 1];
-			const currentWebview = page.$getAppWebview();
-			currentWebview.hideTitleNViewButtonRedDot({
-				index
-			});
-			// #endif
-			this.$mRouter.switchTab({ route: '/pages/public/login' });
-		}
-	},
-	// #endif
+
 	methods: {
 
 		...mapMutations(['setNotifyNum', 'setCartNum']),
@@ -175,53 +149,11 @@ export default {
 					selectedIconPath
 				});
 			});
-			if (this.hasLogin) {
-				await this.getMemberInfo();
-			} else {
-				this.loading = false;
-			}
-		},
-		// 获取用户信息
-		async getMemberInfo() {
-			await this.$http
-				.get(memberInfo)
-				.then(async r => {
-					this.loading = false;
-					this.userInfo = r.data;
-					await this.setCartNum(r.data.cart_num);
-					await this.initNotifyNum();
-					// 获取足迹列表
-					await this.getFootPrintList();
-					await this.setSectionData(r.data);
-				})
-				.catch(() => {
-					this.hasLogin = false;
-					this.userInfo = {};
-					this.loading = false;
-				});
-		},
-		// 设置未读消息个数
-		async initNotifyNum () {
-      await this.$http.get(notifyUnRreadCount).then(r => {
-        this.setNotifyNum(r.data.count);
-      });
-    },
 
-		// 给个人中心的各模块赋值
-		setSectionData(data) {
-			const orderSynthesizeNumArr = [];
-			for (let item in data.order_synthesize_num) {
-				orderSynthesizeNumArr.push(data.order_synthesize_num[item]);
-			}
-			// 更新userInfo缓存
-			uni.setStorageSync('userInfo', data);
+			this.loading = false;
+			
 		},
-		// 获取足迹列表
-		async getFootPrintList() {
-			await this.$http.get(`${footPrintList}`).then(r => {
-				this.footPrintList = r.data;
-			});
-		},
+
 		// 统一跳转接口,拦截未登录路由
 		navTo(route) {
 			if (!route) return;
@@ -261,25 +193,6 @@ export default {
 			this.coverTransition = 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)';
 			this.coverTransform = 'translateY(0px)';
 		},
-		// 跳转至商品详情
-		navToProduct(type, id) {
-			let route = `/pages/product/product?id=${id}`;
-			switch (type) {
-				case 'discount':
-					route = `/pages/marketing/discount/product?id=${id}`;
-					break;
-				case 'bargain':
-					route = `/pages/marketing/bargain/product?id=${id}`;
-					break;
-				case 'group_buy':
-					route = `/pages/marketing/group/product?id=${id}`;
-					break;
-				case 'wholesale':
-					route = `/pages/marketing/wholesale/product?id=${id}`;
-					break;
-			}
-			this.$mRouter.push({ route });
-		}
 	}
 };
 </script>
@@ -424,18 +337,6 @@ page {
 						font-size: 24upx;
 						color: #3c3c3c;
 					}
-					.share-btn {
-						height: 142upx;
-						text-align: left;
-						background: none;
-						padding: 0;
-						margin: 0;
-					}
-
-					.share-btn:after {
-						border: none;
-						border-radius: none;
-					}
 				}
 			}
 		}
@@ -443,27 +344,6 @@ page {
 		.tj-sction {
 			@extend %section;
 			display: flex;
-
-			.tj-item {
-				@extend %flex-center;
-				flex: 1;
-				flex-direction: column;
-				margin: 30upx 0;
-				font-size: $font-sm;
-				color: #75787d;
-				/*border-right: 2upx solid rgba(0, 0, 0, 0.2);*/
-			}
-
-			/*.tj-item:last-child {*/
-			/*border-right: none;*/
-			/*}*/
-			.num {
-				font-size: $font-base;
-			}
-
-			.red {
-				color: $base-color;
-			}
 		}
 	}
 }

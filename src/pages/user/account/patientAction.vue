@@ -13,13 +13,13 @@
 		<view class="block">
 			<view class="tempature">
 					<image :src="appServiceQr" class="img"></image>
-			        <view>体温单</view>
+			        <view class="topic-text">体温单</view>
 					<button class="button">录入</button>
 					<button class = "button">查询</button>
 			</view>
 			<view class="document">
 					<image :src="appServiceQr" class="img"></image>
-			        <view>文书</view>
+			        <view class="topic-text">文书</view>
 					<button class="button">录入</button>
 					<button class = "button">查询</button>
 			</view>
@@ -111,6 +111,8 @@ page {
 .item{
 	display: flex;
 	align-items: center;
-
+}
+.topic-text {
+    width: 100upx;
 }
 </style>
