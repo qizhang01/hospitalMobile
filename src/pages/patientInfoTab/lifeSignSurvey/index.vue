@@ -13,15 +13,20 @@
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
                     <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1"></buttonGroup>
-                    <periodSelect :buttonList="timeOption" v-else="dropdownIndex==2"></periodSelect>
+                    <timeSelect :buttonList="timeOption" v-else="dropdownIndex==2"></timeSelect>
 				</view>
 				<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
 				<!--下拉选择列表--综合-->
 			</view>
 		</view>
-        <scroll-view scroll-y="true">
-            <lifeSignCard v-for="(item, index) in dataList" :key="index" :infomation="item"></lifeSignCard>
-
+        <scroll-view scroll-y="true" class="patient-list_container">
+            <view class="line-header">
+                <text>床号/姓名</text>
+                <text>性别/年龄</text>
+                <text>MRN</text>
+                <text></text>
+            </view>
+            <lineCell v-for="(item, index) in dataList" :key="index" :patientObj="item"></lineCell>
         </scroll-view>
 		<!--页面加载动画-->
 		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
@@ -31,16 +36,16 @@
 </template>
 
 <script>
-    import lifeSignCard from './lifeSignCard.vue'
-    import buttonGroup from './components/buttonGroup.vue'
-    import periodSelect from './components/periodSelect.vue';
     import {mockData, typeOption, timeOption} from './data'
+    import lineCell from './components/lineCell.vue';
+    import buttonGroup from '../../lifeSignQuery/components/buttonGroup.vue';
+    import timeSelect from '../../lifeSignQuery/components/timeSelect.vue';
 	import { mapMutations } from 'vuex';
 	export default {
 		components: {
-            lifeSignCard,
+            lineCell,
             buttonGroup,
-            periodSelect
+            timeSelect
 		},
 		data() {
 			return {
@@ -50,7 +55,7 @@
 				loading: true,
 				scrollTop: 0,
                 selectedType: '体温待测',
-                selectedTypeItem: '1000',
+                selectedTypeItem: '10:00',
                 selectH: 0,
                 dropdownIndex: 0,
                 tabIndex: 1,
@@ -101,11 +106,6 @@
             selectQueryType(){
                 this.selectH = 1
                 this.dropdownIndex = 1
-            },
-
-            selectOther(){
-                this.selectH = 1
-                this.dropdownIndex = 2
             },
 
             selectTypeItem(){
@@ -219,4 +219,17 @@
 				font-weight: bold;
 			}
 		}
+        .line-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .patient-list_container {
+            padding-top: 110upx;
+            .line-header {
+                background-color: gray;
+                height: 50upx;
+                line-height: 50upx;
+            }
+        }
 </style>
