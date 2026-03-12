@@ -6,7 +6,7 @@ export const typeOption = [
         selected: false,
         name: '体重待测'
     }, {  id: 3,
-        selected: true,
+        selected: false,
         name: '血压待测'
     }, {  id: 4,
         selected: false,

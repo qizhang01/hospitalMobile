@@ -12,7 +12,7 @@
 				</view>
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
-                    <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1"></buttonGroup>
+                    <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1" @button-item-click="handleTypeClick"></buttonGroup>
                     <timeSelect :buttonList="timeOption" v-else="dropdownIndex==2"></timeSelect>
 				</view>
 				<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
@@ -113,26 +113,23 @@
                 this.dropdownIndex = 3
             },
 
-            dropdownItem(index){
-                let arr = this.dropdownList;
-				for (let i = 0; i < arr.length; i++) {
-					if (i === index) {
-						arr[i].selected = true;
-					} else {
-						arr[i].selected = false;
-					}
-				}
-				this.dropdownList = arr;
-				if(this.dropdownIndex===1){
-					this.patientRelationship = arr
-					this.selectedPatientRelationship = arr[index].name;
-				}else if(this.dropdownIndex===2){
-
-				}else if(this.dropdownIndex===3){
-                    this.patientGroup = arr
-					this.selectedPatientGroup = arr[index].name;
-                }
-				this.selectH = 0;
+            handleTypeClick(playLoad){
+                this.selectH = 0
+                this.selectedType = playLoad.name
+                this.typeOption = this.typeOption.map(item=>{
+                    if(item.name==playLoad.name){
+                         return {
+                            ...item,
+                            selected: true
+                         }
+                    }else {
+                        return {
+                            ...item,
+                            selected: false
+                        }
+                    }
+                })
+                console.log(1111111,playLoad)
             }
 		}
 	};

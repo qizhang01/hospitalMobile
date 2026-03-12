@@ -15,7 +15,7 @@
 			<uni-datetime-picker type="date" :clear-icon="false" v-model="startDate" @maskClick="selectStartDate" />
 		</view>
 
-        <button type="primary" class="confirm-button">确定</button>
+        <button type="primary" class="confirm-button" @tap.stop="confirm">确定</button>
 	</view>
 </template>
 
@@ -42,6 +42,9 @@
             selectStartDate(){
 
             },
+            confirm(){
+
+            }
 		}
 	};
 </script>

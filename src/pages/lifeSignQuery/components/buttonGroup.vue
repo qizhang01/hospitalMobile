@@ -3,7 +3,7 @@
         <button 
             v-for ="(item, index) in buttonList" 
             :type="item.selected? 'primary': 'default'" 
-            @tap.stop="handleButtonClick" 
+            @tap.stop="handleButtonClick(item)" 
             size="mini"
              class="mini-btn"
             :key="index">
@@ -30,7 +30,7 @@
 		},
 		methods: {
             handleButtonClick(item){
-
+                this.$emit('button-item-click',item)
             }
 		}
 	};
