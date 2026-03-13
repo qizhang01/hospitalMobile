@@ -31,7 +31,6 @@ export default {
 			content: '',
 			class: 'mT'
 		},
-		{ title: '意见反馈', url: '/pages/set/feedback/list', content: '' }
 	],
 
 

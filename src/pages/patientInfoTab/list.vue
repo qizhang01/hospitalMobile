@@ -30,29 +30,29 @@
 				>
 					<view class="carrier">
 						<view class="title">
-							<text class="cell-title">床位号: {{ item.bed_no }}</text>
+							<text class="cell-title">床位号: {{ item.BedNo }}</text>
 						</view>
 						<view class="term">
-							<text>{{ item.name }}</text>
-							<text class="at_least">{{ item.admit_situation }}级</text>
+							<text>{{ item.Name }}</text>
+							<text class="at_least">{{ item.AdmitSituation }}级</text>
 							<text>
-	                           {{ getAgeFromBirthDate(item.birth_date) }}岁
+	                           {{ getAgeFromBirthDate(item.BirthDate) }}岁
 							</text>
 							<text>
-	                            {{ item.physi_sex_name }}
+	                            {{ item.PhysiSexName }}
 							</text>
 							<view>
-								#{{ item.wrist_band}}
+								#{{ item.Wristband}}
 							</view>
 						</view>
 						<view class="">
 							<view class="info">
-								<text>医保: {{ item.charge_type_name }}</text>
-								<text class="at_least">医生: {{item.attend_dr_name}}</text>
+								<text>医保: {{ item.ChargeTypeName }}</text>
+								<text class="at_least">医生: {{item.InhospDrName}}</text>
 							</view>
-							<text>入院时间: {{ getWardTime(item.admission_ward_time) }}</text>
+							<text>入院时间: {{ getWardTime(item.AdmissionWardTime) }}</text>
 							<view class="info">
-								<text class="at_least">诊断: {{ item.diagnosis_name }}</text>
+								<text class="at_least">诊断: {{ item.DiagnosisName }}</text>
 								<text class="at_least">住院时间15天</text>
 							</view>
 						</view>
@@ -179,24 +179,6 @@ export default {
 				this.loadingType = res.length === 10 ? 'more' : 'nomore';
 				this.couponList = res;
 			 }
-				// .then(r => {
-				// 	console.log(11111111)
-				// 	this.loading = false;
-				// 	if (type === 'refresh') {
-				// 		uni.stopPullDownRefresh();
-				// 	}
-				// 	this.loadingType = r.data.length === 10 ? 'more' : 'nomore';
-				// 	this.couponList = [...this.couponList, ...r.data];
-				// })
-				// .catch(err => {
-				// 	console.log(34343434)
-				// 	this.couponList.length = 0;
-				// 	this.errorInfo = err;
-				// 	this.loading = false;
-				// 	if (type === 'refresh') {
-				// 		uni.stopPullDownRefresh();
-				// 	}
-	
 		},
 
 		navTo(route) {

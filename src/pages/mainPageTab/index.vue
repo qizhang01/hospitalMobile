@@ -27,9 +27,6 @@
                 <view class="addr">
                     <text class="iconfont iconsaomiao" @tap.stop="link" ></text>
                 </view>
-                <view class="addr">
-                    <text class="iconfont iconsaomiao" @tap.stop="link" ></text>
-                </view>
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
 					<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in dropdownList" :key="index" @tap.stop="dropdownItem(index)">
@@ -200,7 +197,6 @@
 		visibility: visible;
         // height: 300upx;
         max-height: 900upx;
-        // overflow-y: auto;
 	}
 	.rf-dropdownlist-mask {
 		position: fixed;
@@ -228,27 +224,7 @@
 		align-items: center;
 		justify-content: space-between;
 	}
-	.rf-attr-safearea {
-		height: 100upx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		/*padding-bottom: env(safe-area-inset-bottom);*/
-	}
-	.rf-safearea-bottom {
-		width: 100%;
-		height: env(safe-area-inset-bottom);
-	}
-	.rf-attr-btnbox::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		right: 0;
-		left: 0;
-		border-top: 1upx solid #eaeef1;
-		-webkit-transform: scaleY(0.5);
-		transform: scaleY(0.5);
-	}
+
 		/*screen*/
 		.rf-header-screen {
             margin-top: 46px;
@@ -256,8 +232,7 @@
 			background: $color-white;
 			position: fixed;
 			z-index: 99;
-			.rf-screen-top,
-			.rf-screen-bottom {
+			.rf-screen-top{
 				border: none;
 				display: flex;
 				align-items: center;
@@ -283,19 +258,7 @@
 					font-weight: 500;
 				}
 			}
-			.rf-screen-bottom {
-				height: 100upx;
-				padding: 0 30upx;
-				box-sizing: border-box;
-				font-size: 24upx;
-				align-items: center;
-				overflow: hidden;
-			}
-			.rf-bottom-text {
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
+
 			.rf-bottom-item {
 				flex: 1;
 				width: 0;
@@ -315,20 +278,11 @@
 			.rf-bold {
 				font-weight: bold;
 			}
-			.rf-active {
-				color: $base-color;
-			}
 			.rf-icon-ml .rf-icon-class {
 				margin-left: 6upx;
 			}
 			.rf-ml {
 				margin-left: 6upx;
-			}
-			.rf-seizeaseat-20 {
-				height: 20upx;
-			}
-			.rf-seizeaseat-30 {
-				height: 30upx;
 			}
 			.rf-icon-middle .rf-icon-class {
 				vertical-align: middle;

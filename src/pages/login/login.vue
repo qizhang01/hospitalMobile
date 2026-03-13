@@ -2,7 +2,6 @@
 	<view class="login">
 		<view class="login-type-2" >
 			<!--顶部返回按钮-->
-			<text class="back-btn iconfont iconzuo" @tap="navBack"></text>
 			<view class="login-top" :class="'bg-' + themeColor.name">
 				<view class="desc">
 					<view class="title">Hi~</view>
@@ -68,7 +67,7 @@
 	</view>
 </template>
 <script>
-import { loginByPass, loginBySmsCode, smsCode, authLogin, registerByPass } from '@/api/login';
+import { loginByPass, loginBySmsCode, authLogin } from '@/api/login';
 
 export default {
 	data() {
@@ -110,18 +109,11 @@ export default {
 			this.mobile = e.detail.value;
 		},
 
-		// 返回上一页
-		navBack() {
-			this.$mRouter.back();
-		},
 		// 统一跳转路由
 		navTo(route) {
 			this.$mRouter.push({ route });
 		},
-		// 返回主页
-		toHome() {
-			this.$mRouter.reLaunch({ route: '/pages/index/index' });
-		},
+
 		// 提交表单
 		async toLogin() {
 			uni.removeStorageSync('loginMobile');
@@ -156,12 +148,6 @@ export default {
 					if (this.userInfo) {
 						this.btnLoading = false;
 						const oauthClientParams = {};
-						/*  #ifdef MP-WEIXIN */
-						oauthClientParams.oauth_client = 'wechatMp';
-						/*  #endif  */
-						/*  #ifndef MP-WEIXIN */
-						oauthClientParams.oauth_client = 'wechat';
-						/*  #endif  */
 						const userInfo = JSON.parse(this.userInfo);
 						this.$http.post(authLogin, {
 							...userInfo,
@@ -174,21 +160,6 @@ export default {
 					uni.removeStorageSync('wechatUserInfo');
 					const backToPage = uni.getStorageSync('backToPage');
 					uni.removeStorageSync('backToPage');
-					if (backToPage) {
-						if (
-							backToPage.indexOf('/pages/profile/profile') !== -1 ||
-							backToPage.indexOf('/pages/cart/cart') !== -1 ||
-							backToPage.indexOf('/pages/index/index') !== -1 ||
-							backToPage.indexOf('/pages/public/login') !== -1 ||
-							backToPage.indexOf('/pages/category/category') !== -1
-						) {
-							this.$mRouter.reLaunch(JSON.parse(backToPage));
-						} else {
-							this.$mRouter.redirectTo(JSON.parse(backToPage));
-						}
-					} else {
-						this.$mRouter.reLaunch({ route: '/pages/profile/profile' });
-					}
 				})
 				.catch(() => {
 					this.btnLoading = false;
@@ -204,15 +175,6 @@ page {
 .login-type-2 {
 	width: 100%;
 	position: relative;
-	.back-btn {
-		position: absolute;
-		left: 40upx;
-		z-index: 9999;
-		padding-top: var(--status-bar-height);
-		top: 40upx;
-		font-size: 48upx;
-		color: $color-white;
-	}
 	.login-top {
 		height: 460upx;
 		position: relative;
@@ -285,10 +247,7 @@ page {
 						padding-left: 80upx;
 						border-bottom: 1upx solid rgba(0, 0, 0, .1);
 					}
-					.sms-code-btn, sms-code-resend {
-						width: 240upx;
-						font-size: $font-base - 2upx;
-					}
+
 				}
 			}
 			.login-type-tips {
