@@ -38,7 +38,7 @@
 				<!--下拉选择列表--综合-->
 			</view>
             <scroll-view scroll-y="true">
-                <patientInfoList :list="patientInfoList"></patientInfoList>
+                <patientInfoList :list="patientList"></patientInfoList>
             </scroll-view>
 		</view>
         
@@ -75,7 +75,7 @@
                 patientGroup,
                 dropdownList: [],
                 tabIndex: 1,
-                patientInfoList: [1,2,3,4]
+                patientList: [1,2,3,4]
 			};
 		},
 		onPageScroll(e) {
