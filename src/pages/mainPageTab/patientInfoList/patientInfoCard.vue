@@ -56,7 +56,10 @@
 export default {
 	name: 'rfProductList',
 	props: {
-
+        list: {
+            type: Array,
+            default(){return []}
+        },
 	},
 	components: {
 

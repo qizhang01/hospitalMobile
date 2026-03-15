@@ -116,8 +116,8 @@ export default {
 		},
 
         onSetInterval(){
-            timer = this.setInterval(() => {
-                nowTime = formatTime(new Date())
+            timer =setInterval(() => {
+                this.nowTime = formatTime(new Date())
             }, 1000);
         },
 

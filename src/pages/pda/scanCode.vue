@@ -15,7 +15,9 @@ export default {
   },
   created() {
     // 组件创建时，只在安卓环境下初始化
+    if (uni.getSystemInfoSync().platform === 'android'){
       this.initScanner();
+    }
   },
 
   beforeDestroy() {
