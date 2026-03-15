@@ -24,9 +24,9 @@
 					<text>{{ selectedPatientGroup }}</text>
 					<text class="iconfont " :class="tabIndex==2?'iconshang':'iconxia'"></text>
 				</view>
-                <view class="addr">
+                <!-- <view class="addr">
                     <text class="iconfont iconsaomiao" @tap.stop="link" ></text>
-                </view>
+                </view> -->
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
 					<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in dropdownList" :key="index" @tap.stop="dropdownItem(index)">
@@ -259,34 +259,14 @@
 				}
 			}
 
-			.rf-bottom-item {
-				flex: 1;
-				width: 0;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				padding: 0 12upx;
-				box-sizing: border-box;
-				margin-right: 20upx;
-				white-space: nowrap;
-				height: 60upx;
-				border-radius: 40upx;
-			}
-			.rf-bottom-item:last-child {
-				margin-right: 0;
-			}
 			.rf-bold {
 				font-weight: bold;
 			}
-			.rf-icon-ml .rf-icon-class {
-				margin-left: 6upx;
-			}
+
 			.rf-ml {
 				margin-left: 6upx;
 			}
-			.rf-icon-middle .rf-icon-class {
-				vertical-align: middle;
-			}
+
 			.rf-middle {
 				vertical-align: middle;
 			}

@@ -1,5 +1,6 @@
 <template>
 	<view class="coupon-center">
+            <scan-code />
 			<view class="">
 				<view class="">
 					<view class="rf-top-item rf-icon-ml">
@@ -8,6 +9,7 @@
 					<view class="" @tap.stop="handleClick">
                         <text>病区巡视记录</text>
                     </view>
+                    <view>扫描结果：{{ scanResult }}</view>
 				</view>
 			</view>
 			<view class="content">
@@ -49,11 +51,13 @@ import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import { mapMutations } from 'vuex';
 import {formatTime} from '@/utils/util.js'
 import {abnormalList} from './option.js'
+import scanCode from '@/pages/pda/scanCode.vue'
 
 let timer=null
 export default {
 	components: {
-		rfLoadMore
+		rfLoadMore,
+        scanCode
 	},
 	data() {
 		return {
@@ -62,19 +66,36 @@ export default {
             checkedText: '正常',
             value: '',
             abnormalList,
-            isNormal: true
+            isNormal: true,
+            scanResult: ''
 		};
 	},
     computed: {
     },
+
+    onShow() {
+        // 页面显示时，开始监听激光扫码事件
+        this.listenToLaserScan();
+    },
+
 	onLoad(options) {
-		// this.type = options.type;
 		this.onSetInterval();
 	},
 
+    onHide() {
+        // 页面隐藏时，移除监听，避免不可见页面还响应事件
+        this.removeLaserScanListener();
+    },
+
+    onUnload() {
+        // 页面卸载时，也必须移除监听
+        this.removeLaserScanListener();
+    },
+    
     beforeUnmount() {
 		this.clearTimer();
 	},
+
 	methods: {
 		...mapMutations(['setPatientInfo']),
 		// 数据初始化
@@ -122,6 +143,28 @@ export default {
         },
         handleButtonClick(item){
 
+        },
+
+        //
+        listenToLaserScan() {
+            // 监听全局事件
+            uni.$on('onLaserScanResult', this.handleLaserResult);
+        },
+
+        removeLaserScanListener() {
+            // 移除监听
+            uni.$off('onLaserScanResult', this.handleLaserResult);
+        },
+
+        handleLaserResult(res) {
+            const rawData = res.data;
+            this.scanResult = `激光扫码: ${rawData}`;
+            // 在这里调用你的业务处理函数，比如解析JSON、查询数据库等
+            this.processScannedCode(rawData);
+        },
+        processScannedCode(code) {
+            console.log('进行业务处理:', code);
+            // TODO: 你的业务逻辑
         }
 	}
 };
@@ -133,9 +176,9 @@ export default {
 //     justify-content: center;
 //     flex-direction: column;
 // }
-	page {
-		background: white;
-	}
+page {
+    background: white;
+}
 .center {
     display: flex;
     justify-content: center;

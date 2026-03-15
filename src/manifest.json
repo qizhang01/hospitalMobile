@@ -1,5 +1,5 @@
 {
-    "name" : "文书录入系统",
+    "name" : "护理系统",
     "appid" : "__UNI__BEE9F05", // 自行更换uniapp appid 可登录查看uniapp提供的用户统计 https://tongji.dcloud.net.cn/
     "description" : "文书录入系统",
     "versionName" : "1.2.9",
@@ -26,11 +26,8 @@
             "delay" : 0
         },
         "modules" : {
-            "Payment" : {},
-            "Push" : {},
             "VideoPlayer" : {},
-            "Share" : {},
-            "OAuth" : {}
+            "Barcode" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -44,7 +41,6 @@
                     "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
                     "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
@@ -53,17 +49,16 @@
                     "<uses-permission android:name=\"android.permission.INTERNET\"/>",
                     "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SMS\"/>"
-                ]
+                ],
+                "abiFilters" : [ "arm64-v8a" ]
             },
             "ios" : {
                 "privacyDescription" : {
@@ -71,7 +66,8 @@
                     "NSPhotoLibraryAddUsageDescription" : "商品评价",
                     "NSCameraUsageDescription" : "核销虚拟商品",
                     "NSMicrophoneUsageDescription" : ""
-                }
+                },
+                "dSYMs" : false
             },
             /* ios打包配置 */
             "sdkConfigs" : {
@@ -155,7 +151,8 @@
         },
         "uniStatistics" : {
             "enable" : true
-        }
+        },
+        "nvueLaunchMode" : ""
     },
     "uni-app" : {
         "scripts" : {
