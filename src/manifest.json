@@ -1,7 +1,7 @@
 {
     "name" : "护理系统",
     "appid" : "__UNI__BEE9F05", // 自行更换uniapp appid 可登录查看uniapp提供的用户统计 https://tongji.dcloud.net.cn/
-    "description" : "文书录入系统",
+    "description" : "护理录入系统",
     "versionName" : "1.2.9",
     "versionCode" : 1,
     "transformPx" : false,
@@ -170,29 +170,6 @@
     },
     /* SDK配置 */
     "quickapp" : {},
-    /* 快应用特有相关 */
-    "mp-weixin" : {
-        /* 小程序特有相关 */
-        "usingComponents" : true,
-        "appid" : "",
-        // 这里添加微信小程序appid
-        "setting" : {
-            "urlCheck" : true,
-            "minified" : true,
-            "postcss" : true,
-            "es6" : true
-        },
-        "permission" : {},
-        "plugins" : {},
-        // 根据具体情况填写version(版本号)和provider(插件APPID)
-        //         "live-player-plugin" : {
-        //					 "version" : "1.2.5",
-        //					 "provider" : "wx2b03c6e691cd7370"
-        //         },
-        "uniStatistics" : {
-            "enable" : true
-        }
-    },
     "h5" : {
         "router" : {
             "mode" : "history"
@@ -208,34 +185,6 @@
             //展示 loading 加载组件的延时时间（页面 js 若在 delay 时间内加载完成，则不会显示 loading 组件）
             "timeout" : 10000
         },
-        "uniStatistics" : {
-            "enable" : true
-        }
-    },
-    //页面js加载超时时间（超时后展示 error 对应的组件）
-    "mp-qq" : {
-        "setting" : {
-            "minified" : true
-        },
-        "appid" : "", // 这里添加QQ小程序 appid
-        "uniStatistics" : {
-            "enable" : true
-        }
-    },
-    "uniStatistics" : {
-        "enable" : true
-    },
-    "mp-alipay" : {
-        "uniStatistics" : {
-            "enable" : true
-        }
-    },
-    "mp-baidu" : {
-        "uniStatistics" : {
-            "enable" : true
-        }
-    },
-    "mp-toutiao" : {
         "uniStatistics" : {
             "enable" : true
         }
