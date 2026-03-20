@@ -31,13 +31,6 @@ export default class Request {
 		return config;
 	}
 
-	requestComFun(response) {
-
-	}
-
-	requestComFail(response) {
-		
-	}
 
 	setConfig(f) {
 		this.config = f(this.config);
@@ -92,7 +85,7 @@ export default class Request {
 		});
 	}
 
-	// #ifndef MP-ALIPAY
+
 	put(url, data, options = {}) {
 		return this.request({
 			url,
@@ -102,7 +95,6 @@ export default class Request {
 		});
 	}
 
-	// #endif
 
 	// #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-BAIDU
 	delete(url, data, options = {}) {

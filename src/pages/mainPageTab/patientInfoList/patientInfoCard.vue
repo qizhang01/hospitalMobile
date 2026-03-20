@@ -6,18 +6,18 @@
     >   
         <view class="patient-info-item_top">
             <view class="patient-info-content">
-                <text >104 床</text>
+                <text >{{ patientInfo.BedNo }} 床</text>
                 <!-- <view class="triangle-wrapper">
                     <image class="triangle-tag" :src="item | filterTagName"></image>
                 </view> -->
             </view>
             <view class="patient-info-content">
-                <text >陈明安</text>
+                <text >{{ patientInfo.Name }}</text>
                 <text >35</text>
             </view>
             <view class="patient-info-content">
-                <text class="">二级</text>
-                <text >#123678</text>
+                <text class="">{{ patientInfo.NursingClass }}级</text>
+                <text >#{{ patientInfo.PatientId }}</text>
             </view>
             <view class="icon-action">
                 <text class="iconfont iconxiala" @tap.stop="toggleOpen"></text>
@@ -27,24 +27,24 @@
             <view class="row">
                 <view class="row-item_1">
                     <text class="inline">医保</text>
-                    <text class="inline">实时医保</text>
+                    <text class="inline">{{ patientInfo.ChargeTypeName }}</text>
                 </view>
                 <view>
                     <text class="inline">医生</text>
-                    <text class="inline">王静静</text>
+                    <text class="inline">{{ patientInfo.ReceptTreatDrName }}</text>
                 </view>
             </view>
             <view class="">
                 <text class="inline">入院</text>
-                <text class="inline">25-09-17 09:30</text>
+                <text class="inline">{{ patientInfo.AdmissionTime }}</text>
             </view>
             <view class="">
                 <text class="inline">诊断</text>
-                <text class="inline">恶性肿瘤</text>
+                <text class="inline">{{ patientInfo.DiagnosisName }}</text>
             </view>
             <view class="">
                 <text class="inline">住院事件</text>
-                <text class="inline">15</text>
+                <text class="inline">{{ patientInfo.OutcomeName }}</text>
             </view>
         </view>
     </view>
@@ -56,9 +56,9 @@
 export default {
 	name: 'rfProductList',
 	props: {
-        list: {
-            type: Array,
-            default(){return []}
+        patientInfo: {
+            type: Object,
+            default(){return {}}
         },
 	},
 	components: {

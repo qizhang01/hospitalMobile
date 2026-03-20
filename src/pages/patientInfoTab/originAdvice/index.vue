@@ -30,7 +30,14 @@
 			</view>
 		</view>
 		<view class="product-list-wrapper">
-				<rf-product-list :list="productList" :style="{paddingTop: 100 + 'upx' }"></rf-product-list>
+                <view>
+                    <text class="rf-right">{{ patientInfo.BedNo }} 床</text> 
+                    <text class="rf-right">{{ patientInfo.Name }}</text>
+                </view>
+				<!-- <rf-product-list :list="adviceList"></rf-product-list> -->
+                <block v-for="(item, index) in adviceList" :key="index">
+                    <rfOriginadviceList :patientMedicineInfo="item"></rfOriginadviceList>
+                </block>
 		</view>
 		<!-- <rf-load-more
 			:status="loadingType"
@@ -41,17 +48,21 @@
 			v-if="productList.length === 0 && !loading"
 		></rf-empty> -->
 		<!--页面加载动画-->
-		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
+		<rfLoading isFullScreen :active="loading"></rfLoading>
 	</view>
 </template>
 <script>
-	import rfProductList from '@/components/rf-product-list';
+	import rfOriginadviceList from './rf-originadvice-list';
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 	import medicineList, {doctorAdviceList, periodList, stopList, allOptionsList} from '@/pages/doctorTipsTab/infoList.js'
+    import { mapState } from 'vuex';
+
+
 	/* eslint-disable */
 	export default {
+        computed: mapState(['patientInfo']),
 		components: {
-			rfProductList,
+			rfOriginadviceList,
 			rfLoadMore,
 		},
 		filters: {
@@ -79,12 +90,12 @@
 				periodList,
                 stopList,
                 allOptionsList,
-				productList: medicineList,
+				adviceList: [],
 				pageIndex: 1,
 			}
 		},
 		onLoad(options) {
-
+            this.getoriginAdviceList()
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -138,13 +149,39 @@
 				this.tabIndex = index;
 			},
 
-			async getProductList(type) {
-                return medicineList;
+			async getoriginAdviceList(type) {
+                const res = await this.$http
+                    .get(`/api/inpatient/${this.patientInfo.PatientId}/orders`)
+                    
+                if(res){
+                    this.loading = false;
+                    if (type === 'refresh') {
+                        uni.stopPullDownRefresh();
+                    }
+                    this.loadingType = res.length === 10 ? 'more' : 'nomore';
+                    this.adviceList = this.parseData(res);
+                }
 			},
 			// 跳转详情
 			navTo(route) {
 				this.$mRouter.push({ route });
-			}
+			},
+
+            parseData(list){
+                const map = new Map()
+                list.forEach(item=>{
+                    if(map.get(item.group)){
+                        map.get(item.group).push(item)
+                    }else {
+                        map.set(item.group, [item])
+                    }
+                })
+                const result = []
+                for(let [key, value] of map){
+                    result.push(value)
+                }
+                return result
+            }
 		},
 	}
 </script>
@@ -232,7 +269,14 @@
 			height: 0;
 			color: transparent;
 		}
-
+        .product-list-wrapper{
+            padding-top: 100upx;
+            .rf-right{
+                margin: 20upx;
+                color: #0081ff;
+            }
+            
+        }
 		/*screen*/
 		.rf-header-screen {
 			width: 100%;
@@ -301,21 +345,11 @@
 			.rf-active {
 				color: $base-color;
 			}
-			.rf-icon-ml .rf-icon-class {
-				margin-left: 6upx;
-			}
+
 			.rf-ml {
 				margin-left: 6upx;
 			}
-			.rf-seizeaseat-20 {
-				height: 20upx;
-			}
-			.rf-seizeaseat-30 {
-				height: 30upx;
-			}
-			.rf-icon-middle .rf-icon-class {
-				vertical-align: middle;
-			}
+
 			.rf-middle {
 				vertical-align: middle;
 			}

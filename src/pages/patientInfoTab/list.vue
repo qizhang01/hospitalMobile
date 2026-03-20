@@ -116,19 +116,19 @@ export default {
 	onPullDownRefresh() {
 		this.page = 1;
 		this.couponList.length = 0;
-		this.getCouponList('refresh');
+		this.getPatientList('refresh');
 	},
 	// 加载更多
 	onReachBottom() {
 		if (this.loadingType === 'nomore') return;
 		this.page++;
-		this.getCouponList();
+		this.getPatientList();
 	},
 	methods: {
 		...mapMutations(['setPatientInfo']),
 		// 数据初始化
 		initData() {
-			this.getCouponList();
+			this.getPatientList();
 		},
 		hideDropdownList() {
 			this.selectH = 0
@@ -161,16 +161,15 @@ export default {
 			}else if(this.tabIndex===1){
 				this.periodList = arr
 				this.selectedGroupName = arr[index].name;
-                this.getCouponList("", arr[index].value)
+                this.getPatientList("", arr[index].value)
 			}
 			this.selectH = 0;
 		},
 		// 获取收货地址列表
-		async getCouponList(type="", selectedValue="2901") {
+		async getPatientList(type="", selectedValue="2901") {
 			const res = await this.$http
 				.get(`/api/ward/${selectedValue}/inpatients`)
 				
-             console.log(11111111, res)
 			 if(res){
 				this.loading = false;
 				if (type === 'refresh') {
@@ -197,7 +196,7 @@ export default {
 		handleClick(item){
 			this.setPatientInfo(
 				{...item,
-					age: this.getAgeFromBirthDate(item.birth_date)
+					age: this.getAgeFromBirthDate(item.BirthDate)
 				}
 			)
 			this.navTo('/pages/user/account/patientAction')	

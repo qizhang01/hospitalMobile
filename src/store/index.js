@@ -21,7 +21,8 @@ const store = new Vuex.Store({
 		globalConfig: GLOBALCONFIG,
 		refreshToken: REFRESHTOKEN,
 		themeColor: THEMECOLOR,
-		patientInfo: {}
+		patientInfo: {},
+        scanCode: ''
 	},
 	getters: {
 
@@ -44,7 +45,10 @@ const store = new Vuex.Store({
 		// 判断用户是否登录
 		hasLogin: state => {
 			return !!state.accessToken;
-		}
+		},
+        scanCode: state => {
+			return state.scanCode;
+		},
 	},
 	mutations: {
 		login(state, provider) {
@@ -85,7 +89,11 @@ const store = new Vuex.Store({
         
 		setPatientInfo(state, patientInfo){
            state.patientInfo = patientInfo;
-		}
+		},
+
+        setScanCode(state, code){
+            state.scanCode = code
+        }
 	},
 	actions: {
 		globalConfigChange({ commit }, info) {
@@ -96,7 +104,7 @@ const store = new Vuex.Store({
 		},
 		logout({ commit }) {
 			commit('logout');
-		}
+		},
 	}
 });
 
