@@ -15,12 +15,12 @@
 		<view
 			class="category-list"
 			@touchmove.stop.prevent="moveHandle"
-			v-if="(styleCateType === 'one_two_three_cover' || styleCateType === 'one_two_three_text') && categoryList.length > 0">
+			v-if="(styleCateType === 'one_two_three_cover' || styleCateType === 'one_two_three_text') && documentList.length > 0">
 			<!-- 左侧分类导航 -->
 			<scroll-view scroll-y="true" class="left">
 				<view
 					class="row"
-					v-for="(fItem, fIndex) in categoryList"
+					v-for="(fItem, fIndex) in documentList"
 					:key="fItem.id"
 					:class="[fIndex === showCategoryIndex ? 'on' : '']"
 					@tap="showCategory(fIndex)"
@@ -87,7 +87,7 @@ export default {
 		return {
 			hotSearchDefault: '请输入关键字', // 搜索默认关键字
 			showCategoryIndex: 0, // 一级菜单高亮显示序号
-			categoryList: documentList, // 分类列表
+			documentList: documentList, // 分类列表
 			specClass: 'none', // 规格弹窗
 			productDetail: {}, // 商品详情
 			search: {},
@@ -103,7 +103,7 @@ export default {
 			page: 1,
 			moneySymbol: this.moneySymbol,
 			productLoading: true,
-			currentSecondCategoryList: [],
+			currentSecondDocumentList: [],
 			categoryInvertedIndex: 0
 		};
 	},
@@ -117,9 +117,6 @@ export default {
 
 	},
 	methods: {
-
-
-
 		hideSpec() {
 			this.specClass = 'hide';
 			setTimeout(() => {
@@ -141,7 +138,6 @@ export default {
 		showCategory(index) {
 			this.showCategoryIndex = index;
 		},
-
 		// 跳转至搜索详情页
 		toSearch() {
 			this.$mRouter.push({

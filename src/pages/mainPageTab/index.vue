@@ -75,7 +75,7 @@
                 patientGroup,
                 dropdownList: [],
                 tabIndex: 1,
-                patientList: [1,2,3,4]
+                patientList: []
 			};
 		},
 		onPageScroll(e) {
@@ -85,7 +85,9 @@
 
 		},
 
-
+        onLoad(options) {
+            this.getPatientList();
+        },
 		// 下拉刷新
 		onPullDownRefresh() {
 
@@ -165,7 +167,22 @@
 					this.selectedPatientGroup = arr[index].name;
                 }
 				this.selectH = 0;
-            }
+            },
+
+            async getPatientList(type="", selectedValue="2901") {
+                const res = await this.$http
+                    .get(`/api/ward/${selectedValue}/inpatients`)
+                    
+                if(res){
+                    this.loading = false;
+                    if (type === 'refresh') {
+                        uni.stopPullDownRefresh();
+                    }
+                    this.loadingType = res.length === 10 ? 'more' : 'nomore';
+                    this.patientList = res;
+                }
+            },
+
 		}
 	};
 </script>

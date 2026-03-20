@@ -2,14 +2,13 @@
 	<view class="rf-product-list">
 		<view class="rf-product-list-container">
 			<block>
-				<!--商品列表-->
 				<view
 					class="rf-product-item"
 				>
-                    <view class="rf-card-topic text-red-color" v-for="(item, index) in patientMedicineInfo.medicineList" :key="item.id">
+                    <view class="rf-card-topic text-red-color">
 						<view>
-							<text class="sketch in1line">{{ item.name }}</text>
-							<text class="sketch in1line small-text">{{ item.specifications }} * {{ item.number }}</text>
+							<text class="sketch in1line">{{ patientMedicineInfo.name }}</text>
+							<text class="sketch in1line small-text">{{ patientMedicineInfo.spec }} * {{ patientMedicineInfo.dosage }}</text>
 						</view>
 						<view>
 							<text class="sketch in1line">600ml</text>	
@@ -22,16 +21,16 @@
 							<view class="rf-pro-pay">
 								<text>计划时间: {{patientMedicineInfo.planTime}}</text>
                                 <text>{{patientMedicineInfo.type}}</text>
-                                <text>{{patientMedicineInfo.identification}}</text>
+                                <text>{{patientMedicineInfo.freq}}</text>
 								<text>{{patientMedicineInfo.status}}</text>
 							</view>
 							<view class="rf-pro-pay">
-								<text>开始时间: {{patientMedicineInfo.startTime}}</text>
+								<text>开始时间: {{patientMedicineInfo.start_at}}</text>
 								<text>{{patientMedicineInfo.startNurseName}}</text>
 							</view>
                             <view class="rf-pro-pay">
-								<text>结束时间: {{patientMedicineInfo.endTime}}</text>
-								<text>{{patientMedicineInfo.endNurseName}}</text>
+								<text>结束时间: {{patientMedicineInfo.enter_at}}</text>
+								<text>{{patientMedicineInfo.stop_by}}</text>
 							</view>
 						
 					</view>
@@ -46,9 +45,9 @@ export default {
 	name: 'rfCard',
 	props: {
 		patientMedicineInfo: {
-			type: Object,
+			type: Array,
 			default() {
-				return {};
+				return [];
 			}
 		},
 

@@ -1,9 +1,9 @@
 export const documentList = [{
     id: 1,
-    title: '文书1'
+    title: '健康指导表'
 },{
     id: 2,
-    title: '文书2'
+    title: '住院患者压力性损伤危险因素评估表'
 },{
     id: 3,
     title: '文书3'

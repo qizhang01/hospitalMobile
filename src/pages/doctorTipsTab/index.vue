@@ -30,7 +30,7 @@
 			</view>
 		</view>
 		<view class="product-list-wrapper">
-				<rf-product-list :list="productList" :style="{paddingTop: 100 + 'upx' }"></rf-product-list>
+				<rf-product-list :list="patientAdviceList" :style="{paddingTop: 100 + 'upx' }"></rf-product-list>
 		</view>
 		<!-- <rf-load-more
 			:status="loadingType"
@@ -48,7 +48,7 @@
 
 	import rfProductList from '@/components/rf-product-list';
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
-	import medicineList, {doctorAdviceList, periodList, stopList, allOptionsList} from './infoList.js'
+	import {doctorAdviceList, periodList, stopList, allOptionsList} from './infoList.js'
 	/* eslint-disable */
 	export default {
 		components: {
@@ -80,7 +80,7 @@
 				periodList,
                 stopList,
                 allOptionsList,
-				productList: medicineList,
+				patientAdviceList: [],
 				pageIndex: 1,
 			}
 		},
@@ -139,8 +139,8 @@
 				this.tabIndex = index;
 			},
 
-			async getProductList(type) {
-                return medicineList;
+			async getPatientAdviceList() {
+                
 			},
 			// 跳转详情
 			navTo(route) {
@@ -203,27 +203,6 @@
 		align-items: center;
 		justify-content: space-between;
 	}
-	.rf-attr-safearea {
-		height: 100upx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		/*padding-bottom: env(safe-area-inset-bottom);*/
-	}
-	.rf-safearea-bottom {
-		width: 100%;
-		height: env(safe-area-inset-bottom);
-	}
-	.rf-attr-btnbox::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		right: 0;
-		left: 0;
-		border-top: 1upx solid #eaeef1;
-		-webkit-transform: scaleY(0.5);
-		transform: scaleY(0.5);
-	}
 
 	.product-list {
 		padding-bottom: env(safe-area-inset-bottom);
@@ -275,48 +254,16 @@
 				align-items: center;
 				overflow: hidden;
 			}
-			.rf-bottom-text {
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-			.rf-bottom-item {
-				flex: 1;
-				width: 0;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				padding: 0 12upx;
-				box-sizing: border-box;
-				margin-right: 20upx;
-				white-space: nowrap;
-				height: 60upx;
-				border-radius: 40upx;
-			}
-			.rf-bottom-item:last-child {
-				margin-right: 0;
-			}
 			.rf-bold {
 				font-weight: bold;
 			}
 			.rf-active {
 				color: $base-color;
 			}
-			.rf-icon-ml .rf-icon-class {
-				margin-left: 6upx;
-			}
 			.rf-ml {
 				margin-left: 6upx;
 			}
-			.rf-seizeaseat-20 {
-				height: 20upx;
-			}
-			.rf-seizeaseat-30 {
-				height: 30upx;
-			}
-			.rf-icon-middle .rf-icon-class {
-				vertical-align: middle;
-			}
+
 			.rf-middle {
 				vertical-align: middle;
 			}

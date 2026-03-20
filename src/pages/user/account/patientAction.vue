@@ -2,12 +2,12 @@
 	<view class="recharge">
 		<view class="block">
 			<view class="title">
-				<text class="cell-title">床位号: {{ patientInfo.bed_no }}</text>
-				<text>{{ patientInfo.name }}</text>
-				<text class="at_least">{{ patientInfo.admit_situation }}级</text>
+				<text class="cell-title">床位号: {{ patientInfo.BedNo }}</text>
+				<text>{{ patientInfo.Name }}</text>
+				<text class="at_least">{{ patientInfo.NursingClass }}级</text>
 				<text>{{ patientInfo.age }}岁</text>
-				<text>{{ patientInfo.physi_sex_name }}</text>
-				<view>#{{ patientInfo.wrist_band }}</view>
+				<text>{{ patientInfo.PhysiSexName }}</text>
+				<view>#{{ patientInfo.Wristband }}</view>
 			</view>
 		</view>
 		<view class="block">

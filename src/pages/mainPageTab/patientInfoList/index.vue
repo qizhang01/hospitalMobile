@@ -1,7 +1,7 @@
 <template>
 	<view class="patient-info-list">
         <block v-for="(item, index) in list" :key="index">
-           <patientInfoCard ></patientInfoCard>
+           <patientInfoCard :patientInfo="item"></patientInfoCard>
         </block>
 	</view>
 </template>

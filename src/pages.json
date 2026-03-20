@@ -84,6 +84,21 @@
 				}
 			}
 		},
+        {
+            "path": "pages/houseCheck/index",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "病区功能",
+				"app-plus": {
+					"bounce": "none",
+					"pullToRefresh": {
+						"support": true,
+						"color": "#fa436a",
+						"style": "default"
+					}
+				}
+			}
+        },
 
 		// 体温表
 		{
@@ -187,12 +202,6 @@
                             "backgroundColorTop": "#F7F7F7"
 					}
 				},{
-                    "path": "/houseCheck/index",
-                    "style": {
-							"navigationBarTitleText": "病区巡视",
-                            "backgroundColorTop": "#F7F7F7"
-					}
-                },{
                     "path": "/lifeSignSurvey/index",
                     "style": {
 							"navigationBarTitleText": "体征待测",
@@ -287,13 +296,31 @@
 						}
 				}
 			]
-		}
+		},
+        {
+            "root": "pages/houseCheck",
+			"pages": [
+
+				{
+					"path": "/houseCheckAction/action",
+					"style": {
+						"navigationBarTitleText": "病区巡视"
+					}
+				},
+                {
+					"path": "/houseCheckRecord/record",
+                    "style": {
+                        "navigationBarTitleText": "病区巡视记录"
+                    }
+				}
+			]
+        }
 
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "护理系统",
-		"navigationBarBackgroundColor": "#FFFFFF",
+		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#f8f8f8"
 	},
 	"tabBar": {
@@ -321,10 +348,10 @@
 				"text": "登录"
 			},
 			{
-				"pagePath": "pages/doctorTipsTab/index",
+				"pagePath": "pages/houseCheck/index",
 				"iconPath": "static/tab-cart.png",
 				"selectedIconPath": "static/tab-cart-rf.png",
-				"text": "医嘱管理"
+				"text": "病区巡视"
 			},
 			{
 				"pagePath": "pages/profileTab/profile",

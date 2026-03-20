@@ -1,5 +1,5 @@
 <template>
-	<view class="coupon-center">
+	<view class="container">
 			<view class="">
 				<view class="">
 					<view class="rf-top-item rf-icon-ml">
@@ -49,7 +49,7 @@
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import { mapMutations } from 'vuex';
 import {formatTime} from '@/utils/util.js'
-import {abnormalList} from './option.js'
+import {abnormalList} from '../option.js'
 
 let timer=null
 export default {
@@ -142,11 +142,9 @@ export default {
 </script>
 <style lang="scss">
 
-// .content {
-//     display: flex;
-//     justify-content: center;
-//     flex-direction: column;
-// }
+.container {
+    padding: 30upx;
+}
 page {
     background: white;
 }

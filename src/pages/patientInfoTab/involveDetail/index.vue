@@ -30,7 +30,7 @@
 			</view>
 		</view>
 		<view class="product-list-wrapper">
-				<rf-product-list :list="productList" :style="{paddingTop: 100 + 'upx' }"></rf-product-list>
+				<rf-product-list :list="adviceList" :style="{paddingTop: 100 + 'upx' }"></rf-product-list>
 		</view>
 		<!-- <rf-load-more
 			:status="loadingType"
@@ -41,15 +41,17 @@
 			v-if="productList.length === 0 && !loading"
 		></rf-empty> -->
 		<!--页面加载动画-->
-		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
+		<rfLoading isFullScreen :active="loading"></rfLoading>
 	</view>
 </template>
 <script>
 	import rfProductList from '@/components/rf-product-list';
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
-	import medicineList, {doctorAdviceList, periodList, stopList, allOptionsList} from '@/pages/doctorTipsTab/infoList.js'
+    import { mapState } from 'vuex';
+	import {doctorAdviceList, periodList, stopList, allOptionsList} from '@/pages/doctorTipsTab/infoList.js'
 	/* eslint-disable */
 	export default {
+        computed: mapState(['patientInfo']),
 		components: {
 			rfProductList,
 			rfLoadMore,
@@ -79,12 +81,12 @@
 				periodList,
                 stopList,
                 allOptionsList,
-				productList: medicineList,
+				adviceList: [],
 				pageIndex: 1,
 			}
 		},
 		onLoad(options) {
-
+            this.getoriginAdviceList()
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -138,13 +140,24 @@
 				this.tabIndex = index;
 			},
 
-			async getProductList(type) {
-                return medicineList;
-			},
 			// 跳转详情
 			navTo(route) {
 				this.$mRouter.push({ route });
-			}
+			},
+
+            async getoriginAdviceList(type) {
+                const res = await this.$http
+                    .get(`/api/inpatient/${this.patientInfo.PatientId}/orders`)
+                    
+                if(res){
+                    this.loading = false;
+                    if (type === 'refresh') {
+                        uni.stopPullDownRefresh();
+                    }
+                    this.loadingType = res.length === 10 ? 'more' : 'nomore';
+                    this.adviceList = res;
+                }
+			},
 		},
 	}
 </script>

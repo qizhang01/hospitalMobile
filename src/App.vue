@@ -39,7 +39,7 @@ export default {
     },
 
 	methods: {
-		...mapMutations(['setCartNum', 'setNotifyNum']),
+		...mapMutations(['setScanCode']),
 		// 数据初始化
 		async initData() {
 			uni.setTabBarStyle({
@@ -106,13 +106,13 @@ export default {
         processScannedCode(code) {
             console.log('进行业务处理:', code);
             // TODO: 你的业务逻辑
-            uni.setStorageSync( 'scanCode', code);
-            // this.$mRouter.push({
-            //     route: 'pages/patientInfoTab/houseCheck/index'
-            // })
-            uni.navigateTo({
-                url: '/pages/patientInfoTab/houseCheck/index'
-            })
+            // uni.setStorageSync( 'scanCode', code);
+            setScanCode(code)
+            if(getCurrentRoute()!=='/pages/houseCheck/houseCheckAction/action'){
+                uni.navigateTo({
+                    url: '/pages/houseCheck/houseCheckAction/action'
+                })
+            }
         },
 
         initScanner() {
@@ -190,6 +190,12 @@ export default {
                     console.warn('注销广播接收器时发生错误:', e);
                 }
             }
+        },
+
+        getCurrentRoute() {
+            const pages = getCurrentPages();
+            const currentPage = pages[pages.length - 1];
+            return  currentPage.$page.route;
         }
 	}
 };
