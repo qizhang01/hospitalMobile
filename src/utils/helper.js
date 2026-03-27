@@ -3,7 +3,7 @@ import mRouter from '@/utils/router';
 import mConstDataConfig from '@/config/constData.config';
 import mStore from '@/store';
 import { http } from '@/utils/request';
-import { advView } from '@/api/basic';
+
 //常用方法集合
 export default {
 	/**

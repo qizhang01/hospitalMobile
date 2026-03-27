@@ -39,8 +39,6 @@ const smsCode = '/tiny-shop/v1/site/sms-code';
 // 退出登录
 const logout = '/tiny-shop/v1/site/logout';
 
-// 刷新token
-const refreshToken = '/tiny-shop/v1/site/refresh';
 
 // 登录令牌有效性检测
 const verifyAccessToken = '/tiny-shop/v1/site/verify-access-token';
@@ -57,6 +55,5 @@ export {
 	smsCode,
 	loginBySmsCode,
 	logout,
-	refreshToken,
 	verifyAccessToken
 };

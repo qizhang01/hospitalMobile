@@ -67,7 +67,6 @@
 </template>
 <script>
 
-import { productCate, productList, productDetail, cartItemCount, cartItemCreate } from '@/api/product';
 import rfSearchBar from '@/components/rf-search-bar';
 import rfAttrContent from '@/components/rf-attr-content';
 import document1 from './document1.vue';
