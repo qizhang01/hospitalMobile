@@ -45,7 +45,7 @@
 			}
 		},
 
-		// 公告
+
 		{
 			"path": "pages/lifeSignQuery/index",
 			"style": {
@@ -120,7 +120,7 @@
 			}
 		},
 
-		//患者信息
+		//文书信息
 		{
 			"path": "pages/document/index",
 			"style": {
@@ -155,9 +155,6 @@
 			"path": "pages/profileTab/profile",
 			"style": {
 				"navigationBarTitleText": "我的",
-				// #ifdef MP
-				"navigationStyle": "custom",
-				// #endif
 				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
@@ -207,7 +204,20 @@
 							"navigationBarTitleText": "体征待测",
                             "backgroundColorTop": "#F7F7F7"
 					}
-                }
+                },
+                
+				{
+					"path": "patientDetail/index",
+						"style": {
+							"navigationBarTitleText": "详细信息"
+						}
+				},
+                {
+					"path": "timeRecord/index",
+						"style": {
+							"navigationBarTitleText": "排药"
+						}
+				}
 			]
 		},
 		// 设置
@@ -286,14 +296,6 @@
 					"style": {
 						"navigationBarTitleText": "修改资料"
 					}
-				},
-
-
-				{
-					"path": "account/patientAction",
-						"style": {
-							"navigationBarTitleText": "详细信息"
-						}
 				}
 			]
 		},

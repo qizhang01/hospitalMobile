@@ -35,7 +35,7 @@
 			</view>
 		</view>
 		<view class="block">
-			<view class="timeRecord">
+			<view class="timeRecord" @tap.stop="navTo('/pages/patientInfoTab/timeRecord/index')">
                  时间记录
 			</view>
 		</view>

@@ -22,7 +22,8 @@ const store = new Vuex.Store({
 		refreshToken: REFRESHTOKEN,
 		themeColor: THEMECOLOR,
 		patientInfo: {},
-        scanCode: ''
+        scanCode: '',
+        patientList: []
 	},
 	getters: {
 
@@ -91,6 +92,9 @@ const store = new Vuex.Store({
            state.patientInfo = patientInfo;
 		},
 
+        setPatientList(state, patientList){
+           state.patientList = patientList;
+		},
         setScanCode(state, code){
             state.scanCode = code
         }

@@ -97,6 +97,7 @@
 
 		},
 		methods: {
+            ...mapMutations(['setPatientList']),
 			// 顶部tab点击
 			tabClick({ id }) {
 			},
@@ -180,6 +181,7 @@
                     }
                     this.loadingType = res.length === 10 ? 'more' : 'nomore';
                     this.patientList = res;
+                    this.setPatientList(res)
                 }
             },
 

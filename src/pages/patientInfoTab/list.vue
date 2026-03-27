@@ -199,7 +199,7 @@ export default {
 					age: this.getAgeFromBirthDate(item.BirthDate)
 				}
 			)
-			this.navTo('/pages/user/account/patientAction')	
+			this.navTo('/pages/patientInfoTab/patientDetail/index')	
 		}
 	}
 };
