@@ -27,7 +27,7 @@
  *@date 2020/01/08 11:28:39
  */
 import $mAssetsPath from '@/config/assets.config';
-import rfProductList from '@/components/rf-product-list/indexcopy';
+import rfProductList from '@/components/rf-product-list/index';
 export default {
 	name: 'rfFloorIndex',
 	components: { rfProductList },

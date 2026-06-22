@@ -95,7 +95,6 @@
 
 <script>
 
-import { memberInfo, memberUpdate, uploadImage } from '@/api/userInfo';
 import avatar from '@/components/rf-avatar/rf-avatar';
 
 

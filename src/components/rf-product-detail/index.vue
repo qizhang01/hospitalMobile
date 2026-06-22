@@ -588,9 +588,8 @@
 	import uniTag from '@/components/uni-tag/uni-tag';
 	import rfNav from '@/components/rf-nav';
 	import rfLive from '@/components/rf-live';
-	import { cartItemCount, cartItemCreate } from '@/api/product';
 	import { collectCreate, collectDel, pickupPointIndex, transmitCreate } from '@/api/basic';
-  import { couponReceive, addressList } from '@/api/userInfo';
+
 	import { mapMutations } from 'vuex';
   export default {
     name: 'rfProductDetail',
@@ -890,10 +889,10 @@
 					})
 					.then(() => {
 						this.$mHelper.toast('添加购物车成功');
-						this.$http.get(`${cartItemCount}`).then(r => {
-							this.setCartNum(r.data);
-							this.cartNum = r.data;
-						});
+						// this.$http.get(`${cartItemCount}`).then(r => {
+						// 	this.setCartNum(r.data);
+						// 	this.cartNum = r.data;
+						// });
 					});
 			},
 			// 收藏

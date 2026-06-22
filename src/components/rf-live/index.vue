@@ -8,7 +8,7 @@
   </view>
 </template>
 <script>
-import { miniProgramLiveIndex } from '@/api/product';
+// import { miniProgramLiveIndex } from '@/api/product';
 
 export default {
   name: 'rfLive',

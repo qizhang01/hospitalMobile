@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import { memberInfo, rechargeConfigIndex } from '@/api/userInfo';
 import { mapState } from 'vuex';
 
 export default {

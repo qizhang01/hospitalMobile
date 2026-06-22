@@ -75,7 +75,6 @@
 
 <script>
 
-import { couponList } from '@/api/userInfo';
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import {selectList, groupList} from './infoList.js';
 import { mapMutations } from 'vuex';

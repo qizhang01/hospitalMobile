@@ -28,7 +28,7 @@
 									class="login-type-input"
 									type="number"
 									name="mobile"
-									v-model="loginParams.mobile"
+									v-model="loginParams.employee_no"
 									placeholder="请输入用户名"
 									maxlength="11"
 									@blur="blurMobileChange"
@@ -45,9 +45,9 @@
 								/>
 							</view>
 						</view>
-						<view class="login-type-tips">
+						<!-- <view class="login-type-tips">
 							<text @tap="navTo('/pages/public/password?type=1')">修改密码</text>
-						</view>
+						</view> -->
 						<button
 							class="confirm-btn"
 							:class="'bg-' + themeColor.name"
@@ -67,16 +67,16 @@
 	</view>
 </template>
 <script>
-import { loginByPass, loginBySmsCode, authLogin } from '@/api/login';
+import {loginUrl, logoutUrl } from '@/api/login';
 
 export default {
 	data() {
 		return {
 			loginParams: {
-				mobile: '',
-				code: '',
+				employee_no: '',
 				password: ''
 			},
+
 			btnLoading: false,
 			reqBody: {},
 			loginByPass: true,
@@ -99,11 +99,6 @@ export default {
 		// this.userInfo = uni.getStorageSync('wechatUserInfo');
 	},
 	methods: {
-		loginTest(mobile, password) {
-			this.loginParams.mobile = mobile;
-			this.loginParams.password = password;
-		},
-
 		// 失去焦点的手机号
 		blurMobileChange(e) {
 			this.mobile = e.detail.value;
@@ -114,52 +109,31 @@ export default {
 			this.$mRouter.push({ route });
 		},
 
-		// 提交表单
-		async toLogin() {
-			uni.removeStorageSync('loginMobile');
-			uni.removeStorageSync('loginPassword');
-			this.reqBody['mobile'] = this.loginParams['mobile'];
-			let cheRes, loginApi;
-			if (this.loginByPass) {
-				loginApi = loginByPass;
-				this.reqBody['password'] = this.loginParams['password'];
-			} else {
-				this.reqBody['code'] = this.loginParams['code'];
-				loginApi = loginBySmsCode;
-			}
-			if (!cheRes) {
-				return;
-			}
-			this.reqBody.group = this.$mHelper.platformGroupFilter();
-			const backUrl = uni.getStorageSync('backToPage');
-			if (backUrl.indexOf('promo_code') !== -1) {
-				this.reqBody.promo_code = JSON.parse(backUrl)['query']['promo_code'];
-			}
-			this.handleLogin(this.reqBody, loginApi);
-		},
+		// // 提交表单
+		// async toLogin() {
+		// 	uni.removeStorageSync('loginMobile');
+		// 	uni.removeStorageSync('loginPassword');
+		// 	this.reqBody['mobile'] = this.loginParams['mobile'];
+		// 	this.reqBody.group = this.$mHelper.platformGroupFilter();
+		// 	this.handleLogin(this.reqBody, loginApi);
+		// },
 		// 登录
-		async handleLogin(params, loginApi) {
+		async toLogin() {
 			this.btnLoading = true;
+            const params = {
+                employee_no: this.loginParams.employee_no,
+                password: this.loginParams.password
+            }
 			await this.$http
-				.post(loginApi, params)
+				.post(loginUrl, params)
 				.then(r => {
 					this.$mHelper.toast('恭喜您，登录成功！');
 					this.$mStore.commit('login', r.data);
 					if (this.userInfo) {
 						this.btnLoading = false;
-						const oauthClientParams = {};
 						const userInfo = JSON.parse(this.userInfo);
-						this.$http.post(authLogin, {
-							...userInfo,
-							...oauthClientParams,
-							gender: userInfo.sex || userInfo.gender,
-							oauth_client_user_id: userInfo.openid || userInfo.openId,
-							head_portrait: userInfo.headimgurl || userInfo.avatarUrl
-						});
+                        // /api/ward/2901/inpatients
 					}
-					uni.removeStorageSync('wechatUserInfo');
-					const backToPage = uni.getStorageSync('backToPage');
-					uni.removeStorageSync('backToPage');
 				})
 				.catch(() => {
 					this.btnLoading = false;
