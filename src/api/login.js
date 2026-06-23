@@ -1,12 +1,3 @@
-/**
- *@des 登录注册相关接口
- *@author stav stavyan@qq.com
- *@blog https://stavtop.club
- *@date 2019/11/15 15:14:47
- *@param login.js
- */
-
-
 // 密码登录
 const loginUrl = '/api/login';
 
@@ -15,8 +6,21 @@ const logoutUrl = '/api/logout';
 
 const codeTypeUrl = '/api/codes'
 
+const wardsUrl = '/api/wards'
+
+const taskUrl= '/api/task'
+
+const vitalUrl = '/api/vital'
+
+const getInpatientTasksById =(id)=>{
+    return `/api/inpatient/${id}/tasks`
+}
+
 export {
 	loginUrl,
 	logoutUrl,
-    codeTypeUrl
+    codeTypeUrl,
+    wardsUrl,
+    taskUrl,
+    getInpatientTasksById
 };

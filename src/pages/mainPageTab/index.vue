@@ -53,13 +53,16 @@
 
 	import rfSearchBar from '@/components/rf-search-bar';
     import patientInfoList from './patientInfoList'
-	import { mapMutations } from 'vuex';
+	import { mapMutations, mapState} from 'vuex';
+    import {computed} from 'vue'
     import {patientRelationship, patientGroup} from './option.js'
 	export default {
 		components: {
 			rfSearchBar,
             patientInfoList,
 		},
+        computed: mapState(['userInfo']),
+
 		data() {
 			return {
 				loading: true,
@@ -82,11 +85,11 @@
 			this.scrollTop = e.scrollTop;
 		},
 		onShow() {
-
+            this.getPatientList();
 		},
 
         onLoad(options) {
-            this.getPatientList();
+            // this.getPatientList();
         },
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -171,6 +174,11 @@
             },
 
             async getPatientList(type="", selectedValue="2901") {
+                const requestArr = this.userInfo.wards.map(item=>{
+                    return this.$http
+                            .get(`/api/ward/${item.id}/inpatients`)
+                })
+
                 const res = await this.$http
                     .get(`/api/ward/${selectedValue}/inpatients`)
                     

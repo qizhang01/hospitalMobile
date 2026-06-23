@@ -5,7 +5,6 @@ import $mSettingConfig from '@/config/setting.config';
 
 Vue.use(Vuex);
 const ACCESSTOKEN = uni.getStorageSync('accessToken') || '';
-const USER = uni.getStorageSync('user') || {};
 const THEMECOLOR = uni.getStorageSync('themeColor');
 
 const store = new Vuex.Store({
@@ -13,7 +12,7 @@ const store = new Vuex.Store({
 		// 用户token
 		accessToken: ACCESSTOKEN,
 		// 用户信息
-		userInfo: USER.member,
+		userInfo: {},
 		// 网络状态，用于下载提醒
 		networkState: 'unknown',
 		themeColor: THEMECOLOR,
@@ -46,13 +45,10 @@ const store = new Vuex.Store({
 	},
 	mutations: {
 		login(state, provider) {
-			state.accessToken = provider.access_token;
-
-			state.userInfo = provider.member;
-			state.user = provider;
-			uni.setStorageSync('user', provider);
-			uni.setStorageSync('accessToken', provider.access_token);
-			uni.setStorageSync('userInfo', provider.member);
+			state.accessToken = provider.token;
+			state.userInfo = provider;
+			uni.setStorageSync('accessToken', provider.token);
+			uni.setStorageSync('userInfo', provider);
 		},
 		logout(state) {
 			state.accessToken = '';
@@ -84,15 +80,13 @@ const store = new Vuex.Store({
 		},
         setScanCode(state, code){
             state.scanCode = code
-        }
+        },
+    
 	},
 	actions: {
 
 		networkStateChange({ commit }, info) {
 			commit('setNetworkState', info);
-		},
-		logout({ commit }) {
-			commit('logout');
 		},
 	}
 });

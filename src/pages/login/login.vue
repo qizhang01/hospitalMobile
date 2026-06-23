@@ -9,8 +9,8 @@
 				</view>
 				<image class="login-pic" :src="loginPic"></image>
 			</view>
-			<view class="login-type-content">
-				<image class="login-bg" :src="loginBg" :style="{height: tabCurrentIndex === 1 ? '150vw' : '94vw'}"></image>
+			<view class="login-type-content" v-if="!loginSuccess">
+				<image class="login-bg" :src="loginBg" style="height: 94vw"></image>
 				<view class="main">
 					<view class="nav-bar">
 						<view
@@ -34,7 +34,7 @@
 									@blur="blurMobileChange"
 								/>
 							</view>
-							<view class="input-item" v-if="loginByPass">
+							<view class="input-item">
 								<text class="iconfont iconmimaffffffpx" :class="'text-' + themeColor.name"></text>
 								<input
 									class="login-type-input"
@@ -60,16 +60,40 @@
 					</block>
 				</view>
 			</view>
-			<view class="login-type-bottom" :class="'text-' + themeColor.name">
+            <view class="logout-type-content" v-else>
+                <view>
+                    <text style="color: #0081ff; margin-right: 8upx;">
+                        {{ user && user.name }}
+                    </text>
+                    <text>登录中</text>
+                </view>
+                <button
+                    class="confirm-btn"
+                    :class="'bg-' + themeColor.name"
+                    :disabled="btnLoading"
+                    :loading="btnLoading"
+                    @tap="toLogout"
+                >
+                    退出登录
+                </button>
+            </view>
+			<!-- <view class="login-type-bottom" :class="'text-' + themeColor.name">
 				{{ appName }} 版权所有
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
 <script>
 import {loginUrl, logoutUrl } from '@/api/login';
+import {mapState} from 'vuex'
 
 export default {
+    computed: {
+        ...mapState(['userInfo']),
+        user(){
+            return this.userInfo
+        }
+    },
 	data() {
 		return {
 			loginParams: {
@@ -78,14 +102,10 @@ export default {
 			},
 
 			btnLoading: false,
-			reqBody: {},
-			loginByPass: true,
-			userInfo: null,
+			loginSuccess: false,
 			loginBg: this.$mAssetsPath.loginBg,
 			loginPic: this.$mAssetsPath.loginPic,
 			appName: this.$mSettingConfig.appName,
-			styleLoginType: this.$mSettingConfig.styleLoginType,
-			tabCurrentIndex: 0,
 		};
 	},
 	onShow() {
@@ -99,6 +119,7 @@ export default {
 		// this.userInfo = uni.getStorageSync('wechatUserInfo');
 	},
 	methods: {
+
 		// 失去焦点的手机号
 		blurMobileChange(e) {
 			this.mobile = e.detail.value;
@@ -108,15 +129,6 @@ export default {
 		navTo(route) {
 			this.$mRouter.push({ route });
 		},
-
-		// // 提交表单
-		// async toLogin() {
-		// 	uni.removeStorageSync('loginMobile');
-		// 	uni.removeStorageSync('loginPassword');
-		// 	this.reqBody['mobile'] = this.loginParams['mobile'];
-		// 	this.reqBody.group = this.$mHelper.platformGroupFilter();
-		// 	this.handleLogin(this.reqBody, loginApi);
-		// },
 		// 登录
 		async toLogin() {
 			this.btnLoading = true;
@@ -128,17 +140,30 @@ export default {
 				.post(loginUrl, params)
 				.then(r => {
 					this.$mHelper.toast('恭喜您，登录成功！');
-					this.$mStore.commit('login', r.data);
-					if (this.userInfo) {
-						this.btnLoading = false;
-						const userInfo = JSON.parse(this.userInfo);
-                        // /api/ward/2901/inpatients
-					}
+					this.$mStore.commit('login', r);
+                    this.loginSuccess = true
+                    this.btnLoading = false;
 				})
 				.catch(() => {
 					this.btnLoading = false;
 				});
-		}
+		},
+
+
+        async toLogout(){
+            this.btnLoading = true;
+            await this.$http
+				.post(logoutUrl, {})
+				.then(r => {
+					this.$mHelper.toast('恭喜您，登出成功');
+					this.$mStore.commit('logout');
+					this.btnLoading = false;
+                    this.loginSuccess = false
+				})
+				.catch(() => {
+					this.btnLoading = false;
+				});
+        }
 	}
 };
 </script>
@@ -241,5 +266,12 @@ page {
 		text-align: center;
 		font-size: $font-lg;
 	}
+    .logout-type-content {
+        height: 400upx;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
 </style>

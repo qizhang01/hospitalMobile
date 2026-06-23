@@ -2,7 +2,9 @@ export default class Request {
 	config = {
 		baseUrl: '/',
 		header: {
-			'content-type': 'application/json'
+			'content-type': 'application/json',
+            API_KEY: "bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m,",
+            'X-Access-Token': uni.getStorageSync('accessToken')
 		},
 		method: 'GET',
 		dataType: 'json',
