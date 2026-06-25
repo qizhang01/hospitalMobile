@@ -21,6 +21,7 @@
 					<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
 				</view>
 			</view>
+
 			<view class="sub-list valid">
 				<view
 					class="row"
@@ -53,7 +54,7 @@
 							<text>入院时间: {{ getWardTime(item.AdmissionWardTime) }}</text>
 							<view class="info">
 								<text class="at_least">诊断: {{ item.DiagnosisName }}</text>
-								<text class="at_least">住院时间15天</text>
+								<text class="at_least">住院时间{{getInhospitalDay(item.AdmissionTime)}}天</text>
 							</view>
 						</view>
 					</view>
@@ -77,24 +78,31 @@
 
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import {selectList, groupList} from './infoList.js';
-import { mapMutations } from 'vuex';
+import { mapMutations , mapState,mapGetters} from 'vuex';
 
 export default {
 	components: {
 		rfLoadMore
 	},
+    // ...mapGetters(['patientList']),
+    computed: {
+        ...mapState(['patientList']),
+        user(){
+            return this.patientList
+        }
+    },
+
 	data() {
 		return {
-			couponList: [],
-			type: null,
+			couponList: this.$store.state.patientList,
 			loadingType: 'more',
 			page: 1,
-			loading: true,
+			loading: false,
 			errorInfo: '',
 			selectH: 0,
 			dropdownList: [],
 			selectedName: "其他筛选",
-			selectedGroupName: "科室1",
+			selectedGroupName: "所有科室",
 			tabIndex: 0,
 			selectList,
 			groupList
@@ -108,9 +116,11 @@ export default {
 	},
     
 	onLoad(options) {
-		this.type = options.type;
-		this.initData();
+
 	},
+    onShow(){
+        this.initData();
+    },
 	// 下拉刷新
 	onPullDownRefresh() {
 		this.page = 1;
@@ -127,7 +137,8 @@ export default {
 		...mapMutations(['setPatientInfo']),
 		// 数据初始化
 		initData() {
-			this.getPatientList();
+			// this.getPatientList();
+            this.setDepartmentList()
 		},
 		hideDropdownList() {
 			this.selectH = 0
@@ -199,7 +210,37 @@ export default {
 				}
 			)
 			this.navTo('/pages/patientInfoTab/patientDetail/index')	
-		}
+		},
+
+        getInhospitalDay(AdmissionTime){
+            const today = new Date()
+            const start = new Date(AdmissionTime.slice(0, 10))
+            const diffInMs = Math.abs(today.valueOf() - start.valueOf());
+            return Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+        },
+
+        setDepartmentList(){
+            const result = [{
+                id: 0,
+                name: "所有科室",
+                value: "all",
+                selected: true
+            }]
+            const set = new Set()
+            this.$store.state.patientList.map(item=>{
+                set.add(item.AdmissionDeptName)
+            })
+            Array.from(set).map((item, index)=>{
+                result.push({
+                    id: index +1,
+                    name: item,
+                    value: item,
+                    selected: false
+                })
+            })
+
+            this.groupList = result
+        }
 	}
 };
 </script>

@@ -31,5 +31,13 @@ export default {
 	// 登录插画
 	loginPic: PATH + '/login-pic.png',
 
-	tabNotifyBlue: PATH + '/tab-notify-blue.png'
+	tabNotifyBlue: PATH + '/tab-notify-blue.png',
+    allergy: PATH + '/allergy.png',
+    finish: PATH + '/finish.png',
+    highTemperature: PATH + '/highTemperature.png',
+    newPatient: PATH + '/newPatient.png',
+
+    noMoney: PATH + '/noMoney.png',
+    notes: PATH + '/notes.png',
+    operation: PATH + '/operation.png',
 };

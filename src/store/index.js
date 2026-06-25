@@ -12,7 +12,7 @@ const store = new Vuex.Store({
 		// 用户token
 		accessToken: ACCESSTOKEN,
 		// 用户信息
-		userInfo: {},
+		userInfo: null,
 		// 网络状态，用于下载提醒
 		networkState: 'unknown',
 		themeColor: THEMECOLOR,
@@ -42,6 +42,14 @@ const store = new Vuex.Store({
         scanCode: state => {
 			return state.scanCode;
 		},
+
+        patientInfo: state=>{
+            return state.patientInfo
+        },
+
+        userInfo : state =>{
+            return state.userInfo
+        }
 	},
 	mutations: {
 		login(state, provider) {
@@ -72,6 +80,7 @@ const store = new Vuex.Store({
 		},
         
 		setPatientInfo(state, patientInfo){
+           
            state.patientInfo = patientInfo;
 		},
 

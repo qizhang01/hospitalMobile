@@ -143,6 +143,7 @@ export default {
 					this.$mStore.commit('login', r);
                     this.loginSuccess = true
                     this.btnLoading = false;
+                    this.$mRouter.reLaunch({ route: '/pages/mainPageTab/index' });
 				})
 				.catch(() => {
 					this.btnLoading = false;

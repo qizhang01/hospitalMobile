@@ -13,10 +13,19 @@
             </view>
             <view class="patient-info-content">
                 <text >{{ patientInfo.Name }}</text>
-                <text >35</text>
+                <text >{{patientInfo.Age}}岁|{{ patientInfo.PhysiSexName }}</text>
             </view>
             <view class="patient-info-content">
-                <text class="">{{ patientInfo.NursingClass }}级</text>
+                <view class="patient-info-status">
+                    <text class="nursing-info">{{ patientInfo.NursingClass }}级</text>
+                    <image class="character-icon" :src="noMoney" v-if="patientInfo.ArrearFlag"></image>
+                    <image class="character-icon" :src="finish" ></image>
+                    <image class="character-icon" :src="newPatient"></image>
+                    <image class="character-icon" :src="allergy" v-if="patientInfo.Allergy" ></image>
+                    <image class="character-icon" :src="notes" ></image>
+                    <image class="character-icon" :src="highTemperature"></image>
+                    <image class="character-icon" :src="operation" v-if="patientInfo.SurgeryHistory"></image>
+                </view>
                 <text >#{{ patientInfo.PatientId }}</text>
             </view>
             <view class="icon-action">
@@ -66,8 +75,15 @@ export default {
 	},
 	data() {
 		return {
-            isShowDetail: false
-		};
+            isShowDetail: false,
+            noMoney: this.$mAssetsPath.noMoney,
+            finish: this.$mAssetsPath.finish,
+            newPatient: this.$mAssetsPath.newPatient,
+            highTemperature: this.$mAssetsPath.highTemperature,
+            notes: this.$mAssetsPath.notes,
+            operation: this.$mAssetsPath.operation,
+            allergy: this.$mAssetsPath.allergy,
+    };
 	},
 	filters: {
 
@@ -108,7 +124,8 @@ export default {
 .patient-info-item_top{
     display: flex;
     align-items: center;
-    padding: 10upx 0upx;
+    justify-content: space-between;
+    padding: 10upx 10upx;
 }
 .content-item {
     display: flex;
@@ -117,7 +134,18 @@ export default {
 .patient-info-content {
     display: flex;
     flex-direction: column;
-    padding: 0upx 50upx;
+    justify-content: center;
+    .patient-info-status {
+        display: flex;
+        align-items: center;
+        .nursing-info{
+            margin-right: 4px;
+        }
+        .character-icon {
+            height: 20px; 
+            width: 20px;
+        }
+    }
 }
 .inline {
     margin-right: 10upx;
@@ -132,7 +160,5 @@ export default {
 .row-item_1 {
     margin-right: 40upx;
 }
-.icon-action {
-    margin-left: 60upx;
-}
+
 </style>

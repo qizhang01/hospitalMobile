@@ -2,7 +2,7 @@
     /* eslint-disable */
     import Vue from 'vue';
     import { verifyAccessToken } from '@/api/login'
-    import { mapMutations } from 'vuex';
+    import { mapMutations, mapState } from 'vuex';
     let mainActivity = null;
     let broadcastReceiver = null;
     let intentFilter = null;
@@ -10,8 +10,11 @@
     let isProcessingScan = false;
 
 export default {
+    computed: mapState(['userInfo']),
+
 	async onLaunch() {
 		await this.initData();
+        this.checkLogin();
         if (uni.getSystemInfoSync().platform === 'android'){
             this.initScanner();
             this.listenToLaserScan();
@@ -27,7 +30,10 @@ export default {
         // 页面隐藏时，移除监听，避免不可见页面还响应事件
         // this.removeLaserScanListener();
     },
+    onload(){
 
+    }, 
+    
     onUnload() {
         // 页面卸载时，也必须移除监听
         this.removeLaserScanListener();
@@ -40,6 +46,18 @@ export default {
 
 	methods: {
 		...mapMutations(['setScanCode']),
+
+        checkLogin(){
+            if(this.userInfo){
+                uni.navigateTo({
+                    url: '/pages/mainPageTab/index'
+                })
+            }else {
+                uni.navigateTo({
+                    url: '/pages/login/login'
+                })
+            }
+        },
 		// 数据初始化
 		async initData() {
 			uni.setTabBarStyle({
@@ -103,6 +121,7 @@ export default {
             // 在这里调用你的业务处理函数，比如解析JSON、查询数据库等
             this.processScannedCode(rawData);
         },
+
         processScannedCode(code) {
             console.log('进行业务处理:', code);
             // TODO: 你的业务逻辑

@@ -174,22 +174,27 @@
             },
 
             async getPatientList(type="", selectedValue="2901") {
-                const requestArr = this.userInfo.wards.map(item=>{
+                const requestArr = this.userInfo && this.userInfo.wards.map(item=>{
                     return this.$http
                             .get(`/api/ward/${item.id}/inpatients`)
                 })
 
-                const res = await this.$http
-                    .get(`/api/ward/${selectedValue}/inpatients`)
-                    
-                if(res){
-                    this.loading = false;
-                    if (type === 'refresh') {
-                        uni.stopPullDownRefresh();
-                    }
-                    this.loadingType = res.length === 10 ? 'more' : 'nomore';
-                    this.patientList = res;
-                    this.setPatientList(res)
+                // const res = await this.$http
+                //     .get(`/api/ward/${selectedValue}/inpatients`)
+                if(requestArr){
+                    Promise.all(requestArr).then(response=>{
+                        const result= response.flat().map(item=>({
+                            ...item,
+                            Age: new Date().getFullYear()- Number(item.BirthDate.substr(0,4))
+                        }))
+                        this.loading = false;
+                        if (type === 'refresh') {
+                            uni.stopPullDownRefresh();
+                        }
+                        this.loadingType = result.length === 10 ? 'more' : 'nomore';
+                        this.patientList = result;
+                        this.setPatientList(result)
+                    })
                 }
             },
 
