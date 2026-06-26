@@ -40,4 +40,5 @@ export default {
     noMoney: PATH + '/noMoney.png',
     notes: PATH + '/notes.png',
     operation: PATH + '/operation.png',
+    avatar: PATH + '/avatar.jpeg'
 };

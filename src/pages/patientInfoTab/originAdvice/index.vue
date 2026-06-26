@@ -150,6 +150,7 @@
 			},
 
 			async getoriginAdviceList(type) {
+
                 const res = await this.$http
                     .get(`/api/inpatient/${this.patientInfo.PatientId}/orders`)
                     
@@ -159,29 +160,13 @@
                         uni.stopPullDownRefresh();
                     }
                     this.loadingType = res.length === 10 ? 'more' : 'nomore';
-                    this.adviceList = this.parseData(res);
+                    this.adviceList = res;
                 }
 			},
 			// 跳转详情
 			navTo(route) {
 				this.$mRouter.push({ route });
 			},
-
-            parseData(list){
-                const map = new Map()
-                list.forEach(item=>{
-                    if(map.get(item.group)){
-                        map.get(item.group).push(item)
-                    }else {
-                        map.set(item.group, [item])
-                    }
-                })
-                const result = []
-                for(let [key, value] of map){
-                    result.push(value)
-                }
-                return result
-            }
 		},
 	}
 </script>

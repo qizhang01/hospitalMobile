@@ -7,18 +7,13 @@
 			<view class="user-info-box">
 				<view
 					class="portrait-box"
-					@tap="toLogin"
 				>
 					<image
 						class="portrait"
-						:src="userInfo.head_portrait || headImg"
+						:src="avatar"
 					></image>
 					<text class="username">
-						{{
-							userInfo.nickname ||
-							userInfo.realname ||
-								'登录'
-						}}
+						{{$store.state.userInfo.name}}
 					</text>
 				</view>
 			</view>
@@ -31,18 +26,9 @@
 				<text class="e-m">{{appName}} 版权所有</text>
 			</view>
 		</view>
-		<!-- 个人中心 内容区-->
+
 		<view
 			class="cover-container"
-			:style="[
-				{
-					transform: coverTransform,
-					transition: coverTransition
-				}
-			]"
-			@touchstart="coverTouchstart"
-			@touchmove="coverTouchmove"
-			@touchend="coverTouchend"
 		>
 			<image class="arc" :src="arc"></image>
 			<!--我的服务-->
@@ -76,36 +62,37 @@
 				</view>
 			</view>
 		</view>
-		<!--页面加载动画-->
-		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
+
+        <view class="logout-type-content" >
+            <button
+                class="confirm-btn"
+                :class="'bg-' + themeColor.name"
+                :disabled="btnLoading"
+                :loading="btnLoading"
+                @tap="toLogout"
+            >
+                退出登录
+            </button>
+        </view>
 	</view>
 </template>
 <script>
 
 import listCell from '@/components/rf-list-cell';
-import { mapMutations } from 'vuex';
+import { mapState } from 'vuex';
+import {loginUrl, logoutUrl } from '@/api/login';
 
-
-let startY = 0, moveY = 0, pageAtTop = true;
 export default {
+    computed: mapState(['userInfo']),
 	components: {
 		listCell,
 	},
 	data() {
 		return {
-			isOpenLiveStreaming: this.$mSettingConfig.isOpenLiveStreaming,
-			headImg: this.$mAssetsPath.headImg,
-			vipCardBg: this.$mAssetsPath.vipCardBg,
+            avatar: this.$mAssetsPath.avatar,
 			arc: this.$mAssetsPath.arc,
 			userBg: this.$mAssetsPath.userBg,
-			coverTransform: 'translateY(0px)',
-			coverTransition: '0s',
-			moving: false,
-			userInfo: {
-				// 用户信息
-				promoter: null // 分销商信息
-			},
-			loading: true,
+			btnLoading: false,
 			appName: this.$mSettingConfig.appName,
 			hasLogin: false,
 		};
@@ -130,10 +117,7 @@ export default {
 	},
 
 	methods: {
-
-		...mapMutations(['setNotifyNum', 'setCartNum']),
 		// 分享
-		...mapMutations(['login']),
 		// 数据初始化
 		async initData() {
 			this.hasLogin = this.$mStore.getters.hasLogin;
@@ -157,40 +141,21 @@ export default {
 			if (!route) return;
 			this.$mRouter.push({ route });
 		},
-        
-		toLogin(){
-			this.$mRouter.switchTab({ route: '/pages/public/login' });
-		},
-		coverTouchstart(e) {
-			if (pageAtTop === false) {
-				return;
-			}
-			this.coverTransition = 'transform .1s linear';
-			startY = e.touches[0].clientY;
-		},
-		coverTouchmove(e) {
-			moveY = e.touches[0].clientY;
-			let moveDistance = moveY - startY;
-			if (moveDistance < 0) {
-				this.moving = false;
-				return;
-			}
-			this.moving = true;
-			if (moveDistance >= 80 && moveDistance < 100) {
-				moveDistance = 80;
-			}
-			if (moveDistance > 0 && moveDistance <= 80) {
-				this.coverTransform = `translateY(${moveDistance}px)`;
-			}
-		},
-		coverTouchend() {
-			if (this.moving === false) {
-				return;
-			}
-			this.moving = false;
-			this.coverTransition = 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)';
-			this.coverTransform = 'translateY(0px)';
-		},
+
+        async toLogout(){
+            this.btnLoading = true;
+            await this.$http
+				.post(logoutUrl, {})
+				.then(r => {
+					this.$mHelper.toast('恭喜您，登出成功');
+					this.$mStore.commit('logout');
+					this.btnLoading = false;
+                    navTo('pages/login/login')
+				})
+				.catch(() => {
+					this.btnLoading = false;
+				});
+        }
 	}
 };
 </script>

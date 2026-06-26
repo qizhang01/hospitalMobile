@@ -5,26 +5,23 @@
         :hover-start-time="150"
     >   
         <view class="patient-info-item_top">
-            <view class="patient-info-content">
+            <view class="patient-info-content column-1">
                 <text >{{ patientInfo.BedNo }} 床</text>
-                <!-- <view class="triangle-wrapper">
-                    <image class="triangle-tag" :src="item | filterTagName"></image>
-                </view> -->
             </view>
-            <view class="patient-info-content">
+            <view class="patient-info-content column-2">
                 <text >{{ patientInfo.Name }}</text>
                 <text >{{patientInfo.Age}}岁|{{ patientInfo.PhysiSexName }}</text>
             </view>
-            <view class="patient-info-content">
+            <view class="patient-info-content column-3">
                 <view class="patient-info-status">
-                    <text class="nursing-info">{{ patientInfo.NursingClass }}级</text>
-                    <image class="character-icon" :src="noMoney" v-if="patientInfo.ArrearFlag"></image>
-                    <image class="character-icon" :src="finish" ></image>
-                    <image class="character-icon" :src="newPatient"></image>
-                    <image class="character-icon" :src="allergy" v-if="patientInfo.Allergy" ></image>
-                    <image class="character-icon" :src="notes" ></image>
-                    <image class="character-icon" :src="highTemperature"></image>
-                    <image class="character-icon" :src="operation" v-if="patientInfo.SurgeryHistory"></image>
+                    <text class="item-info">{{ patientInfo.NursingClass }}级</text>
+                    <image class="character-icon item-info" :src="noMoney" v-if="patientInfo.ArrearFlag"></image>
+                    <image class="character-icon item-info" :src="finish" ></image>
+                    <image class="character-icon item-info" :src="newPatient"></image>
+                    <image class="character-icon item-info" :src="allergy" v-if="patientInfo.Allergy" ></image>
+                    <image class="character-icon item-info" :src="notes" ></image>
+                    <image class="character-icon item-info" :src="highTemperature"></image>
+                    <image class="character-icon item-info" :src="operation" v-if="patientInfo.SurgeryHistory"></image>
                 </view>
                 <text >#{{ patientInfo.PatientId }}</text>
             </view>
@@ -93,18 +90,6 @@ export default {
 		navTo(route) {
 			this.$mRouter.push({ route });
 		},
-		// 获取产品详情
-		async getProductDetail(row) {
-			// await this.$http
-			// 	.get(`${productDetail}`, {
-			// 		id: row.id
-			// 	})
-			// 	.then(async r => {
-			// 		this.productDetail = await r.data;
-			// 		this.productDetail.sku_name = row.sku_name;
-			// 		this.specClass = 'show';
-			// 	});
-		},
         
         toggleOpen(){
             this.isShowDetail = !this.isShowDetail
@@ -124,7 +109,6 @@ export default {
 .patient-info-item_top{
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 10upx 10upx;
 }
 .content-item {
@@ -138,7 +122,7 @@ export default {
     .patient-info-status {
         display: flex;
         align-items: center;
-        .nursing-info{
+        .item-info{
             margin-right: 4px;
         }
         .character-icon {
@@ -146,6 +130,15 @@ export default {
             width: 20px;
         }
     }
+}
+.column-1 {
+    width: 140upx;
+}
+.column-2 {
+    width: 160upx;
+}
+.column-3 {
+    width: 380upx;
 }
 .inline {
     margin-right: 10upx;

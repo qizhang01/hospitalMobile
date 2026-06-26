@@ -348,7 +348,7 @@
 			},
 			{
 				"pagePath": "pages/houseCheck/index",
-				"iconPath": "static/tab-cart.png",
+				"iconPath": "static/tab-notify.png",
 				"selectedIconPath": "static/tab-cart-rf.png",
 				"text": "病区巡视"
 			},

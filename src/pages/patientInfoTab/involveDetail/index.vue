@@ -30,7 +30,7 @@
 			</view>
 		</view>
 		<view class="product-list-wrapper">
-				<rf-product-list :list="adviceList" :style="{paddingTop: 100 + 'upx' }"></rf-product-list>
+			<rfInvolveDetailList :list="adviceList" :style="{paddingTop: 100 + 'upx' }"></rfInvolveDetailList>
 		</view>
 		<!-- <rf-load-more
 			:status="loadingType"
@@ -45,7 +45,7 @@
 	</view>
 </template>
 <script>
-	import rfProductList from '@/components/rf-product-list';
+	import rfInvolveDetailList from './rf-involveDetail-list';
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
     import { mapState } from 'vuex';
 	import {doctorAdviceList, periodList, stopList, allOptionsList} from '@/pages/doctorTipsTab/infoList.js'
@@ -53,7 +53,7 @@
 	export default {
         computed: mapState(['patientInfo']),
 		components: {
-			rfProductList,
+			rfInvolveDetailList,
 			rfLoadMore,
 		},
 		filters: {
@@ -82,7 +82,6 @@
                 stopList,
                 allOptionsList,
 				adviceList: [],
-				pageIndex: 1,
 			}
 		},
 		onLoad(options) {
@@ -147,7 +146,7 @@
 
             async getoriginAdviceList(type) {
                 const res = await this.$http
-                    .get(`/api/inpatient/${this.patientInfo.PatientId}/orders`)
+                    .get(`/api/inpatient/${this.patientInfo.PatientId}/tasks?with_log=true`)
                     
                 if(res){
                     this.loading = false;

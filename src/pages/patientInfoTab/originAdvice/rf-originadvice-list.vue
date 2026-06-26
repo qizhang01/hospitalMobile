@@ -5,37 +5,37 @@
 				<view
 					class="rf-product-item"
 				>
-                    <view class="rf-card-topic text-red-color" v-for="(item, index) in patientMedicineInfo" :key="item.id">
-						<view>
+                    <view class="rf-title">
+                            <text>{{patientMedicineInfo.enter_at.slice(0,10)}}</text>
+                            <text>{{getSupplyByCode(patientMedicineInfo.supply)}}</text>
+                            <text>{{patientMedicineInfo.freq}}</text>					
+					</view>
+                    <view class="rf-card-topic text-red-color" v-for="(item, index) in patientMedicineInfo.orders" :key="item.id">
+						<view class="line-1">
 							<text class="sketch in1line">{{ item.name }}</text>
-							<text class="sketch in1line small-text">{{ item.dosage }} {{ item.dosage_unit }}</text>
-						</view>
-						<view>
 							<text class="sketch in1line">{{ item.spec }}</text>	
-                            <text class="sketch in1line">{{ item.stop_by }}</text>	
+						</view>
+						<view class="line-2">
+                            <text class="small-text">{{ item.dosage }} {{ item.dosage_unit }}</text>
+							<text class="doctor-text">{{ patientMedicineInfo.doctor }}</text>	
 						</view>	
 
 					</view>
      
-					<view class="rf-pro-content">
-							<view class="rf-pro-pay">
-								<text>计划时间: {{patientMedicineInfo[0].planTime}}</text>
-                                <text>{{patientMedicineInfo[0].type}}</text>
-                                <text>{{patientMedicineInfo[0].freq}}</text>
-							</view>						
-					</view>
 				</view>
 			</block>
 		</view>
 	</view>
 </template>
-<script>
 
+<script>
+import { mapState } from 'vuex';
 export default {
 	name: 'rfCard',
+    computed: mapState(['supply']),
 	props: {
 		patientMedicineInfo: {
-			type: Array,
+			type: Object,
 			default() {
 				return [];
 			}
@@ -46,6 +46,7 @@ export default {
 			default: 0
 		}
 	},
+
 	components: {
 		
 	},
@@ -56,25 +57,41 @@ export default {
 	},
 
 	methods: {
-
+        getSupplyByCode(code){
+            const obj = this.supply.filter(item=>item.code==code)
+            return obj[0].name
+        }
 	}
 };
 </script>
 
 <style>
 .rf-card-topic{
-    display: flex;
-    justify-content: space-between;
     padding:4px 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    .line-1 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .line-2 {
+        display: flex;
+        flex-direction: row;
+        .doctor-text {
+            margin-left: 100upx;
+        }
+    }
 }
 .rf-product-item {
   padding: 6px 0px;
 }
-.rf-pro-content {
+.rf-title {
     background-color: #6699CC;
 }
-.rf-product-list .rf-pro-content .rf-pro-pay {
+.rf-product-list .rf-title  {
     color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10upx;
 }
 </style>

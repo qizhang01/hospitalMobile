@@ -7,9 +7,8 @@
 					<view class="title">Hi~</view>
 					<text>{{ appName }}欢迎您</text>
 				</view>
-				<image class="login-pic" :src="loginPic"></image>
 			</view>
-			<view class="login-type-content" v-if="!loginSuccess">
+			<view class="login-type-content">
 				<image class="login-bg" :src="loginBg" style="height: 94vw"></image>
 				<view class="main">
 					<view class="nav-bar">
@@ -60,23 +59,6 @@
 					</block>
 				</view>
 			</view>
-            <view class="logout-type-content" v-else>
-                <view>
-                    <text style="color: #0081ff; margin-right: 8upx;">
-                        {{ user && user.name }}
-                    </text>
-                    <text>登录中</text>
-                </view>
-                <button
-                    class="confirm-btn"
-                    :class="'bg-' + themeColor.name"
-                    :disabled="btnLoading"
-                    :loading="btnLoading"
-                    @tap="toLogout"
-                >
-                    退出登录
-                </button>
-            </view>
 			<!-- <view class="login-type-bottom" :class="'text-' + themeColor.name">
 				{{ appName }} 版权所有
 			</view> -->
@@ -102,9 +84,7 @@ export default {
 			},
 
 			btnLoading: false,
-			loginSuccess: false,
 			loginBg: this.$mAssetsPath.loginBg,
-			loginPic: this.$mAssetsPath.loginPic,
 			appName: this.$mSettingConfig.appName,
 		};
 	},
@@ -120,7 +100,6 @@ export default {
 	},
 	methods: {
 
-		// 失去焦点的手机号
 		blurMobileChange(e) {
 			this.mobile = e.detail.value;
 		},
@@ -141,9 +120,8 @@ export default {
 				.then(r => {
 					this.$mHelper.toast('恭喜您，登录成功！');
 					this.$mStore.commit('login', r);
-                    this.loginSuccess = true
                     this.btnLoading = false;
-                    this.$mRouter.reLaunch({ route: '/pages/mainPageTab/index' });
+                    setTimeout(()=>this.$mRouter.reLaunch({ route: '/pages/mainPageTab/index' }))
 				})
 				.catch(() => {
 					this.btnLoading = false;
@@ -151,20 +129,6 @@ export default {
 		},
 
 
-        async toLogout(){
-            this.btnLoading = true;
-            await this.$http
-				.post(logoutUrl, {})
-				.then(r => {
-					this.$mHelper.toast('恭喜您，登出成功');
-					this.$mStore.commit('logout');
-					this.btnLoading = false;
-                    this.loginSuccess = false
-				})
-				.catch(() => {
-					this.btnLoading = false;
-				});
-        }
 	}
 };
 </script>

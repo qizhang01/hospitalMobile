@@ -18,7 +18,8 @@ const store = new Vuex.Store({
 		themeColor: THEMECOLOR,
 		patientInfo: {},
         scanCode: '',
-        patientList: []
+        patientList: [],
+        supply: null
 	},
 	getters: {
 
@@ -49,6 +50,14 @@ const store = new Vuex.Store({
 
         userInfo : state =>{
             return state.userInfo
+        },
+
+        patientList: state =>{
+            return state.patientList
+        },
+
+        supply: state=>{
+            return state.supply
         }
 	},
 	mutations: {
@@ -90,7 +99,10 @@ const store = new Vuex.Store({
         setScanCode(state, code){
             state.scanCode = code
         },
-    
+        
+        setSupply(state, supply){
+            state.supply = supply
+        }
 	},
 	actions: {
 

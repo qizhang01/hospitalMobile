@@ -89,7 +89,7 @@
 		},
 
         onLoad(options) {
-            // this.getPatientList();
+            this.getSupply();
         },
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -100,7 +100,7 @@
 
 		},
 		methods: {
-            ...mapMutations(['setPatientList']),
+            ...mapMutations(['setPatientList','setSupply']),
 			// 顶部tab点击
 			tabClick({ id }) {
 			},
@@ -197,7 +197,13 @@
                     })
                 }
             },
-
+            
+            async getSupply(){
+                const res = await this.$http.get(`/api/supplies`)
+                if(res){
+                    this.setSupply(res)
+                }
+            }
 		}
 	};
 </script>
