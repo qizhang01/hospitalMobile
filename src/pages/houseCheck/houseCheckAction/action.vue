@@ -9,8 +9,8 @@
                         <text>病区巡视记录</text>
                     </view>
                     <!-- <view>扫描结果：{{ this.$mStore.state.scanCode}}</view> -->
-                    <view>扫描结果1：{{ scanCode}}</view>
-                    <view>扫描结果2：{{ $store.state.scanCode}}</view>
+                    <view>扫描结果1: {{ scanCode}}</view>
+                    <view>扫描结果2: {{ $store.state.scanCode}}</view>
 				</view>
 			</view>
 			<view class="content">

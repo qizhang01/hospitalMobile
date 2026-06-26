@@ -7,7 +7,7 @@
 				>
                     <view class="rf-title">
                             <text>{{patientMedicineInfo.enter_at.slice(0,10)}}</text>
-                            <text>{{getSupplyByCode(patientMedicineInfo.supply)}}</text>
+                            <text>{{supply.get(patientMedicineInfo.supply)}}</text>
                             <text>{{patientMedicineInfo.freq}}</text>					
 					</view>
                     <view class="rf-card-topic text-red-color" v-for="(item, index) in patientMedicineInfo.orders" :key="item.id">
@@ -57,10 +57,7 @@ export default {
 	},
 
 	methods: {
-        getSupplyByCode(code){
-            const obj = this.supply.filter(item=>item.code==code)
-            return obj[0].name
-        }
+
 	}
 };
 </script>

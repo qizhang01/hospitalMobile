@@ -19,7 +19,7 @@
                 <view class="rf-pro-content">
                         <view class="rf-pro-pay">
                             <text>计划时间: {{patientMedicineInfo.plan_time.slice(0,10)}}</text>
-                            <text>{{patientMedicineInfo.supply}}</text>
+                            <text>{{supply.get(patientMedicineInfo.supply)}}</text>
                             <text>{{patientMedicineInfo.freq}}</text>
                             <text>{{patientMedicineInfo.workflow}}</text>
                         </view>
@@ -39,9 +39,10 @@
 	</view>
 </template>
 <script>
-
+import { mapState } from 'vuex';
 export default {
 	name: 'rfCard',
+    computed: mapState(['supply']),
 	props: {
 		patientMedicineInfo: {
 			type: Object,

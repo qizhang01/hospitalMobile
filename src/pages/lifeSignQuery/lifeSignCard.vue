@@ -1,9 +1,8 @@
 <template>
-    <view
-    >   
+    <view>   
         <view class="life-sign_title">
-            <text >{{ infomation.date }}</text>
-            <text style="color: #0081ff;">{{ infomation.doctor }}</text>
+            <text >{{ infomation.record_at }}</text>
+            <text style="color: #0081ff;">{{ infomation.record_by }}</text>
         </view>
         <view class="life-sign_content">
             <text v-for="(v, key) in infomation.data" :key="key" class="life-sign_item">{{ translateObj[key] }}: {{ v }}</text>

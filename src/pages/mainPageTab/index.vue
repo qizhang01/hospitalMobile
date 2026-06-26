@@ -7,8 +7,8 @@
 			icon=""
 			@tab="tabClick"
 			:categoryList="[]"
-			:merchantData="merchantData"
-			:placeholder="hotSearchDefault"
+			merchantData=""
+			placeholder=""
 		/>
 		<view class="rf-header-screen" >
 			<view class="rf-screen-top">
@@ -24,9 +24,6 @@
 					<text>{{ selectedPatientGroup }}</text>
 					<text class="iconfont " :class="tabIndex==2?'iconshang':'iconxia'"></text>
 				</view>
-                <!-- <view class="addr">
-                    <text class="iconfont iconsaomiao" @tap.stop="link" ></text>
-                </view> -->
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
 					<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in dropdownList" :key="index" @tap.stop="dropdownItem(index)">
@@ -35,16 +32,14 @@
 					</view>
 				</view>
 				<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
-				<!--下拉选择列表--综合-->
-			</view>
+            </view>
             <scroll-view scroll-y="true">
                 <patientInfoList :list="patientList"></patientInfoList>
             </scroll-view>
 		</view>
         
 		<!--页面加载动画-->
-		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
-		<rf-back-top :scrollTop="scrollTop"></rf-back-top>
+		<rfLoading isFullScreen :active="loading"></rfLoading>
 		<!-- <rf-back-home></rf-back-home> -->
 	</view>
 </template>
@@ -67,8 +62,6 @@
 			return {
 				loading: true,
 				scrollTop: 0,
-				hotSearchDefault: '请输入关键字',
-				merchantData: {},
                 selectedPatientRelationship: '所有病人',
                 selectedOtherItem: '其他筛选',
                 selectedPatientGroup: '患者分组',
@@ -90,6 +83,8 @@
 
         onLoad(options) {
             this.getSupply();
+            this.getTaskState();
+            this.getEmployees();
         },
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -100,14 +95,9 @@
 
 		},
 		methods: {
-            ...mapMutations(['setPatientList','setSupply']),
+            ...mapMutations(['setPatientList','setSupply','setTaskState','setEmployees']),
 			// 顶部tab点击
 			tabClick({ id }) {
-			},
-
-			// 数据初始化
-			initData() {
-
 			},
 
 			// 通用跳转
@@ -119,18 +109,6 @@
 			navToSearch() {
 				this.$mRouter.push({
 					route: `/pages/mainPageTab/search/search?data=${JSON.stringify(this.search)}`
-				});
-			},
-
-
-			// 首页参数赋值
-			initIndexData(data) {
-
-				uni.setStorageSync('search', this.search);
-				this.hotSearchDefault = data.search.hot_search_default || '请输入关键字';
-				uni.setStorage({
-					key: 'hotSearchDefault',
-					data: data.search.hot_search_default
 				});
 			},
 
@@ -172,7 +150,20 @@
                 }
 				this.selectH = 0;
             },
+            
+            async getEmployees(){
+                const requestArr = this.userInfo && this.userInfo.wards.map(item=>{
+                    return this.$http
+                            .get(`/api/ward/${item.id}/employees`)
+                })
 
+                if(requestArr){
+                    Promise.all(requestArr).then(response=>{
+                        const result= response.flat()
+                        this.setEmployees(result)
+                    })
+                }
+            },
             async getPatientList(type="", selectedValue="2901") {
                 const requestArr = this.userInfo && this.userInfo.wards.map(item=>{
                     return this.$http
@@ -202,6 +193,13 @@
                 const res = await this.$http.get(`/api/supplies`)
                 if(res){
                     this.setSupply(res)
+                }
+            },
+
+            async getTaskState(){
+                const res = await this.$http.get(`/api/task_states`)
+                if(res){
+                    this.setTaskState(res)
                 }
             }
 		}

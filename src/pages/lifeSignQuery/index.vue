@@ -19,26 +19,23 @@
 				<!--下拉选择列表--综合-->
 			</view>
 		</view>
-        <scroll-view scroll-y="true">
-            <lifeSignCard v-for="(item, index) in dataList" :key="index" :infomation="item"></lifeSignCard>
-
+        <scroll-view scroll-y="true" style="padding-top: 90upx;">
+            <card v-for="(item, index) in dataList" :key="index" :infomation="item"></card>
         </scroll-view>
 		<!--页面加载动画-->
 		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
-		<rf-back-top :scrollTop="scrollTop"></rf-back-top>
-		<!-- <rf-back-home></rf-back-home> -->
 	</view>
 </template>
 
 <script>
-    import lifeSignCard from './lifeSignCard.vue'
+    import card from './lifeSignCard.vue'
     import buttonGroup from './components/buttonGroup.vue'
     import periodSelect from './components/periodSelect.vue';
     import {mockData, typeOption, timeOption} from './data'
 	import { mapMutations } from 'vuex';
 	export default {
 		components: {
-            lifeSignCard,
+            card,
             buttonGroup,
             periodSelect
 		},
@@ -59,6 +56,14 @@
 		onPageScroll(e) {
 			this.scrollTop = e.scrollTop;
 		},
+
+        onLoad(options){
+            const inpatient = options.inpatient
+            if(inpatient){
+                this.getVitalByPatientId(inpatient)
+            }
+        },
+        
 		onShow() {
 
 		},
@@ -73,29 +78,9 @@
 
 		},
 		methods: {
-			// 顶部tab点击
-			tabClick({ id }) {
-			},
-
-			// 数据初始化
-			initData() {
-
-			},
-
 			// 通用跳转
 			navTo(route) {
 				this.$mRouter.push({ route });
-			},
-
-			// 首页参数赋值
-			initIndexData(data) {
-
-				uni.setStorageSync('search', this.search);
-				this.hotSearchDefault = data.search.hot_search_default || '请输入关键字';
-				uni.setStorage({
-					key: 'hotSearchDefault',
-					data: data.search.hot_search_default
-				});
 			},
 
             selectQueryType(){
@@ -133,6 +118,15 @@
 					this.selectedPatientGroup = arr[index].name;
                 }
 				this.selectH = 0;
+            },
+
+            async getVitalByPatientId(id){
+                const res = await this.$http
+                    .get(`/api/vital?inpatient=${id}`)
+                if(res){
+                    console.log(res)
+                    // this.dataList = res
+                }
             }
 		}
 	};

@@ -1,18 +1,18 @@
 <template>
 	<view class="line-cell">
         <view class="line-cell_column">
-            <text class="cell">{{patientObj.bedNo}}</text>
-            <text class="cell">{{patientObj.name}}</text>
+            <text class="cell">{{patientObj.BedNo}}</text>
+            <text class="cell">{{patientObj.Name}}</text>
         </view>
         <view class="line-cell_column">
-            <text class="cell">{{patientObj.gender}}</text>
-            <text class="cell">{{patientObj.age}}</text>
+            <text class="cell">{{patientObj.PhysiSexName}}</text>
+            <text class="cell">{{patientObj.Age}}</text>
         </view>
         <view class="line-cell_column">
             <text class="cell">#</text>
-            <text class="cell">{{patientObj.MRNumber}}</text>
+            <text class="cell">{{patientObj.Mrn}}</text>
         </view>
-        <view class="line-cell_column">
+        <view class="line-cell_column" @tap="handleOnTap">
             <text class="iconfont iconyou"></text>
         </view>
     </view>
@@ -36,6 +36,12 @@
 		},
 
 		methods: {
+
+            handleOnTap(){
+                uni.navigateTo({
+                    url: `/pages/lifeSignQuery/index?inpatient=${this.patientObj.PatientId}`
+                })
+            }
         }
 	};
 </script>

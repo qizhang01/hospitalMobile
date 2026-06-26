@@ -26,7 +26,7 @@
                 <text>MRN</text>
                 <text></text>
             </view>
-            <lineCell v-for="(item, index) in dataList" :key="index" :patientObj="item"></lineCell>
+            <lineCell v-for="(item, index) in patientList" :key="index" :patientObj="item"></lineCell>
         </scroll-view>
 		<!--页面加载动画-->
 		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
@@ -40,8 +40,10 @@
     import lineCell from './components/lineCell.vue';
     import buttonGroup from '../../lifeSignQuery/components/buttonGroup.vue';
     import timeSelect from '../../lifeSignQuery/components/timeSelect.vue';
-	import { mapMutations } from 'vuex';
+	import { mapMutations, mapState } from 'vuex';
 	export default {
+
+        computed: mapState(['patientList']),
 		components: {
             lineCell,
             buttonGroup,

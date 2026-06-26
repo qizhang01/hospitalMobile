@@ -127,10 +127,23 @@ export default {
             // TODO: 你的业务逻辑
             // uni.setStorageSync( 'scanCode', code);
             setScanCode(code)
-            if(getCurrentRoute()!=='/pages/houseCheck/houseCheckAction/action'){
-                uni.navigateTo({
-                    url: '/pages/houseCheck/houseCheckAction/action'
-                })
+            const currentRoute = getCurrentRoute()
+            if(/^\\d{5,6}$/.test(code)){
+                //病人腕带
+                if(currentRoute!=='/pages/houseCheck/houseCheckAction/action'){
+                    uni.navigateTo({
+                        url: '/pages/houseCheck/houseCheckAction/action'
+                    })
+                }
+            } else if(/\\d{23}/.test(code)){
+                //瓶贴
+                if(currentRoute!=='/pages/houseCheck/houseCheckRecord/record'){
+                    uni.navigateTo({
+                        url: '/pages/houseCheck/houseCheckRecord/record'
+                    })
+                }
+            } else if(/^20\\d{15}$/.test(code)){
+                //包药机
             }
         },
 

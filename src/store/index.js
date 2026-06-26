@@ -19,7 +19,9 @@ const store = new Vuex.Store({
 		patientInfo: {},
         scanCode: '',
         patientList: [],
-        supply: null
+        supply: null,
+        taskState: null,
+        employees: []
 	},
 	getters: {
 
@@ -101,7 +103,18 @@ const store = new Vuex.Store({
         },
         
         setSupply(state, supply){
-            state.supply = supply
+            const supplyMap = new Map()
+            supply.forEach(item=>{
+                supplyMap.set(item.code, item.name)
+            })
+            state.supply = supplyMap
+        },
+        setTaskState(state, taskState) {
+            state.taskState = taskState
+        },
+
+        setEmployees(state, employees) {
+            state.employees = employees
         }
 	},
 	actions: {

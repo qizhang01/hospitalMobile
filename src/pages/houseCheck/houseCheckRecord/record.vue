@@ -1,5 +1,6 @@
 <template>
 	<view class="coupon-center">
+        <view>扫描结果2: {{ $store.state.scanCode}}</view>
         <view class="header-text">
             <text>排药 - 加药 - 执行 - 继续执行</text>
         </view>
