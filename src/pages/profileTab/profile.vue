@@ -150,7 +150,7 @@ export default {
 					this.$mHelper.toast('恭喜您，登出成功');
 					this.$mStore.commit('logout');
 					this.btnLoading = false;
-                    navTo('pages/login/login')
+                    this.$mRouter.reLaunch({ route: '/pages/login/login' })
 				})
 				.catch(() => {
 					this.btnLoading = false;

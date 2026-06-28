@@ -128,21 +128,21 @@ export default {
             // uni.setStorageSync( 'scanCode', code);
             setScanCode(code)
             const currentRoute = getCurrentRoute()
-            if(/^\\d{5,6}$/.test(code)){
+            if(/^\d{5,6}$/.test(code+'')){
                 //病人腕带
                 if(currentRoute!=='/pages/houseCheck/houseCheckAction/action'){
                     uni.navigateTo({
                         url: '/pages/houseCheck/houseCheckAction/action'
                     })
                 }
-            } else if(/\\d{23}/.test(code)){
+            } else if(/\d{23}/.test(code+'')){
                 //瓶贴
                 if(currentRoute!=='/pages/houseCheck/houseCheckRecord/record'){
                     uni.navigateTo({
                         url: '/pages/houseCheck/houseCheckRecord/record'
                     })
                 }
-            } else if(/^20\\d{15}$/.test(code)){
+            } else if(/^20\d{15}$/.test(code+'')){
                 //包药机
             }
         },

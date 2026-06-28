@@ -84,7 +84,7 @@
         onLoad(options) {
             this.getSupply();
             this.getTaskState();
-            this.getEmployees();
+            this.getUsers();
         },
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -128,7 +128,9 @@
                 this.dropdownIndex = 3
                 this.dropdownList = this.patientGroup
             },
-
+            hideDropdownList() {
+                this.selectH = 0
+            },
             dropdownItem(index){
                 let arr = this.dropdownList;
 				for (let i = 0; i < arr.length; i++) {
@@ -151,17 +153,11 @@
 				this.selectH = 0;
             },
             
-            async getEmployees(){
-                const requestArr = this.userInfo && this.userInfo.wards.map(item=>{
-                    return this.$http
-                            .get(`/api/ward/${item.id}/employees`)
-                })
-
-                if(requestArr){
-                    Promise.all(requestArr).then(response=>{
-                        const result= response.flat()
-                        this.setEmployees(result)
-                    })
+            async getUsers(){
+                const res= await this.$http
+                            .get(`/api/users`)
+                if(res){
+                    this.setEmployees(res)
                 }
             },
             async getPatientList(type="", selectedValue="2901") {

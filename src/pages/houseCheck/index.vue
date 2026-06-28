@@ -6,7 +6,7 @@
                 src="/static/tab-home-blue.png"
                 mode="aspectFit"
             ></image>
-            <text>体征待测</text>
+            <text>排药操作</text>
         </view>
         <view class="group" @tap.stop="handleClick2">
             <image
@@ -103,7 +103,9 @@ export default {
             }
 		},
         handleClick1(){
-
+            uni.navigateTo({
+                url: '/pages/houseCheck/operate/index'
+            })
         },
 
         handleClick2(){

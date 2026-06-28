@@ -165,14 +165,6 @@
 						"buttons": [
 							{
 								"fontSrc": "/static/iconfont.ttf",
-								"text": "\ue658",
-								"fontSize": "28",
-								"color": "#303133",
-								"width": "42px",
-								"background": "rgba(0,0,0,0)"
-							},
-							{
-								"fontSrc": "/static/iconfont.ttf",
 								"text": "\ue618",
 								"fontSize": "26",
 								"color": "#303133",
@@ -316,6 +308,12 @@
 					"path": "/houseCheckRecord/record",
                     "style": {
                         "navigationBarTitleText": "病区巡视记录"
+                    }
+				},
+                {
+					"path": "/operate/index",
+                    "style": {
+                        "navigationBarTitleText": "具体操作"
                     }
 				}
 			]

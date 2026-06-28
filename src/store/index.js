@@ -21,7 +21,7 @@ const store = new Vuex.Store({
         patientList: [],
         supply: null,
         taskState: null,
-        employees: []
+        employees: null
 	},
 	getters: {
 
@@ -114,7 +114,11 @@ const store = new Vuex.Store({
         },
 
         setEmployees(state, employees) {
-            state.employees = employees
+            const userMap = new Map()
+            employees.forEach(item=>{
+                userMap.set(item.id, item)
+            })
+            state.employees = userMap
         }
 	},
 	actions: {

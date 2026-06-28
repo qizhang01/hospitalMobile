@@ -127,7 +127,6 @@ export default {
 					tabList: [
 						'/static/tab-home-blue.png',
 						'/static/tab-cate-blue.png',
-						'/static/tab-notify-blue.png',
 						'/static/tab-cart-blue.png',
 						'/static/tab-my-blue.png'
 					]

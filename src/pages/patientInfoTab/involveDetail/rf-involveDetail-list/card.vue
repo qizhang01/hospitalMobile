@@ -25,10 +25,10 @@
                         </view>
                         <view class="rf-pro-pay">
                             <text>开始时间: {{patientMedicineInfo.start_at}}</text>
-                            <text>{{patientMedicineInfo.execute_by}}</text>
+                            <text>{{employees.get(patientMedicineInfo.execute_by).name}}</text>
                         </view>
                         <view class="rf-pro-pay">
-                            <text>结束时间: {{patientMedicineInfo.enter_at}}</text>
+                            <text>结束时间: {{patientMedicineInfo.finish_at}}</text>
                             <text>{{patientMedicineInfo.stop_by}}</text>
                         </view>
                     
@@ -42,7 +42,7 @@
 import { mapState } from 'vuex';
 export default {
 	name: 'rfCard',
-    computed: mapState(['supply']),
+    computed: mapState(['supply','employees']),
 	props: {
 		patientMedicineInfo: {
 			type: Object,

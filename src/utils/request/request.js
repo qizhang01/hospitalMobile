@@ -4,7 +4,6 @@ export default class Request {
 		header: {
 			'content-type': 'application/json',
             API_KEY: "bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m,",
-            'X-Access-Token': uni.getStorageSync('accessToken')
 		},
 		method: 'GET',
 		dataType: 'json',
@@ -40,7 +39,7 @@ export default class Request {
 
 
 	async request(options = {}) {
-		options.header = options.header || this.config.header;
+		options.header = options.header || {...this.config.header, 'X-Access-Token': uni.getStorageSync('accessToken')};
 		// #ifdef APP-PLUS
 		options.sslVerify =
 			options.sslVerify === undefined
