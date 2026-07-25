@@ -1,33 +1,3 @@
-export const mockData = [
-    {
-        id: 0,
-        date: '2025-09-18 5:45',
-        doctor: '王秋林',
-        data: {
-            temperature: '36.8(耳温)*C',
-            pulse: '88 次/分',
-            breathe: '20 次/分'
-        }
-    },
-    {
-        id: 1,
-        date: '2025-09-18 5:45',
-        doctor: '刘春霞',
-        data: {
-            painScore: '2分',
-        }
-    },
-    {
-        id: 3,
-        date: '2025-09-18 5:45',
-        doctor: '王秋林',
-        data: {
-            temperature: '36.8(耳温)*C',
-            pulse: '88 次/分',
-            breathe: '30 次/分'
-        }
-    }
-]
 
 
 export const typeOption = [
@@ -42,23 +12,20 @@ export const typeOption = [
 export const timeOption = [
     {  id: 1,
         selected: true,
-        name: '近三天'
+        name: '近三天',
+        value: 3
     }, {  id: 2,
         selected: false,
-        name: '近一周'
+        name: '近一周',
+        value: 7
     },
     {  id: 3,
         selected: false,
-        name: '近半月'
+        name: '近半月',
+        value: 15,
     }, {  id: 4,
         selected: false,
-        name: '近一月'
+        name: '近一月',
+        value: 30
     },
 ]
-
-export const translateObj={
-    temperature: '体温',
-    pulse: '脉搏',
-    breathe: '呼吸',
-    painScore: '疼痛得分'
-}

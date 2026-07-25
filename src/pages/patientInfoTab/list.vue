@@ -25,7 +25,7 @@
 			<view class="sub-list valid">
 				<view
 					class="row"
-					v-for="(item, index) in couponList"
+					v-for="(item, index) in patientList"
 					:key="index"
 					@tap.stop="handleClick(item)"
 				>
@@ -62,12 +62,12 @@
 			</view>
 			<rf-load-more
 				:status="loadingType"
-				v-if="couponList.length > 0"
+				v-if="patientList.length > 0"
 			></rf-load-more>
 
 		<rf-empty
 			:info="errorInfo || '暂无患者信息'"
-			v-if="couponList.length === 0 && !loading"
+			v-if="patientList.length === 0 && !loading"
 		></rf-empty>
 		<!--页面加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
@@ -77,25 +77,18 @@
 <script>
 
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
-import {selectList, groupList} from './infoList.js';
+import {selectList} from './infoList.js';
 import { mapMutations , mapState,mapGetters} from 'vuex';
 
 export default {
 	components: {
 		rfLoadMore
 	},
-    // ...mapGetters(['patientList']),
-    computed: {
-        ...mapState(['patientList']),
-        user(){
-            return this.patientList
-        }
-    },
 
 	data() {
 		return {
-			couponList: this.$store.state.patientList,
-			loadingType: 'more',
+			patientList: this.$store.state.cachePatientsList,
+			loadingType: 'nomore',
 			page: 1,
 			loading: false,
 			errorInfo: '',
@@ -105,14 +98,8 @@ export default {
 			selectedGroupName: "所有科室",
 			tabIndex: 0,
 			selectList,
-			groupList
+			groupList: []
 		};
-	},
-	computed:{
-
-	},
-	filters: {
-
 	},
     
 	onLoad(options) {
@@ -124,25 +111,24 @@ export default {
 	// 下拉刷新
 	onPullDownRefresh() {
 		this.page = 1;
-		this.couponList.length = 0;
-		this.getPatientList('refresh');
+		this.patientList.length = 0;
 	},
 	// 加载更多
 	onReachBottom() {
 		if (this.loadingType === 'nomore') return;
 		this.page++;
-		this.getPatientList();
 	},
 	methods: {
 		...mapMutations(['setPatientInfo']),
 		// 数据初始化
 		initData() {
-			// this.getPatientList();
-            this.setDepartmentList()
+            // this.setDepartmentList()
+            this.setDepartmentList(this.patientList);
 		},
 		hideDropdownList() {
 			this.selectH = 0
 		},
+
 		screen(e) {
 			let index = parseInt(e.currentTarget.dataset.index, 10);
 			if (index === 0) {
@@ -171,11 +157,23 @@ export default {
 			}else if(this.tabIndex===1){
 				this.periodList = arr
 				this.selectedGroupName = arr[index].name;
-                this.getPatientList("", arr[index].value)
+                this.filter(this.selectedGroupName)
 			}
 			this.selectH = 0;
 		},
-		// 获取收货地址列表
+
+        filter(selectedGroupName){
+            const cachePatientsList=this.$store.state.cachePatientsList
+            if(selectedGroupName=='所有科室'){
+                this.patientList = cachePatientsList
+            }else {
+                this.patientList = cachePatientsList.filter(item=>{
+                    return item.AdmissionDeptName==selectedGroupName
+                })
+            }
+        },
+
+	
 		async getPatientList(type="", selectedValue="2901") {
 			const res = await this.$http
 				.get(`/api/ward/${selectedValue}/inpatients`)
@@ -186,7 +184,7 @@ export default {
 					uni.stopPullDownRefresh();
 				}
 				this.loadingType = res.length === 10 ? 'more' : 'nomore';
-				this.couponList = res;
+				this.patientList = res;
 			 }
 		},
 
@@ -219,7 +217,7 @@ export default {
             return Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
         },
 
-        setDepartmentList(){
+        setDepartmentList(patientList){
             const result = [{
                 id: 0,
                 name: "所有科室",
@@ -227,7 +225,7 @@ export default {
                 selected: true
             }]
             const set = new Set()
-            this.$store.state.patientList.map(item=>{
+            patientList.map(item=>{
                 set.add(item.AdmissionDeptName)
             })
             Array.from(set).map((item, index)=>{

@@ -12,14 +12,14 @@
 				</view>
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
-                    <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1"></buttonGroup>
-                    <periodSelect :buttonList="timeOption" v-else="dropdownIndex==2"></periodSelect>
+                    <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1" ></buttonGroup>
+                    <periodSelect :buttonList="timeOption" v-else="dropdownIndex==2" @handleSelect ="handleSelect"></periodSelect>
 				</view>
 				<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
 				<!--下拉选择列表--综合-->
 			</view>
 		</view>
-        <scroll-view scroll-y="true" style="padding-top: 90upx;">
+        <scroll-view scroll-y="true" style="padding: 90upx 0upx;">
             <card v-for="(item, index) in dataList" :key="index" :infomation="item"></card>
         </scroll-view>
 		<!--页面加载动画-->
@@ -51,6 +51,7 @@
                 selectH: 0,
                 dropdownIndex: 0,
                 tabIndex: 1,
+                inpatient: ''
 			};
 		},
 		onPageScroll(e) {
@@ -58,9 +59,12 @@
 		},
 
         onLoad(options){
-            const inpatient = options.inpatient
-            if(inpatient){
-                this.getVitalByPatientId(inpatient)
+            this.inpatient = options.inpatient
+            if(options.inpatient){
+                const dates = this.getDatesByDaylong(3)
+                const fromTime = `${dates[dates.length -1]}T00:00:00+08:00`
+                const toTime = `${dates[0]}T00:00:00+08:00`
+                this.getVitalByPatientId(options.inpatient, fromTime, toTime)
             }
         },
         
@@ -87,7 +91,7 @@
                 this.selectH = 1
                 this.dropdownIndex = 1
             },
-
+    
             selectOther(){
                 this.selectH = 1
                 this.dropdownIndex = 2
@@ -98,38 +102,79 @@
                 this.dropdownIndex = 3
             },
 
-            dropdownItem(index){
-                let arr = this.dropdownList;
-				for (let i = 0; i < arr.length; i++) {
-					if (i === index) {
-						arr[i].selected = true;
-					} else {
-						arr[i].selected = false;
-					}
-				}
-				this.dropdownList = arr;
-				if(this.dropdownIndex===1){
-					this.patientRelationship = arr
-					this.selectedPatientRelationship = arr[index].name;
-				}else if(this.dropdownIndex===2){
-
-				}else if(this.dropdownIndex===3){
-                    this.patientGroup = arr
-					this.selectedPatientGroup = arr[index].name;
+            handleSelect(date){
+                let fromTime, toTime
+                if(typeof date ==='number'){
+                    const dates = this.getDatesByDaylong(date)
+                    fromTime = `${dates[dates.length -1]}T00:00:00+08:00`
+                    toTime = `${dates[0]}T00:00:00+08:00`
+                    this.selectedTypeItem = this.getOptionTextByNumber(date)
+                }else {
+                    fromTime = date.startDate? `${date.startDate}T00:00:00+08:00`: null
+                    toTime = date.endDate? `${date.endDate}T00:00:00+08:00`: null
                 }
-				this.selectH = 0;
+                this.getVitalByPatientId(this.inpatient, fromTime, toTime)
+
+                this.selectH=0
             },
 
-            async getVitalByPatientId(id){
-                const res = await this.$http
-                    .get(`/api/vital?inpatient=${id}`)
-                if(res){
-                    console.log(res)
-                    // this.dataList = res
+            async getVitalByPatientId(id, fromTime, toTime){
+                let url = ''
+                if(fromTime&&toTime){
+                    url = `/api/vital?inpatient=${id}&from=${encodeURIComponent(fromTime)}&to=${encodeURIComponent(toTime)}`
+                }else if(fromTime){
+                    url = `/api/vital?inpatient=${id}&from=${encodeURIComponent(fromTime)}`
+                }else {
+                    url = `/api/vital?inpatient=${id}&to=${encodeURIComponent(toTime)}`
                 }
+                const res = await this.$http
+                    .get(url)
+                if(res){
+                    this.dataList = this.parseData(res)
+                }
+            },
+            
+            parseData(res){
+                const result = []
+                const map = new Map()
+                res.forEach(item=>{
+                    const key = item.planned_time.slice(0,13)
+                    if(map.get(key)){
+                        map.set(key, [...map.get(key), item])
+                    }else {
+                        map.set(key, [item])
+                    }
+                })
+                map.forEach((v,key)=>{
+                    result.push(v)
+                })
+                return result
+            },
+
+            getDatesByDaylong(dayLong) {
+                let currentDate = new Date();
+                let dates = [];
+                for (let i=0; i<dayLong; i++){
+                    let date = new Date();
+                    date.setDate(currentDate.getDate() -i);
+                    dates.push(date);
+                }
+                return dates.map(item=> `${item.getFullYear()}-${this.get2Digtal(item.getMonth()+1)}-${this.get2Digtal(item.getDate())}`);
+            },
+
+            get2Digtal(month){
+                if(month<10){
+                    return `0${month}`
+                }
+                return `${month}`
+            },
+
+            getOptionTextByNumber(number){
+                const obj = timeOption.filter(item=>item.value==number)
+                return obj[0].name
             }
-		}
-	};
+        }
+    }
 </script>
 <style lang="scss">
 	page {

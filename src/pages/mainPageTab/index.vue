@@ -20,7 +20,7 @@
 					<text>{{ selectedOtherItem}}</text>
 					<text class="iconfont" :class="tabIndex==1?'iconshang':'iconxia'"></text>
 				</view>
-				<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="selectPatientType">
+				<view class="rf-top-item" :class="[tabIndex == 2?`text-${themeColor.name} rf-bold`:'']" @tap="selectPatientType">
 					<text>{{ selectedPatientGroup }}</text>
 					<text class="iconfont " :class="tabIndex==2?'iconshang':'iconxia'"></text>
 				</view>
@@ -56,7 +56,7 @@
 			rfSearchBar,
             patientInfoList,
 		},
-        computed: mapState(['userInfo']),
+        computed: mapState(['userInfo', 'cachePatientsList']),
 
 		data() {
 			return {
@@ -114,18 +114,21 @@
 
             selectPatientRelationship(){
                 this.selectH = 1
-                this.dropdownIndex = 1
+                this.dropdownIndex =0
+                this.tabIndex = 0
                 this.dropdownList=this.patientRelationship
             },
 
             selectOther(){
                 this.selectH = 1
-                this.dropdownIndex = 2
+                this.dropdownIndex =1
+                this.tabIndex = 1
             },
 
             selectPatientType(){
                 this.selectH = 1
-                this.dropdownIndex = 3
+                this.dropdownIndex =2
+                this.tabIndex = 2
                 this.dropdownList = this.patientGroup
             },
             hideDropdownList() {
@@ -141,18 +144,68 @@
 					}
 				}
 				this.dropdownList = arr;
-				if(this.dropdownIndex===1){
+				if(this.dropdownIndex===0){
 					this.patientRelationship = arr
 					this.selectedPatientRelationship = arr[index].name;
-				}else if(this.dropdownIndex===2){
+				}else if(this.dropdownIndex===1){
 
-				}else if(this.dropdownIndex===3){
+				}else if(this.dropdownIndex===2){
                     this.patientGroup = arr
 					this.selectedPatientGroup = arr[index].name;
+                    this.filter(this.selectedPatientGroup)
                 }
 				this.selectH = 0;
             },
             
+            filter(info){
+                switch (info) {
+                    case '全部标识': 
+                        this.patientList = this.cachePatientsList
+                        break;
+
+                    case '新病人': 
+                        this.patientList = this.cachePatientsList.filter(item=>{
+                            const dayNumber = 3
+                            return new Date().getTime() - new Date(item.AdmissionWardTime).getTime()<3*24*60*60
+                        }) 
+                        break;
+
+                    case '过敏':
+                        this.patientList = this.cachePatientsList.filter(item=>item.Allergy)  
+                        break;
+
+                    case '新医嘱': 
+                        this.patientList = this.cachePatientsList.filter(item=>{
+                            const dayNumber = 3
+                            return new Date().getTime() - new Date(item.AdmissionWardTime).getTime()<3*24*60*60
+                        }) 
+                        break;
+                    // case 'NewDoctorAdvice': 
+                    //     patientsList.value = cachePatientsList.filter(item=>{
+                    //         const dayNumber = 3
+                    //         return new Date().getTime() - new Date(item.AdmissionWardTime).getTime()<3*24*60*60
+                    //     })  
+                    //     break;
+                    case '手术': 
+                        this.patientList = this.cachePatientsList.filter(item=>item.SurgeryHistory)
+                        break;
+
+                    case '欠费': 
+                        this.patientList = this.cachePatientsList.filter(item=>item.ArrearFlag) 
+                        break;
+
+                    case '发热': 
+                        this.patientList = this.cachePatientsList.filter(item=>item.ArrearFlag) 
+                        break;
+
+                    case '静滴静推': 
+                        this.patientList = this.cachePatientsList.filter(item=>item.ArrearFlag) 
+                        break;
+
+                    default: 
+                    this.patientList = cachePatientsList
+                }
+            },
             async getUsers(){
                 const res= await this.$http
                             .get(`/api/users`)

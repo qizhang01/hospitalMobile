@@ -18,7 +18,7 @@ const store = new Vuex.Store({
 		themeColor: THEMECOLOR,
 		patientInfo: {},
         scanCode: '',
-        patientList: [],
+        cachePatientsList: [],
         supply: null,
         taskState: null,
         employees: null
@@ -54,8 +54,8 @@ const store = new Vuex.Store({
             return state.userInfo
         },
 
-        patientList: state =>{
-            return state.patientList
+        cachePatientsList: state =>{
+            return state.cachePatientsList
         },
 
         supply: state=>{
@@ -96,7 +96,7 @@ const store = new Vuex.Store({
 		},
 
         setPatientList(state, patientList){
-           state.patientList = patientList;
+           state.cachePatientsList = patientList;
 		},
         setScanCode(state, code){
             state.scanCode = code

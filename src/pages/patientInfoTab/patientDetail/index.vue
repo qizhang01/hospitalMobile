@@ -15,7 +15,7 @@
 					<image :src="appServiceQr" class="img"></image>
 			        <view class="topic-text">体温单</view>
 					<button class="button">录入</button>
-					<button class = "button">查询</button>
+					<button class = "button" @tap.stop="navToLifeSignQuery">查询</button>
 			</view>
 			<view class="document">
 					<image :src="appServiceQr" class="img"></image>
@@ -63,7 +63,11 @@ export default {
 	methods:{
 		navTo(route) {
 			this.$mRouter.push({ route });
-		}
+		},
+
+        navToLifeSignQuery(){
+            this.navTo(`/pages/lifeSignQuery/index?inpatient=${this.patientInfo.PatientId}`)
+        }
 	}
 };
 </script>

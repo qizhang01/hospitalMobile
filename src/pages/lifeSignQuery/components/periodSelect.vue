@@ -4,7 +4,7 @@
             <button 
                 v-for ="(item, index) in buttonList" 
                 :type="item.selected? 'primary': 'default'"
-                @tap.stop="handleButtonClick"
+                @tap.stop="handleButtonClick(item)"
                 class="mini-btn"
                 size="mini"
                 :key="index">
@@ -20,7 +20,7 @@
 			<uni-datetime-picker type="date" :clear-icon="false" v-model="endDate" @maskClick="selectEndDate" />
 		</view>
 
-        <button type="primary" class="confirm-button">确定</button>
+        <button type="primary" class="confirm-button" @tap.stop="handleSelect">确定</button>
 	</view>
 </template>
 
@@ -30,26 +30,44 @@
             buttonList: {
                 type: Array,
                 default: []
-            },
+            }
         },
 		components: {
 
 		},
 		data() {
 			return {
-                startDate: '',
-                endDate: ''
+                startDate: null,
+                endDate: null,
+                selectedDayVal: 3
 			};
 		},
 		methods: {
             handleButtonClick(item){
-
+                this.selectedDayVal=item.value
+                this.startDate = null
+                this.endDate = null
+                this.buttonList = this.buttonList.map(el=>{
+                    if(el.id==item.id){
+                        return {
+                            ...el,
+                            selected: true
+                        }
+                    }else {
+                        return {...el, selected: false}
+                    }
+                })
             },
-            selectStartDate(){
 
-            },
-            selectEndDate(){
-
+            handleSelect(){
+                if(this.startDate||this.endDate){
+                    this.$emit('handleSelect',{
+                        startDate: this.startDate,
+                        endDate: this.endDate
+                    })
+                }else if(this.selectedDayVal){
+                    this.$emit('handleSelect', this.selectedDayVal)
+                }
             }
 		}
 	};
