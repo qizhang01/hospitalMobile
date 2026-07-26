@@ -10,11 +10,11 @@
 					<text>{{ selectedPeriodName }}</text>
 					<text class="iconfont" :class="tabIndex==1?'iconshang':'iconxia'"></text>
 				</view>
-				<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="2">
+				<view class="rf-top-item" :class="[tabIndex == 2?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="2">
 					<text>{{ selectedStatusName }}</text>
 					<text class="iconfont " :class="tabIndex==2?'iconshang':'iconxia'"></text>
 				</view>
-				<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="3">
+				<view class="rf-top-item" :class="[tabIndex == 3?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="3">
 					<text>{{ selectedTotalName }}</text>
 					<text class="iconfont " :class="tabIndex==3?'iconshang':'iconxia'"></text>
 				</view>
@@ -36,10 +36,10 @@
 			:status="loadingType"
 			v-if="productList.length > 0"
 		></rf-load-more> -->
-		<!-- <rf-empty
-			:info="errorInfo || '该分类暂无商品'"
-			v-if="productList.length === 0 && !loading"
-		></rf-empty> -->
+		<rf-empty
+			:info="errorInfo || '该分类暂无数据'"
+			v-if="adviceList.length === 0 && !loading"
+		></rf-empty>
 		<!--页面加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
 	</view>
@@ -49,6 +49,8 @@
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
     import { mapState } from 'vuex';
 	import {doctorAdviceList, periodList, stopList, allOptionsList} from '@/pages/doctorTipsTab/infoList.js'
+
+    const allSupplyCode=allOptionsList.map(item=>item.code)
 	/* eslint-disable */
 	export default {
         computed: mapState(['patientInfo']),
@@ -82,6 +84,7 @@
                 stopList,
                 allOptionsList,
 				adviceList: [],
+                cacheAdviceList: []
 			}
 		},
 		onLoad(options) {
@@ -122,8 +125,10 @@
                     this.allOptionsList= arr
                     this.selectedTotalName = arr[index].name;
                 }
+                this.adviceList = this.filter(this.cacheAdviceList);
 				this.selectH = 0;
 			},
+
 			screen(e) {
 				let index = parseInt(e.currentTarget.dataset.index, 10);
 				if (index === 0) {
@@ -154,9 +159,40 @@
                         uni.stopPullDownRefresh();
                     }
                     this.loadingType = res.length === 10 ? 'more' : 'nomore';
-                    this.adviceList = res;
+
+                    this.adviceList = this.filter(res);
+                    // this.adviceList = res;
+                    this.cacheAdviceList = res
                 }
 			},
+
+            filter(data){
+				// selectedTotalName: '全部',
+                let filterList = data
+                if(this.selectedPeriodName=='长期'|| this.selectedPeriodName=='临时'){
+                    filterList = filterList.filter(item=>item.long_once.includes(this.selectedPeriodName))
+                }
+
+                if(this.selectedStatusName=='未停'){
+                    filterList = filterList.filter(item=>item.workflow==1||item.workflow==2||item.workflow==5)
+                }else if(this.selectedStatusName=='已停'){
+                    filterList = filterList.filter(item=>item.workflow==3||item.workflow==4)
+                }else if(this.selectedStatusName=='已撤销'){
+                    // filterList = filterList.filter(item=>item.status!=='停止'&& item.status!=='在用')
+                }
+
+                if(this.selectedTotalName=='全部'){
+
+                }else if(this.selectedTotalName=='其他'){
+                    filterList = filterList.filter(item=>!allSupplyCode.includes(item.supply))
+                }else {
+                    const code = allOptionsList.filter(item=>item.name==this.selectedTotalName)[0].code
+                    filterList = filterList.filter(item=>item.supply==code)
+                }
+                
+                return filterList
+            },
+
 		},
 	}
 </script>

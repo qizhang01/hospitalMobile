@@ -89,9 +89,9 @@ export default {
 		};
 	},
 	onShow() {
-		// if (this.$mStore.getters.hasLogin) {
-		// 	this.$mRouter.reLaunch({ route: '/pages/index/index' });
-		// }
+		if (uni.getStorageSync('accessToken')) {
+			this.$mRouter.reLaunch({ route: '/pages/mainPageTab/index' });
+		}
 	},
 	onLoad(options) {
 		// this.loginParams.mobile = uni.getStorageSync('loginMobile') || '';

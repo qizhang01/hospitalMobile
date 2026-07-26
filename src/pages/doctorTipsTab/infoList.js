@@ -113,26 +113,32 @@ export const allOptionsList=[
     {
         id: 1,
         name: "全部",
+        code: 'all',
         selected: true
     },{
         id: 2,
+        code: 20,
         name: "静滴",
         selected: false
     },{
         id: 3,
         name: "静推",
+        code: 31,
         selected: false
     },{
         id: 4,
         name: "肌注",
+        code: 23,
         selected: false
     },{
         id: 5,
         name: "口服",
+        code: 22,
         selected: false
     },{
         id: 6,
         name: "皮下注射",
+        code: 28,
         selected: false
     },{
         id: 7,
@@ -141,18 +147,22 @@ export const allOptionsList=[
     },{
         id: 8,
         name: "雾化",
+        code: 32,
         selected: false
     },{
         id: 9,
         name: "外用",
+        code: 24,
         selected: false
     },{
         id: 10,
         name: "皮试",
+        code: 30,
         selected: false
     },{
         id: 11,
         name: "其他",
+        code: -1,
         selected: false
     }
 ]

@@ -21,11 +21,11 @@
                             <text>计划时间: {{patientMedicineInfo.plan_time.slice(0,10)}}</text>
                             <text>{{supply.get(patientMedicineInfo.supply)}}</text>
                             <text>{{patientMedicineInfo.freq}}</text>
-                            <text>{{patientMedicineInfo.workflow}}</text>
+                            <text>{{getWorkflowsName(patientMedicineInfo.workflow)}}</text>
                         </view>
                         <view class="rf-pro-pay">
                             <text>开始时间: {{patientMedicineInfo.start_at}}</text>
-                            <text>{{employees.get(patientMedicineInfo.execute_by).name}}</text>
+                            <text>{{patientMedicineInfo.execute_by && employees.get(patientMedicineInfo.execute_by).name}}</text>
                         </view>
                         <view class="rf-pro-pay">
                             <text>结束时间: {{patientMedicineInfo.finish_at}}</text>
@@ -42,7 +42,7 @@
 import { mapState } from 'vuex';
 export default {
 	name: 'rfCard',
-    computed: mapState(['supply','employees']),
+    computed: mapState(['supply','employees', 'workflows']),
 	props: {
 		patientMedicineInfo: {
 			type: Object,
@@ -66,7 +66,10 @@ export default {
 	},
 
 	methods: {
-
+        getWorkflowsName(workflow){
+            const splitList = this.workflows.get(workflow).split('->')
+            return splitList[splitList.length -1]
+        }
 	}
 };
 </script>

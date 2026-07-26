@@ -10,8 +10,8 @@
                             <text>{{supply.get(patientMedicineInfo.supply)}}</text>
                             <text>{{patientMedicineInfo.freq}}</text>					
 					</view>
-                    <view class="rf-card-topic text-red-color" v-for="(item, index) in patientMedicineInfo.orders" :key="item.id">
-						<view class="line-1">
+                    <view class="rf-card-topic text-red-color"  v-for="(item, index) in patientMedicineInfo.orders" :key="item.id">
+						<view class="line-1" :class="{'active': item.status=='在用'}">
 							<text class="sketch in1line">{{ item.name }}</text>
 							<text class="sketch in1line">{{ item.spec }}</text>	
 						</view>

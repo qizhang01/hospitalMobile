@@ -685,6 +685,9 @@
 .text-red-color {
 	color: red;
 }
+.text-red-color .active {
+	color: black;
+}
 // navBar样式
 .navbar {
 	display: flex;

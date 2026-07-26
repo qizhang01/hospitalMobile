@@ -2,19 +2,12 @@
 	<view class="rf-floor-index">
 		<view class="f-header">
 			<view class="line"></view>
-			<text class="name">为您推荐</text>
 			<view class="line"></view>
 		</view>
 		<rf-product-list :bottom="bottom" :list="guessYouLikeList"></rf-product-list>
 	</view>
 </template>
 <script>
-/**
- *@des 商品推荐
- *@author stav stavyan@qq.com
- *@blog https://stavtop.club
- *@date 2020/01/08 11:28:39
- */
 
 import rfProductList from '@/components/rf-product-list/index';
 export default {

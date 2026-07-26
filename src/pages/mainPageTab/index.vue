@@ -79,12 +79,16 @@
 		},
 		onShow() {
             this.getPatientList();
+            if(uni.getStorageSync('userInfo')){
+                this.$mStore.commit('login', uni.getStorageSync('userInfo'));
+            }
 		},
 
         onLoad(options) {
             this.getSupply();
             this.getTaskState();
             this.getUsers();
+            this.getWorkflows()
         },
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -95,7 +99,7 @@
 
 		},
 		methods: {
-            ...mapMutations(['setPatientList','setSupply','setTaskState','setEmployees']),
+            ...mapMutations(['setPatientList','setSupply','setTaskState','setEmployees', 'setWorkflows']),
 			// 顶部tab点击
 			tabClick({ id }) {
 			},
@@ -214,7 +218,8 @@
                 }
             },
             async getPatientList(type="", selectedValue="2901") {
-                const requestArr = this.userInfo && this.userInfo.wards.map(item=>{
+                const userInfo = uni.getStorageSync('userInfo');
+                const requestArr = userInfo && userInfo.wards.map(item=>{
                     return this.$http
                             .get(`/api/ward/${item.id}/inpatients`)
                 })
@@ -242,6 +247,12 @@
                 const res = await this.$http.get(`/api/supplies`)
                 if(res){
                     this.setSupply(res)
+                }
+            },
+            async getWorkflows(){
+                const res = await this.$http.get(`/api/workflows`)
+                if(res){
+                    this.setWorkflows(res)
                 }
             },
 

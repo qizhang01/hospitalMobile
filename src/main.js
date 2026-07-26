@@ -69,41 +69,47 @@ $mRouter.beforeEach((navType, to) => {
 	if (to.route === undefined) {
 		throw '路由钩子函数中没有找到to对象，路由信息:' + JSON.stringify(to);
 	}
-	if (to.route === $mRoutesConfig.login.path && store.getters.hasLogin) {
+	if (to.route === $mRoutesConfig.login.path && uni.getStorageSync('accessToken')) {
 		uni.reLaunch({
 			url: $mHelper.objParseUrlAndParam($mRoutesConfig.main.path)
 		});
 		return;
 	}
+    if (uni.getStorageSync('accessToken')) {
+        // 已经登录
+        uni[navType]({
+            url: $mHelper.objParseUrlAndParam(to.route, to.query)
+        })
+    }
 	// 过滤需要权限的页面
-	if (to.route.requiresAuth) {
-		if (store.getters.hasLogin) {
-			// 已经登录
-			uni[navType]({
-				url: $mHelper.objParseUrlAndParam(to.route.path, to.query)
-			});
-		} else {
-			// 登录成功后的重定向地址和参数
-			const query = {
-				redirectUrl: to.route.path,
-				...to.query
-			};
-			// 没有登录 是否强制登录?
-			if (store.state.forcedLogin) {
-				uni.redirectTo({
-					url: $mHelper.objParseUrlAndParam($mRoutesConfig.login.path, query)
-				});
-			} else {
-				uni.navigateTo({
-					url: $mHelper.objParseUrlAndParam($mRoutesConfig.login.path, query)
-				});
-			}
-		}
-	} else {
-		uni[navType]({
-			url: $mHelper.objParseUrlAndParam(to.route, to.query)
-		});
-	}
+	// if (to.route.requiresAuth) {
+	// 	if (store.getters.hasLogin) {
+	// 		// 已经登录
+	// 		uni[navType]({
+	// 			url: $mHelper.objParseUrlAndParam(to.route.path, to.query)
+	// 		});
+	// 	} else {
+	// 		// 登录成功后的重定向地址和参数
+	// 		const query = {
+	// 			redirectUrl: to.route.path,
+	// 			...to.query
+	// 		};
+	// 		// 没有登录 是否强制登录?
+	// 		if (store.state.forcedLogin) {
+	// 			uni.redirectTo({
+	// 				url: $mHelper.objParseUrlAndParam($mRoutesConfig.login.path, query)
+	// 			});
+	// 		} else {
+	// 			uni.navigateTo({
+	// 				url: $mHelper.objParseUrlAndParam($mRoutesConfig.login.path, query)
+	// 			});
+	// 		}
+	// 	}
+	// } else {
+	// 	uni[navType]({
+	// 		url: $mHelper.objParseUrlAndParam(to.route, to.query)
+	// 	});
+	// }
 });
 
 App.mpType = 'app';

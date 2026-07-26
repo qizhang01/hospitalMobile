@@ -21,7 +21,8 @@ const store = new Vuex.Store({
         cachePatientsList: [],
         supply: null,
         taskState: null,
-        employees: null
+        employees: null,
+        workflows: null
 	},
 	getters: {
 
@@ -60,6 +61,10 @@ const store = new Vuex.Store({
 
         supply: state=>{
             return state.supply
+        },
+
+        workflows: state=>{
+            return state.workflows
         }
 	},
 	mutations: {
@@ -112,13 +117,21 @@ const store = new Vuex.Store({
         setTaskState(state, taskState) {
             state.taskState = taskState
         },
-
+   
         setEmployees(state, employees) {
             const userMap = new Map()
             employees.forEach(item=>{
                 userMap.set(item.id, item)
             })
             state.employees = userMap
+        },
+
+        setWorkflows(state, data) {
+            const map = new Map()
+            data.forEach(item=>{
+                map.set(item.id, item.steps)
+            })
+            state.workflows = map
         }
 	},
 	actions: {
