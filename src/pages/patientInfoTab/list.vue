@@ -79,7 +79,7 @@
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import {selectList} from './infoList.js';
 import { mapMutations , mapState,mapGetters} from 'vuex';
-import {taskUrl} from '@/api/login'
+import {taskUrl, wardUrl} from '@/api/login'
 
 export default {
 	components: {
@@ -177,7 +177,7 @@ export default {
 	
 		async getPatientList(type="", selectedValue="2901") {
 			const res = await this.$http
-				.get(`/api/ward/${selectedValue}/inpatients`)
+				.get(`${wardUrl}/${selectedValue}/inpatients`)
 				
 			 if(res){
 				this.loading = false;
@@ -302,7 +302,7 @@ export default {
 		width: 100%;
 		background: $color-white;
 		position: fixed;
-		top: 45px;
+		// top: 45px;
 		z-index: 99;
 		.rf-screen-top
 		{
@@ -343,7 +343,7 @@ export default {
 		}
 	}
 	.sub-list {
-		margin-top: 100upx;
+		padding-top: 100upx;
 	}
 
 </style>

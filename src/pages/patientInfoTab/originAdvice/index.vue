@@ -57,6 +57,7 @@
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 	import {doctorAdviceList, periodList, stopList, allOptionsList} from '@/pages/doctorTipsTab/infoList.js'
     import { mapState } from 'vuex';
+    import {taskUrl, inpatientUrl} from '@/api/login'
 
     const allSupplyCode=allOptionsList.map(item=>item.code)
 	/* eslint-disable */
@@ -182,7 +183,7 @@
 
 			async getoriginAdviceList(type) {
                 const res = await this.$http
-                    .get(`/api/inpatient/${this.patientInfo.PatientId}/orders`)
+                    .get(`${inpatientUrl}/${this.patientInfo.PatientId}/orders`)
                     
                 if(res){
                     this.loading = false;
