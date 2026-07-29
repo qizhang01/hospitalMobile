@@ -69,7 +69,6 @@ import {documentList} from './document.js'
 export default {
 	components: {
 		rfSearchBar,
-		rfAttrContent,
 		document1,
 		document2,
 		document3

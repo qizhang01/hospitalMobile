@@ -1,7 +1,6 @@
 <script>
     /* eslint-disable */
     import Vue from 'vue';
-    import { verifyAccessToken } from '@/api/login'
     import { mapMutations, mapState } from 'vuex';
     let mainActivity = null;
     let broadcastReceiver = null;
@@ -94,15 +93,6 @@ export default {
 				}
 			});
 		},
-		// 检验token是否有效
-		async handleVerifyAccessToken (token) {
-			// await this.$http.post(verifyAccessToken, { token }).then(r => {
-			// 	if (!r.data.token) {
-			// 				this.$mStore.commit('logout');
-			// 	}}
-			// );
-    	},
-
 
         //
         listenToLaserScan() {
@@ -126,21 +116,20 @@ export default {
             console.log('进行业务处理:', code);
             // TODO: 你的业务逻辑
             // uni.setStorageSync( 'scanCode', code);
-            setScanCode(code)
+            
+            this.setScanCode(code)
+            this.$mHelper.toast(code);
+
             const currentRoute = getCurrentRoute()
             if(/^\d{5,6}$/.test(code+'')){
                 //病人腕带
                 if(currentRoute!=='/pages/houseCheck/houseCheckAction/action'){
-                    uni.navigateTo({
-                        url: '/pages/houseCheck/houseCheckAction/action'
-                    })
+                    this.$mRouter.push({ route:'/pages/houseCheck/houseCheckAction/action' });
                 }
             } else if(/\d{23}/.test(code+'')){
                 //瓶贴
                 if(currentRoute!=='/pages/houseCheck/houseCheckRecord/record'){
-                    uni.navigateTo({
-                        url: '/pages/houseCheck/houseCheckRecord/record'
-                    })
+                    this.$mRouter.push({ route:'/pages/houseCheck/houseCheckRecord/record' });
                 }
             } else if(/^20\d{15}$/.test(code+'')){
                 //包药机

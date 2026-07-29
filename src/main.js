@@ -18,11 +18,8 @@ import rfImage from '@/components/rf-image/rf-image';
 import rfEmpty from '@/components/rf-empty';
 import rfLoading from '@/components/rf-loading';
 import rfLoadProgress from '@/components/rf-load-progress/rf-load-progress';
-import rfParser from '@/components/rf-parser';
 import rfBackTop from '@/components/rf-back-top';
 import rfTag from '@/components/rf-tag';
-import rfNavDetail from '@/components/rf-nav-detail';
-import cuCustom from '@/components/cu-custom';
 import rfBackHome from '@/components/rf-back-home';
 
 
@@ -53,11 +50,8 @@ Vue.component('rfImage', rfImage);
 Vue.component('rfEmpty', rfEmpty);
 Vue.component('rfLoading', rfLoading);
 Vue.component('rfLoadProgress', rfLoadProgress);
-Vue.component('rfParser', rfParser);
 Vue.component('rfBackTop', rfBackTop);
 Vue.component('rfTag', rfTag);
-Vue.component('rfNavDetail', rfNavDetail);
-Vue.component('cuCustom', cuCustom);
 Vue.component('rfBackHome', rfBackHome);
 
 if (process.env.NODE_ENV === 'production') {
@@ -127,8 +121,6 @@ Vue.mixin({
 	}
 });
 
-Vue.prototype.moneySymbol = $mConstDataConfig.moneySymbol;
-Vue.prototype.singleSkuText = $mConstDataConfig.singleSkuText;
 
 // 保留小数点后两位
 Vue.filter('keepTwoDecimal', value => {

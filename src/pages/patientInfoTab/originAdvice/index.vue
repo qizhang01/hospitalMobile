@@ -34,10 +34,11 @@
                     <text class="rf-right">{{ patientInfo.BedNo }} 床</text> 
                     <text class="rf-right">{{ patientInfo.Name }}</text>
                 </view>
-				<!-- <rf-product-list :list="adviceList"></rf-product-list> -->
-                <block v-for="(item, index) in adviceList" :key="index">
-                    <rfOriginadviceList :patientMedicineInfo="item"></rfOriginadviceList>
-                </block>
+                <view class="advice-line">
+                    <block v-for="(item, index) in adviceList" :key="index">
+                        <rfOriginadviceList :patientMedicineInfo="item" :isOdd="index%2==0"></rfOriginadviceList>
+                    </block>
+                </view>
 		</view>
 		<!-- <rf-load-more
 			:status="loadingType"
@@ -378,4 +379,10 @@
 			}
 		}
 	}
+
+
+        .text-red-color:nth-child(odd) {
+            color: black;
+        }
+    
 </style>

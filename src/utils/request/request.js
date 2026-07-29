@@ -7,7 +7,7 @@ export default class Request {
 		method: 'GET',
 		dataType: 'json',
 		// #ifdef APP-PLUS
-		sslVerify: true,
+		sslVerify: false,
 		// #endif
 	};
 
@@ -50,7 +50,7 @@ export default class Request {
 				data: options.data,
 				header: options.header,
 				method: options.method,
-				sslVerify: options.sslVerify,
+				sslVerify: false,
 				complete: response => {
 
 					if (response.statusCode===200) {

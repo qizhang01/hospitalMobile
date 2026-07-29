@@ -1,6 +1,6 @@
 <template>
 	<view class="coupon-center">
-        <view>扫描结果2: {{ $store.state.scanCode}}</view>
+         <view>扫描结果1: {{ scanCode}}</view>
         <view class="header-text">
             <text>排药 - 加药 - 执行 - 继续执行</text>
         </view>
@@ -20,7 +20,7 @@
 
 <script>
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 import {formatTime} from '@/utils/util.js'
 
 let timer=null
@@ -34,6 +34,7 @@ export default {
 		};
 	},
     computed: {
+        ...mapState(['patientList','scanCode']),
     },
 
     onShow() {
