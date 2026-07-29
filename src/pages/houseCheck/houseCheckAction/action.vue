@@ -121,6 +121,8 @@ import { mapMutations } from 'vuex';
 import {formatTime} from '@/utils/util.js'
 import {abnormalList} from '../option.js'
 import { mapState } from 'vuex';
+import {taskStatesUrl, workflowsUrl, suppliesUrl, usersUrl, wardUrl} from '@/api/login'
+
 let timer=null
 export default {
     computed: {
@@ -207,7 +209,7 @@ export default {
         async getPatientList(selectedValue="2901") {
             const id = ''
             const res = await this.$http
-                .get(`/api/ward/${selectedValue}/inpatients`)
+                .get(`${wardUrl}/${selectedValue}/inpatients`)
                 
         }
 	}

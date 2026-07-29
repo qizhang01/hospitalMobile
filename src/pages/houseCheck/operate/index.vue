@@ -22,6 +22,7 @@
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import { mapMutations } from 'vuex';
 import {formatTime} from '@/utils/util.js'
+import {taskUrl} from '@/api/login'
 
 let timer=null
 export default {
@@ -68,7 +69,7 @@ export default {
 		},
 
         async getInfo(){
-            const res =  this.$http.get('/api/task?code=00219664382025010608003')
+            const res =  this.$http.get(taskUrl + '?code=00219664382025010608003')
             if(res){
                  
             }

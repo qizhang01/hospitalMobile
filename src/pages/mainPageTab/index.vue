@@ -1,7 +1,7 @@
 <template>
 	<view class="rf-index">
 		<!--搜索导航栏-->
-		<rf-search-bar
+		<!-- <rf-search-bar
 			@search="navToSearch"
 			title="扫一扫"
 			icon=""
@@ -9,7 +9,7 @@
 			:categoryList="[]"
 			merchantData=""
 			placeholder=""
-		/>
+		/> -->
 		<view class="rf-header-screen" >
 			<view class="rf-screen-top">
 				<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" @tap="selectPatientRelationship">
@@ -51,6 +51,8 @@
 	import { mapMutations, mapState} from 'vuex';
     import {computed} from 'vue'
     import {patientRelationship, patientGroup} from './option.js'
+    import {taskStatesUrl, workflowsUrl, suppliesUrl, usersUrl, wardUrl} from '@/api/login'
+
 	export default {
 		components: {
 			rfSearchBar,
@@ -212,7 +214,7 @@
             },
             async getUsers(){
                 const res= await this.$http
-                            .get(`/api/users`)
+                            .get(usersUrl)
                 if(res){
                     this.setEmployees(res)
                 }
@@ -221,11 +223,9 @@
                 const userInfo = uni.getStorageSync('userInfo');
                 const requestArr = userInfo && userInfo.wards.map(item=>{
                     return this.$http
-                            .get(`/api/ward/${item.id}/inpatients`)
+                            .get(`${wardUrl}/${item.id}/inpatients`)
                 })
 
-                // const res = await this.$http
-                //     .get(`/api/ward/${selectedValue}/inpatients`)
                 if(requestArr){
                     Promise.all(requestArr).then(response=>{
                         const result= response.flat().map(item=>({
@@ -244,20 +244,20 @@
             },
             
             async getSupply(){
-                const res = await this.$http.get(`/api/supplies`)
+                const res = await this.$http.get(suppliesUrl)
                 if(res){
                     this.setSupply(res)
                 }
             },
             async getWorkflows(){
-                const res = await this.$http.get(`/api/workflows`)
+                const res = await this.$http.get(workflowsUrl)
                 if(res){
                     this.setWorkflows(res)
                 }
             },
 
             async getTaskState(){
-                const res = await this.$http.get(`/api/task_states`)
+                const res = await this.$http.get(taskStatesUrl)
                 if(res){
                     this.setTaskState(res)
                 }

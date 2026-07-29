@@ -79,6 +79,7 @@
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import {selectList} from './infoList.js';
 import { mapMutations , mapState,mapGetters} from 'vuex';
+import {taskUrl} from '@/api/login'
 
 export default {
 	components: {

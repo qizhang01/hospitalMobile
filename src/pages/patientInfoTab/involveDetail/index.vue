@@ -49,7 +49,8 @@
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
     import { mapState } from 'vuex';
 	import {doctorAdviceList, periodList, stopList, allOptionsList} from '@/pages/doctorTipsTab/infoList.js'
-
+    import {taskUrl} from '@/api/login'
+    
     const allSupplyCode=allOptionsList.map(item=>item.code)
 	/* eslint-disable */
 	export default {

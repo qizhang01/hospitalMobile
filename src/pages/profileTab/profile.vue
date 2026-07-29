@@ -150,7 +150,8 @@ export default {
 					this.$mHelper.toast('恭喜您，登出成功');
 					this.$mStore.commit('logout');
 					this.btnLoading = false;
-                    this.$mRouter.reLaunch({ route: '/pages/login/login' })
+                    uni.navigateTo({url: '/pages/login/login'})
+                    
 				})
 				.catch(() => {
 					this.btnLoading = false;
@@ -220,8 +221,6 @@ page {
 			flex-direction: column;
 			color: #f7d680;
 			height: 240upx;
-			background: url('/static/vip-card.png');
-			background-size: 100% 100%;
 			border-radius: 16upx 16upx 0 0;
 			overflow: hidden;
 			position: relative;

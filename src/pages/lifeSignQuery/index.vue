@@ -33,6 +33,8 @@
     import periodSelect from './components/periodSelect.vue';
     import {mockData, typeOption, timeOption} from './data'
 	import { mapMutations } from 'vuex';
+    import {taskUrl, vitalUrl} from '@/api/login'
+
 	export default {
 		components: {
             card,
@@ -121,14 +123,14 @@
             async getVitalByPatientId(id, fromTime, toTime){
                 let url = ''
                 if(fromTime&&toTime){
-                    url = `/api/vital?inpatient=${id}&from=${encodeURIComponent(fromTime)}&to=${encodeURIComponent(toTime)}`
+                    url = `?inpatient=${id}&from=${encodeURIComponent(fromTime)}&to=${encodeURIComponent(toTime)}`
                 }else if(fromTime){
-                    url = `/api/vital?inpatient=${id}&from=${encodeURIComponent(fromTime)}`
+                    url = `?inpatient=${id}&from=${encodeURIComponent(fromTime)}`
                 }else {
-                    url = `/api/vital?inpatient=${id}&to=${encodeURIComponent(toTime)}`
+                    url = `?inpatient=${id}&to=${encodeURIComponent(toTime)}`
                 }
                 const res = await this.$http
-                    .get(url)
+                    .get(vitalUrl + url)
                 if(res){
                     this.dataList = this.parseData(res)
                 }

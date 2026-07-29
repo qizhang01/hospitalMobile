@@ -121,7 +121,8 @@ export default {
 					this.$mHelper.toast('恭喜您，登录成功！');
 					this.$mStore.commit('login', r);
                     this.btnLoading = false;
-                    setTimeout(()=>this.$mRouter.reLaunch({ route: '/pages/mainPageTab/index' }))
+                    // uni.navigateTo({ url: '/pages/mainPageTab/index' })
+                    this.$mRouter.reLaunch({ route: '/pages/mainPageTab/index' })
 				})
 				.catch(() => {
 					this.btnLoading = false;

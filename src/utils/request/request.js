@@ -1,6 +1,5 @@
 export default class Request {
 	config = {
-		baseUrl: '/',
 		header: {
 			'content-type': 'application/json',
             API_KEY: "bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m,",
@@ -10,7 +9,6 @@ export default class Request {
 		// #ifdef APP-PLUS
 		sslVerify: true,
 		// #endif
-		API_KEY: "bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m,",
 	};
 
 	interceptor = {

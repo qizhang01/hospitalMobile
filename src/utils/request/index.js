@@ -9,7 +9,7 @@ const http = new Request();
 // request全局参数设置
 http.setConfig(config => {
 	/* 设置全局配置 */
-	config.baseUrl = indexConfig.baseUrl; /* 根域名不同 */
+	// config.baseUrl = 'https://infusion.us.to:8443'; /* 根域名不同 */
 	config.header = {
 		...config.header,
 		API_KEY: "bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m,",
@@ -43,6 +43,10 @@ http.interceptor.response(
 		}
 	},
 	error => {
+        uni.removeStorageSync('accessToken');
+        uni.navigateTo({
+            url: '/pages/login/login'
+        })
 		return Promise.reject(error);
 	}
 );

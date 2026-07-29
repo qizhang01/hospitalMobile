@@ -67,7 +67,7 @@ if (process.env.NODE_ENV === 'production') {
 // 路由导航
 $mRouter.beforeEach((navType, to) => {
 	if (to.route === undefined) {
-		throw '路由钩子函数中没有找到to对象，路由信息:' + JSON.stringify(to);
+		throw '路由钩子函数中没有找到to对象,路由信息:' + JSON.stringify(to);
 	}
 	if (to.route === $mRoutesConfig.login.path && uni.getStorageSync('accessToken')) {
 		uni.reLaunch({

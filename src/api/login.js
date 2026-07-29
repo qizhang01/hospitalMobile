@@ -1,19 +1,26 @@
 // 密码登录
-const loginUrl = '/api/login';
+// const mainUrl = "https://infusion.us.to:8443"
+const mainUrl = ""
+const loginUrl = mainUrl + '/api/login';
 
-// 退出登录
-const logoutUrl = '/api/logout';
+const logoutUrl = mainUrl +'/api/logout';
 
-const codeTypeUrl = '/api/codes'
+const codeTypeUrl = mainUrl +'/api/codes'
 
-const wardsUrl = '/api/wards'
+const wardsUrl = mainUrl +'/api/wards'
 
-const taskUrl= '/api/task'
+const taskUrl= mainUrl +'/api/task'
 
-const vitalUrl = '/api/vital'
+const vitalUrl = mainUrl +'/api/vital'
+
+const taskStatesUrl = mainUrl + '/api/task_states'
+const workflowsUrl = mainUrl +  '/api/workflows'
+const suppliesUrl = mainUrl + '/api/supplies'
+const usersUrl = mainUrl + '/api/users'
+const wardUrl = mainUrl + '/api/ward'
 
 const getInpatientTasksById =(id)=>{
-    return `/api/inpatient/${id}/tasks`
+    return `${mainUrl}/api/inpatient/${id}/tasks`
 }
 
 export {
@@ -22,5 +29,10 @@ export {
     codeTypeUrl,
     wardsUrl,
     taskUrl,
+    taskStatesUrl,
+    workflowsUrl,
+    suppliesUrl,
+    usersUrl,
+    wardUrl,
     getInpatientTasksById
 };
