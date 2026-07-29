@@ -12,8 +12,8 @@
 				</view>
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
-                    <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1" @button-item-click="handleTypeClick"></buttonGroup>
-                    <timeSelect :buttonList="timeOption" v-else="dropdownIndex==2"></timeSelect>
+                    <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1" @buttonItemClick="handleTypeClick"></buttonGroup>
+                    <timeSelect :buttonList="timeOption" v-else="dropdownIndex==2" @timeItemClick="handleTimeItemClick"></timeSelect>
 				</view>
 				<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
 				<!--下拉选择列表--综合-->
@@ -26,7 +26,7 @@
                 <text>MRN</text>
                 <text></text>
             </view>
-            <lineCell v-for="(item, index) in patientList" :key="index" :patientObj="item"></lineCell>
+            <lineCell v-for="(item, index) in cachePatientsList" :key="index" :patientObj="item"></lineCell>
         </scroll-view>
 		<!--页面加载动画-->
 		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
@@ -43,7 +43,7 @@
 	import { mapMutations, mapState } from 'vuex';
 	export default {
 
-        computed: mapState(['patientList']),
+        computed: mapState(['cachePatientsList']),
 		components: {
             lineCell,
             buttonGroup,
@@ -115,6 +115,10 @@
                 this.dropdownIndex = 3
             },
 
+            handleTimeItemClick(payload){
+                this.hideDropdownList()
+            },
+
             handleTypeClick(playLoad){
                 this.selectH = 0
                 this.selectedType = playLoad.name
@@ -131,7 +135,10 @@
                         }
                     }
                 })
-                console.log(1111111,playLoad)
+            },
+
+            hideDropdownList(){
+                this.selectH = 0
             }
 		}
 	};

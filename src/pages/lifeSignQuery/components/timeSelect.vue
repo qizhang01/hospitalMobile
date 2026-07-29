@@ -12,7 +12,7 @@
             </button>
         </view>
         <view class="date-selection">
-			<uni-datetime-picker type="date" :clear-icon="false" v-model="startDate" @maskClick="selectStartDate" />
+			<uni-datetime-picker type="date" :clear-icon="false" v-model="selectedDate" />
 		</view>
 
         <button type="primary" class="confirm-button" @tap.stop="confirm">确定</button>
@@ -32,18 +32,31 @@
 		},
 		data() {
 			return {
-                startDate: '',
+                selectedDate: '',
+                timeItem: this.buttonList[0]
 			};
 		},
 		methods: {
             handleButtonClick(item){
-
+                this.selectedDate = ''
+                this.buttonList = this.buttonList.map(button=>{
+                    if(button.id==item.id){
+                        this.timeItem = button
+                        return {
+                            ...button,
+                            selected: true
+                        }
+                    }else {
+                        return {
+                            ...button,
+                            selected: false
+                        }
+                    }
+                })
             },
-            selectStartDate(){
 
-            },
             confirm(){
-
+                this.$emit('timeItemClick', {timeItem: this.timeItem, selectedDate: this.selectedDate})
             }
 		}
 	};

@@ -11,11 +11,6 @@ export default {
 	// 验证码发送间隔
 	sendCodeTime: 60,
 
-	// 金额符号
-	moneySymbol: '￥',
-
-	// 单商品替代词
-	singleSkuText: '基础款',
 
 
 	// 设置-设置中心

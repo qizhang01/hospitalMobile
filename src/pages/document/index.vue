@@ -55,20 +55,12 @@
 		>
 			<!-- 遮罩层 -->
 			<view class="mask" @tap="hideSpec"></view>
-			<view class="layer" @tap.stop="stopPrevent">
-				<rf-attr-content
-					:product="productDetail"
-					@toggle="toggleSpec"
-					:showBuyBtn="true"
-					></rf-attr-content>
-			</view>
 		</view>
 	</view>
 </template>
 <script>
 
 import rfSearchBar from '@/components/rf-search-bar';
-import rfAttrContent from '@/components/rf-attr-content';
 import document1 from './document1.vue';
 import document2 from './document2.vue';
 import document3 from './document3.vue';
@@ -100,7 +92,6 @@ export default {
 			total_sales: '',
 			loadingType: 'more',
 			page: 1,
-			moneySymbol: this.moneySymbol,
 			productLoading: true,
 			currentSecondDocumentList: [],
 			categoryInvertedIndex: 0

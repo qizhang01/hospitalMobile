@@ -25,12 +25,12 @@
 		},
 		data() {
 			return {
-
+                
 			};
 		},
 		methods: {
             handleButtonClick(item){
-                this.$emit('button-item-click',item)
+                this.$emit('buttonItemClick',item)
             }
 		}
 	};
