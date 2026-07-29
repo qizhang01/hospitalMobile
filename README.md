@@ -1,8 +1,3 @@
-## RF 微商城
-
-### 前言
-
-基于 [RageFrame2](https://github.com/jianyan74/rageframe2) 的一款免费开源的基础商城销售功能的开源微商城，前端基于 uni-app，一端发布多端通用，目前已经适配 H5、微信小程序、QQ小程序、Ios App、Android App。目前开源的版本功能为 V1 版，更多增强功能(V2、V3)敬请期待。
 
 
 ### 项目地址
@@ -106,37 +101,3 @@ location / {
 
 > [详见配置说明](docs/CONFIG.md)
 
-### 官网
-
-http://www.rageframe.com
-
-### 问题反馈
-
-在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我们交流
-
-QQ群2：[1148015133](https://jq.qq.com/?_wv=1027&k=Wk663e9N)
-
-### 特别鸣谢
-
-感谢以下的项目，排名不分先后
-
-Vuejs： https://github.com/vuejs/vue
-
-uni-app： https://uniapp.dcloud.io/
-
-mix-mall: https://ext.dcloud.net.cn/plugin?id=200
-
-ColorUI: https://github.com/weilanwl/ColorUI
-
-...
-
-### 版权信息
-
-RF商城 遵循 [Apache2](LICENSE.md) 开源协议和 [附加使用协议](docs/LICENSE-SUPPLEMENTAL.md) 发布，并提供免费使用。
-
-本项目包含的第三方源码和二进制文件之版权信息另行标注。
-
-版权所有Copyright © 2016-2022 by RageFrame [www.rageframe.com](http://www.rageframe.com)
-
-All rights reserved。
-LICENSE-SUPPLEMENTAL.md

@@ -18,6 +18,7 @@ const workflowsUrl = mainUrl +  '/api/workflows'
 const suppliesUrl = mainUrl + '/api/supplies'
 const usersUrl = mainUrl + '/api/users'
 const wardUrl = mainUrl + '/api/ward'
+const inpatientUrl= mainUrl + '/api/inpatient'
 
 const getInpatientTasksById =(id)=>{
     return `${mainUrl}/api/inpatient/${id}/tasks`
