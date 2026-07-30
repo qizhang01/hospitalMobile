@@ -7,3 +7,8 @@ export function formatTime() {
     const minute = date.getMinutes()
     return `${year}-${month}-${day} ${hour}: ${minute}`
 }   
+
+export function  getAgeByBirthdate(birthDate){
+    const today = new Date()
+    return today.getFullYear() - Number(birthDate.slice(0,4))
+}

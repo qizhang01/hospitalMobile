@@ -16,7 +16,10 @@
                 </view>
 
                 <view class="center" >
-                    <text>101床|男|72|MRN1985167</text>
+                    <text class="item">{{ patientInfo.BedNo }}床 |</text>
+                    <text class="item">{{ patientInfo.PhysiSexName }} |</text>
+                    <text class="item">{{ getAgeByBirthdate(patientInfo.BirthDate) }} |</text>
+                    <text>MRN {{ patientInfo.Mrn }}</text>
                 </view>
                 <view class="switch-content center">
                     <text class="switch-text">{{ checkedText }}</text>
@@ -175,11 +178,7 @@ export default {
 	},
 
 	methods: {
-		// 数据初始化
-		initData() {
-			this.getCouponList();
-		},
-  
+
 		navTo(route) {
 			// this.$mRouter.push({ route });
 		},
@@ -232,6 +231,11 @@ export default {
 
         handleSubmit(){
 
+        },
+
+        getAgeByBirthdate(birthDate){
+            const today = new Date()
+             return today.getFullYear() - Number(birthDate.slice(0,4))
         }
 	}
 };
@@ -253,6 +257,9 @@ export default {
         align-items: center;
         padding: 16upx 0upx;
         flex-wrap: wrap;
+        .item {
+            margin-right: 6upx;
+        }
     }
     .switch-text{
         margin-right: 10upx;
