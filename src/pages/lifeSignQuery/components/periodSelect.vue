@@ -47,16 +47,7 @@
                 this.selectedDayVal=item.value
                 this.startDate = null
                 this.endDate = null
-                this.buttonList = this.buttonList.map(el=>{
-                    if(el.id==item.id){
-                        return {
-                            ...el,
-                            selected: true
-                        }
-                    }else {
-                        return {...el, selected: false}
-                    }
-                })
+                this.$emit('period-button-click', item)
             },
 
             handleSelect(){

@@ -5,9 +5,6 @@
 					<view class="rf-top-item rf-icon-ml">
 						<text>{{ nowTime }}</text>
 					</view>
-					<view class="">
-                        <text>病区巡视记录</text>
-                    </view>
                     <!-- <view>扫描结果：{{ this.$mStore.state.scanCode}}</view> -->
                     <view>扫描结果1: {{ scanCode}}</view>
                     <view>扫描结果2: {{ $store.state.scanCode}}</view>
@@ -29,17 +26,20 @@
                     <button
                         class="row"
                         v-for="(item, index) in abnormalList"
-                        :key="index"
+                        :key="item.index"
                         size="mini"
+                        :type="item.selected ? 'primary': ''"
                         @tap.stop="handleButtonClick(item)"
                     >
-                        {{ item }}
+                        {{ item.name }}
                     </button>
                 </view>
 
-                <view class="center">
-                    <uni-easyinput  v-model="value" focus placeholder="请输入内容" @input="input"></uni-easyinput>
+                <view class="center operate-group" v-if="!isNormal">
+                    <uni-easyinput  v-model="value" focus placeholder="请输入异常状态" @input="input"></uni-easyinput>
+                    <button type="primary" size="mini" @tap.stop="handleSubmit" style="margin-top: 20upx; width: 60%; height: 54upx;">提交</button>
                 </view>
+                
                 <view class="tip-text center">
                     <text>请先扫描病人腕带</text>
                 </view>
@@ -109,7 +109,7 @@
                     </view>
                 </view>
             </view>
-            <view class="rf-dropdownlist-mask" :class="[isShowDetail?'rf-mask-show':'']" @tap.stop="toggleShow">
+            <view class="rf-dropdownlist-mask" :class="[isShowDetail?'rf-mask-show':'']" @tap="toggleShow">
                 
             </view>
 	</view>
@@ -117,20 +117,27 @@
 
 <script>
 import rfLoadMore from '@/components/rf-load-more/rf-load-more';
-import { mapMutations } from 'vuex';
 import {formatTime} from '@/utils/util.js'
 import {abnormalList} from '../option.js'
-import { mapState } from 'vuex';
+import { mapState, watch} from 'vuex';
 import {taskStatesUrl, workflowsUrl, suppliesUrl, usersUrl, wardUrl} from '@/api/login'
 
 let timer=null
 export default {
     computed: {
-        ...mapState(['patientList','scanCode']),
-        patientInfo(){
-            return this.patientList? this.patientList[0]: {}
-        }
+        ...mapState(['cachePatientsList','scanCode']),
     },
+
+    watch: {
+        scanCode: {
+            handler(newVal, oldVal){
+                this.$mHelper.toast(newVal);
+                this.filterById(99451)
+            },
+            immediate: true
+        },
+    },
+
 	components: {
 		rfLoadMore,
 	},
@@ -143,6 +150,7 @@ export default {
             abnormalList,
             isNormal: true,
             isShowDetail: false,
+            patientInfo: this.cachePatientsList? this.cachePatientsList[0]: {}
 		};
 	},
 
@@ -189,7 +197,6 @@ export default {
 		},
 
         toggleShow(){
-            console.log(this.patientList)
             this.isShowDetail = !this.isShowDetail
         },
 
@@ -203,14 +210,28 @@ export default {
         },
 
         handleButtonClick(item){
-
+            this.abnormalList = this.abnormalList.map(el=>{
+                if(item.id==el.id){
+                    return {
+                        ...el,
+                        selected: true
+                    }
+                }else {
+                     return {
+                        ...el,
+                        selected: false
+                    }
+                }
+            })
+        },
+        
+        filterById(id=99451){
+            //99451
+            this.patientInfo = this.cachePatientsList.filter(item=>item.Wristband == id)[0]
         },
 
-        async getPatientList(selectedValue="2901") {
-            const id = ''
-            const res = await this.$http
-                .get(`${wardUrl}/${selectedValue}/inpatients`)
-                
+        handleSubmit(){
+
         }
 	}
 };
@@ -319,5 +340,9 @@ export default {
     }
     .margin-left-2 {
         margin-left: 10upx;
+    }
+    .operate-group {
+        display: flex;
+        flex-direction: column;
     }
 </style>

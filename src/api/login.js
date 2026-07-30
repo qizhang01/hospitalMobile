@@ -1,6 +1,6 @@
 // 密码登录
 const mainUrl = process.env.NODE_ENV === 'development'? '': "https://infusion.us.to:8443"
-// const mainUrl = ""
+
 const loginUrl = mainUrl + '/api/login';
 
 const logoutUrl = mainUrl +'/api/logout';
@@ -35,5 +35,7 @@ export {
     suppliesUrl,
     usersUrl,
     wardUrl,
+    vitalUrl,
+    inpatientUrl,
     getInpatientTasksById
 };

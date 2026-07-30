@@ -2,17 +2,6 @@ export default {
 	// app应用名称
 	appName: '文书录入系统',
 
-	// 购物车在tab的位置
-	cartIndex: 3,
-
-	// 消息在tab的位置
-	notifyIndex: 2,
-
-	// 验证码发送间隔
-	sendCodeTime: 60,
-
-
-
 	// 设置-设置中心
 	setList: [
 		{

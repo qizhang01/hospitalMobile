@@ -13,7 +13,7 @@
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
                     <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1" ></buttonGroup>
-                    <periodSelect :buttonList="timeOption" v-else="dropdownIndex==2" @handleSelect ="handleSelect"></periodSelect>
+                    <periodSelect :buttonList="timeOption" v-else="dropdownIndex==2" @handleSelect ="handleSelect"  @period-button-click="handlePeriodButtonClick"></periodSelect>
 				</view>
 				<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
 				<!--下拉选择列表--综合-->
@@ -21,9 +21,14 @@
 		</view>
         <scroll-view scroll-y="true" style="padding: 90upx 0upx;">
             <card v-for="(item, index) in dataList" :key="index" :infomation="item"></card>
+            <rf-empty
+                :info="errorInfo || '该分类暂无数据'"
+                v-if="dataList.length === 0 && !loading"
+            ></rf-empty>
         </scroll-view>
+
 		<!--页面加载动画-->
-		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
+		<rfLoading isFullScreen :active="loading"></rfLoading>
 	</view>
 </template>
 
@@ -32,7 +37,6 @@
     import buttonGroup from './components/buttonGroup.vue'
     import periodSelect from './components/periodSelect.vue';
     import {mockData, typeOption, timeOption} from './data'
-	import { mapMutations } from 'vuex';
     import {taskUrl, vitalUrl} from '@/api/login'
 
 	export default {
@@ -121,6 +125,7 @@
             },
 
             async getVitalByPatientId(id, fromTime, toTime){
+                this.loading = true
                 let url = ''
                 if(fromTime&&toTime){
                     url = `?inpatient=${id}&from=${encodeURIComponent(fromTime)}&to=${encodeURIComponent(toTime)}`
@@ -133,6 +138,7 @@
                     .get(vitalUrl + url)
                 if(res){
                     this.dataList = this.parseData(res)
+                    this.loading = false
                 }
             },
             
@@ -174,6 +180,19 @@
             getOptionTextByNumber(number){
                 const obj = timeOption.filter(item=>item.value==number)
                 return obj[0].name
+            },
+
+            handlePeriodButtonClick(item){
+                this.timeOption = this.timeOption.map(el=>{
+                    if(el.id==item.id){
+                        return {
+                            ...el,
+                            selected: true
+                        }
+                    }else {
+                        return {...el, selected: false}
+                    }
+                })
             }
         }
     }

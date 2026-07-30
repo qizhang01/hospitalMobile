@@ -76,11 +76,8 @@ const store = new Vuex.Store({
 		},
 		logout(state) {
 			state.accessToken = '';
-			state.userInfo = {};
+			state.userInfo = null;
 			uni.removeStorageSync('accessToken');
-			uni.removeTabBarBadge({ index: $mConstDataConfig.notifyIndex });
-			uni.removeTabBarBadge({ index: $mConstDataConfig.cartIndex });
-
 			uni.removeStorageSync('userInfo');
 		},
 
