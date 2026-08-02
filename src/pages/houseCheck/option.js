@@ -4,5 +4,5 @@ export const abnormalList=[
     {id: 2, name: '返回', selected: false},
     {id: 3, name: 'TEST', selected: false},
     {id: 4, name: 'TEST1', selected: false},
-    {id: 4, name: '其他', selected: false},
+    {id: 5, name: '其他', selected: false},
 ]

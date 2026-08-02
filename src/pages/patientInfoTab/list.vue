@@ -203,12 +203,7 @@ export default {
 		},
 
 		handleClick(item){
-			this.setPatientInfo(
-				{...item,
-					age: this.getAgeFromBirthDate(item.BirthDate)
-				}
-			)
-			this.navTo('/pages/patientInfoTab/patientDetail/index')	
+			this.navTo('/pages/patientInfoTab/patientDetail/index?Wristband='+ item.Wristband)	
 		},
 
         getInhospitalDay(AdmissionTime){

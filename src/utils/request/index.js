@@ -43,10 +43,13 @@ http.interceptor.response(
 		}
 	},
 	error => {
-        uni.removeStorageSync('accessToken');
-        uni.navigateTo({
-            url: '/pages/login/login'
-        })
+        if(error.response.status=='401') {
+            //token失效
+            uni.removeStorageSync('accessToken');
+            uni.navigateTo({
+                url: '/pages/login/login'
+            })
+        }
 		return Promise.reject(error);
 	}
 );

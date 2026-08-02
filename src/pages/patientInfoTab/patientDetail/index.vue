@@ -35,9 +35,10 @@
 			</view>
 		</view>
 		<view class="block">
-			<view class="timeRecord" @tap.stop="navTo('/pages/patientInfoTab/timeRecord/index')">
+			<view class="timeRecord" @tap.stop="navToTimeRecord">
                 时间记录
 			</view>
+            <button class = "button" @tap.stop="navToWard">病房巡视</button>
 		</view>
 		<!--加载动画-->
 		<!-- <rfLoading isFullScreen :active="pageLoading"></rfLoading> -->
@@ -45,10 +46,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations} from 'vuex';
 
 export default {
-	computed: mapState(['patientInfo']),
+	computed: mapState(['patientInfo', 'cachePatientsList']),
 	data() {
 		return {
 			appServiceQr: this.$mSettingConfig.appServiceQr,
@@ -58,15 +59,38 @@ export default {
 		};
 	},
 	onLoad(options) {
-
+        const Wristband = options.Wristband
+        this.initData(Wristband)
 	},
 	methods:{
+        ...mapMutations(['setPatientInfo']),
 		navTo(route) {
 			this.$mRouter.push({ route });
 		},
 
         navToLifeSignQuery(){
             this.navTo(`/pages/lifeSignQuery/index?inpatient=${this.patientInfo.PatientId}`)
+        },
+
+        navToTimeRecord(){
+            this.navTo(`/pages/patientInfoTab/timeRecord/index?patientInfo=${JSON.stringify(this.patientInfo)}`)
+        },
+
+        navToWard(){
+            this.navTo(`/pages/patientInfoTab/houseCheck/index?patientInfo=${JSON.stringify(this.patientInfo)}`)
+        },
+
+		getAgeFromBirthDate( birthDate ){
+			return new Date().getFullYear()- Number(birthDate.substr(0,4));
+		},
+
+        initData(Wristband){
+            const selectedPatient = this.cachePatientsList.filter(item=> item.Wristband==Wristband)[0]
+			this.setPatientInfo(
+				{...selectedPatient,
+					age: this.getAgeFromBirthDate(selectedPatient.BirthDate)
+				}
+			)
         }
 	}
 };
@@ -86,10 +110,7 @@ page {
 	justify-content: space-between;
 	padding: 6px 0px;
 }
-.recharge {
-//   padding:0 20px;
 
-}
 .img {
 	width: 40px;
 	height: 40px;

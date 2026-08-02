@@ -4,15 +4,14 @@
 			<text class="iconfont iconnodata-search" :class="'text-'+themeColor.name"></text>
 			<text class="empty-content-info">{{ info }}</text>
 		</view>
-		<rf-recommend :bottom="bottom" v-if="isRecommendShow" :list="list" class="recommend" />
 	</view>
 </template>
 
 <script>
-import rfRecommend from '@/components/rf-recommend/rf-recommend';
+
 export default {
 	components: {
-		rfRecommend
+		
 	},
 	props: {
 		src: {
