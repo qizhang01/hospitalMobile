@@ -1,6 +1,6 @@
 export default {
 	// app应用名称
-	appName: '文书录入系统',
+	appName: '护理系统',
 
 	// 设置-设置中心
 	setList: [

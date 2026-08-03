@@ -43,7 +43,7 @@ http.interceptor.response(
 		}
 	},
 	error => {
-        if(error.response.status=='401') {
+        if(error.statusCode=='401') {
             //token失效
             uni.removeStorageSync('accessToken');
             uni.navigateTo({

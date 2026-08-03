@@ -15,13 +15,13 @@
 					<image :src="appServiceQr" class="img"></image>
 			        <view class="topic-text">体温单</view>
 					<button class="button">录入</button>
-					<button class = "button" @tap.stop="navToLifeSignQuery">查询</button>
+					<button class = "button" @tap.stop="navToLifeSignQuery" type="primary">查询</button>
 			</view>
 			<view class="document">
 					<image :src="appServiceQr" class="img"></image>
 			        <view class="topic-text">文书</view>
 					<button class="button">录入</button>
-					<button class = "button">查询</button>
+					<button class = "button" type="primary">查询</button>
 			</view>
 			<view class="other">
                 <view class="item" @tap.stop="navTo('/pages/patientInfoTab/originAdvice/index')">	
@@ -35,10 +35,10 @@
 			</view>
 		</view>
 		<view class="block">
-			<view class="timeRecord" @tap.stop="navToTimeRecord">
+			<view class="timeRecord">
                 时间记录
 			</view>
-            <button class = "button" @tap.stop="navToWard">病房巡视</button>
+            <button class = "button" @tap.stop="navToWard" type="primary">病房巡视</button>
 		</view>
 		<!--加载动画-->
 		<!-- <rfLoading isFullScreen :active="pageLoading"></rfLoading> -->
@@ -77,7 +77,7 @@ export default {
         },
 
         navToWard(){
-            this.navTo(`/pages/patientInfoTab/houseCheck/index?patientInfo=${JSON.stringify(this.patientInfo)}`)
+            this.navTo(`/pages/houseCheck/houseCheckAction/action?patientInfo=${JSON.stringify(this.patientInfo)}`)
         },
 
 		getAgeFromBirthDate( birthDate ){

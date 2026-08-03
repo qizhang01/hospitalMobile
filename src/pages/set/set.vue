@@ -75,7 +75,7 @@ export default {
 			CustomBar: this.CustomBar,
 			user: {},
 			setList: this.$mConstDataConfig.setList,
-			styleUserIsOpen: this.$mSettingConfig.styleUserIsOpen,
+			styleUserIsOpen: true,
 			colorModal: false,
 			themeList: this.$mConstDataConfig.themeList
 		};
