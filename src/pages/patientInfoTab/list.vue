@@ -169,7 +169,7 @@ export default {
                 this.patientList = cachePatientsList
             }else {
                 this.patientList = cachePatientsList.filter(item=>{
-                    return item.AdmissionDeptName==selectedGroupName
+                    return item.WardName==selectedGroupName
                 })
             }
         },
@@ -222,7 +222,7 @@ export default {
             }]
             const set = new Set()
             patientList.map(item=>{
-                set.add(item.AdmissionDeptName)
+                set.add(item.WardName)
             })
             Array.from(set).map((item, index)=>{
                 result.push({

@@ -86,8 +86,8 @@ export default {
 	data() {
 		return {
 			isActive: this.active || false,
-			styleLoadingIsOpen: this.$mSettingConfig.styleLoadingIsOpen,
-			styleLoadingType: this.$mSettingConfig.styleLoadingType
+			styleLoadingIsOpen: true,
+			styleLoadingType: 'loop'
 		};
 	},
 	watch: {
