@@ -323,7 +323,7 @@
 
 		/*screen*/
 		.rf-header-screen {
-            margin-top: 46px;
+            margin-top: 20px;
 			width: 100%;
 			background: $color-white;
 			position: fixed;
