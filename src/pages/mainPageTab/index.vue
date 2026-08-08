@@ -227,6 +227,7 @@
                 })
 
                 if(requestArr){
+                    this.loading = true
                     Promise.all(requestArr).then(response=>{
                         const result= response.flat().map(item=>({
                             ...item,

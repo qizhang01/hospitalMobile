@@ -13,11 +13,11 @@
         </view>
         <view class="date-selection">
             <text>开始时间</text>
-			<uni-datetime-picker type="date" :clear-icon="false" v-model="startDate" @maskClick="selectStartDate" />
+			<uni-datetime-picker type="date" :clear-icon="false" v-model="startDate" @maskClick="selectStartDate" placeholder="请选择"/>
 		</view>
         <view class="date-selection">
             <text>结束时间</text>
-			<uni-datetime-picker type="date" :clear-icon="false" v-model="endDate" @maskClick="selectEndDate" />
+			<uni-datetime-picker type="date" :clear-icon="false" v-model="endDate" @maskClick="selectEndDate" placeholder="请选择"/>
 		</view>
 
         <button type="primary" class="confirm-button" @tap.stop="handleSelect">确定</button>

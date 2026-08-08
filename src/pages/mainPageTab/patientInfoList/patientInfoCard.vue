@@ -16,10 +16,10 @@
                 <view class="patient-info-status">
                     <text class="item-info">{{ patientInfo.NursingClass }}级</text>
                     <image class="character-icon item-info" :src="noMoney" v-if="patientInfo.ArrearFlag"></image>
-                    <image class="character-icon item-info" :src="finish" ></image>
+                    <image class="character-icon item-info" :src="finish" style="width: 22px; height: 22px;" ></image>
                     <image class="character-icon item-info" :src="newPatient"></image>
                     <image class="character-icon item-info" :src="allergy" v-if="patientInfo.Allergy" ></image>
-                    <image class="character-icon item-info" :src="notes" ></image>
+                    <image class="character-icon item-info" :src="notes" style="width: 18px; height: 18px;"></image>
                     <image class="character-icon item-info" :src="highTemperature"></image>
                     <image class="character-icon item-info" :src="operation" v-if="patientInfo.SurgeryHistory"></image>
                 </view>
