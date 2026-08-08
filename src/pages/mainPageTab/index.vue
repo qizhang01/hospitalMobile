@@ -56,6 +56,10 @@
                 :status="loadingType"
                 v-if="patientList.length > 0"
             ></rf-load-more>
+            <rf-empty
+                :info="errorInfo || '暂无患者信息'"
+                v-if="patientList.length === 0 && !loading"
+            ></rf-empty>
         </scroll-view>
 		<!--页面加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
@@ -149,9 +153,10 @@
             },
 
             selectOther(){
-                this.selectH = 1
+                // this.selectH = 1
                 this.dropdownIndex =1
                 this.tabIndex = 1
+                this.dropdownList = []
             },
 
             selectPatientType(){
@@ -332,7 +337,7 @@
 		padding-top: 10upx;
 		padding-bottom: 26upx;
 		left: 0;
-		top: 88upx;
+		top: 46upx;
 		visibility: hidden;
 		transition: all 0.2s ease-in-out;
 		z-index: 99;
