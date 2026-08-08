@@ -4,9 +4,10 @@
             <view v-if="!isInvolving">
                 <view>排药操作: {{ $store.state.scanCode}}</view>
                 <view class="header-text">
-                    <text  :class="{ isCurrentStep: currentStep=='排药' }">排药 - </text>
+                    <!-- <text  :class="{ isCurrentStep: currentStep=='排药' }">排药 - </text>
                     <text  :class="{ isCurrentStep: currentStep=='加药' }">加药 - </text>
-                    <text  :class="{ isCurrentStep: currentStep=='执行' }">执行</text>
+                    <text  :class="{ isCurrentStep: currentStep=='执行' }">执行</text> -->
+                    <uni-steps :options="stepList" :active="stepList.findIndex(item=>item.title==currentStep)" />
                 </view>
                 <scroll-view>
                     <view v-for="(task, index) in taskList" :key="task.barcode">
@@ -35,7 +36,7 @@
                     </view>
                 </scroll-view>
             </view>
-            <view v-esle>
+            <view v-else>
                 <view class="header-text">请填写巡视信息</view>
                 <uni-section title="滴速 (滴/分)"  type="line" class="input-area">
                     <uni-easyinput class="uni-mt-5" trim="all" v-model="inputValue1" placeholder="请输入内容" type='number'></uni-easyinput>
@@ -85,7 +86,14 @@ export default {
            isOneFlowEnd: false,
            inputValue1: '',
            inputValue2: '',
-           isInvolving: false
+           isInvolving: false,
+           stepList: [{
+              title: '排药'
+           },{
+            title: '加药'
+           },{
+            title: '执行'
+           }]
 		};
 	},
     computed: {
@@ -109,7 +117,7 @@ export default {
 	methods: {
 		...mapMutations(['setPatientInfo']),
 
-        async getInfo(code='00219664382025010608003'){
+        async getInfo(code='00249175632026072008001'){
             this.loading = true
             const res = await this.$http.get(taskUrl + `?code=${code}`)
             if(res){
