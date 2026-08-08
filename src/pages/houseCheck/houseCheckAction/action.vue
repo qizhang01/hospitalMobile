@@ -1,15 +1,21 @@
 <template>
 	<view class="container">
-			<view class="">
-				<view class="">
-					<view class="rf-top-item rf-icon-ml">
-						<text>{{ nowTime }}</text>
-					</view>
-                    <!-- <view>扫描结果：{{ this.$mStore.state.scanCode}}</view> -->
-                    <view>扫描结果1: {{ scanCode}}</view>
-                    <view>扫描结果2: {{ $store.state.scanCode}}</view>
-				</view>
-			</view>
+			<view class="topTitle">
+                <div class="topNavLeft" @tap.stop="navBack()">
+                    <div class="uni-page-head-btn">
+                        <i class="uni-btn-icon" style="color: rgb(255, 255, 255); font-size: 27px;"></i>
+                    </div>
+                </div>
+                <text>病区巡视</text>
+                <text class="topNavRight" @tap.stop="navToRecord()">病区巡视记录</text>
+            </view>
+            <view class="">
+                <!-- <view class="rf-top-item rf-icon-ml">
+                    <text>{{ nowTime }}</text>
+                </view> -->
+                <view>扫描结果1: {{ scanCode}}</view>
+                <!-- <view>扫描结果2: {{ $store.state.scanCode}}</view> -->
+            </view>
 			<view class="content">
                 <view class="center" @tap.stop="toggleShow">
                     <text>{{patientInfo.Name}}</text>
@@ -73,7 +79,7 @@
                             <text class="rf-ml rf-middle">主诊医生:</text>
                             <text class="rf-ml rf-middle">{{ patientInfo.ReceptTreatDrName }}</text>
                         </view>
-                        <view>
+                        <view class="right-content">
                             <text class="rf-ml rf-middle">入住科室:</text>
                             <text class="rf-ml rf-middle">{{ patientInfo.AdmissionDeptName }}</text>
                         </view>
@@ -84,17 +90,17 @@
                             <text class="rf-ml rf-middle">医保费别:</text>
                             <text class="rf-ml rf-middle">{{ patientInfo.ChargeTypeName }}</text>
                         </view>
-                        <view>
+                        <view class="right-content">
                             <text class="rf-ml rf-middle">预缴款项:</text>
                             <text class="rf-ml rf-middle">{{ patientInfo.PrePayment }}</text>
                         </view>
                     </view>
                     <view class="rf-group">
-                        <view>
+                        <view >
                             <text class="rf-ml rf-middle">费用合计:</text>
                             <text class="rf-ml rf-middle">{{ patientInfo.TotalCost }}</text>
                         </view>
-                        <view>
+                        <view class="right-content">
                             <text class="rf-ml rf-middle">过敏史:</text>
                             <text class="rf-ml rf-middle">{{ }}</text>
                         </view>
@@ -105,7 +111,7 @@
                             <text class="rf-ml rf-middle">诊断:</text>
                             <text class="rf-ml rf-middle">{{ patientInfo.DiagnosisName }}</text>
                         </view>
-                        <view>
+                        <view class="right-content">
                             <text class="rf-ml rf-middle">饮食:</text>
                             <text class="rf-ml rf-middle">{{ patientInfo.Diet }}</text>
                         </view>
@@ -132,13 +138,13 @@ export default {
     },
 
     watch: {
-        scanCode: {
-            handler(newVal, oldVal){
-                this.$mHelper.toast(newVal);
-                this.filterById(99451)
-            },
-            immediate: true
-        },
+        // scanCode: {
+        //     handler(newVal, oldVal){
+        //         this.$mHelper.toast(newVal);
+        //         this.filterById(99451)
+        //     },
+        //     immediate: true
+        // },
     },
 
 	components: {
@@ -163,16 +169,9 @@ export default {
 
 	onLoad(options) {
 		this.onSetInterval();
+        this.patientInfo = JSON.parse(options.patientInfo)
 	},
 
-    onHide() {
-
-    },
-
-    onUnload() {
-
-    },
-    
     beforeUnmount() {
 		this.clearTimer();
 	},
@@ -180,8 +179,16 @@ export default {
 	methods: {
 
 		navTo(route) {
-			// this.$mRouter.push({ route });
+			this.$mRouter.push({ route });
 		},
+        
+        navToRecord(){
+            this.navTo('/pages/houseCheck/houseCheckRecord/record')
+        },
+        navBack(){
+            uni.navigateBack()
+        },
+
         onSetInterval(){
             timer =setInterval(() => {
                 this.nowTime = formatTime(new Date())
@@ -245,7 +252,6 @@ export default {
 		background: $page-color-base;
 	}
     .container {
-        padding: 30upx;
         background: white;
     }
     // page {
@@ -280,6 +286,7 @@ export default {
     }
 	.rf-dropdownlist {
 		width: 100%;
+        height: 80%;
 		position: absolute;
 		background: $color-white;
 		border-bottom-left-radius: 24upx;
@@ -300,8 +307,7 @@ export default {
 	}
 	.rf-dropdownlist-show {
 		visibility: visible;
-        height: 600upx;
-        max-height: 900upx;
+        height: 900upx;
 	}
 	.rf-dropdownlist-mask {
 		position: fixed;
@@ -351,5 +357,28 @@ export default {
     .operate-group {
         display: flex;
         flex-direction: column;
+    }
+    .right-content {
+        text-align: left;
+        width: 48%;
+    }
+    .topNavRight {
+        position: absolute;
+        right: 10px;
+        top: 4px;
+    }
+    .topNavLeft {
+        position: absolute;
+        left: 0px;
+        top: 4px;
+    }
+    .topTitle {
+        color: white;
+        background-color: #0081ff;
+        height: 60upx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
     }
 </style>
