@@ -1,15 +1,31 @@
 <template>
-	<view class="rf-index">
+	<view class="coupon-center">
 		<!--搜索导航栏-->
-		<!-- <rf-search-bar
-			@search="navToSearch"
-			title="扫一扫"
-			icon=""
-			@tab="tabClick"
-			:categoryList="[]"
-			merchantData=""
-			placeholder=""
-		/> -->
+		<view class="search-box" :class="'bg-' + themeColor.name">
+			<!-- <mSearch
+				class="mSearch-input-box"
+				:mode="2"
+				button="inside"
+				placeholder="请输入关键字"
+				@search="doSearch(false)"
+				@confirm="doSearch(false)"
+				v-model="keyword"
+			></mSearch> -->
+            <uni-search-bar 
+                class="mSearch-input-box"
+                placeholder="请输入关键字"
+                cancel-text="搜索"
+                cancelButton = 'always'
+                clearButton = 'always'
+                @confirm="search" 
+                :focus="true" 
+                v-model="keyword"
+                @blur="blur"
+				@cancel="cancel" 
+                @clear="clear">
+			</uni-search-bar>
+		</view>
+        
 		<view class="rf-header-screen" >
 			<view class="rf-screen-top">
 				<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" @tap="selectPatientRelationship">
@@ -33,11 +49,14 @@
 				</view>
 				<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
             </view>
-            <scroll-view scroll-y="true">
-                <patientInfoList :list="patientList"></patientInfoList>
-            </scroll-view>
 		</view>
-        
+        <scroll-view scroll-y="true" class="rf-content">
+            <patientInfoList :list="patientList"></patientInfoList>
+            <rf-load-more
+                :status="loadingType"
+                v-if="patientList.length > 0"
+            ></rf-load-more>
+        </scroll-view>
 		<!--页面加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
 		<!-- <rf-back-home></rf-back-home> -->
@@ -52,10 +71,11 @@
     import {computed} from 'vue'
     import {patientRelationship, patientGroup} from './option.js'
     import {taskStatesUrl, workflowsUrl, suppliesUrl, usersUrl, wardUrl} from '@/api/login'
-
+    import mSearch from '@/components/rf-search/rf-search';
 	export default {
 		components: {
 			rfSearchBar,
+            mSearch,
             patientInfoList,
 		},
         computed: mapState(['userInfo', 'cachePatientsList']),
@@ -73,7 +93,9 @@
                 patientGroup,
                 dropdownList: [],
                 tabIndex: 1,
-                patientList: []
+                patientList: [],
+                loadingType: 'nomore',
+                keyword: ''
 			};
 		},
 		onPageScroll(e) {
@@ -104,6 +126,7 @@
             ...mapMutations(['setPatientList','setSupply','setTaskState','setEmployees', 'setWorkflows']),
 			// 顶部tab点击
 			tabClick({ id }) {
+                
 			},
 
 			// 通用跳转
@@ -237,7 +260,7 @@
                         if (type === 'refresh') {
                             uni.stopPullDownRefresh();
                         }
-                        this.loadingType = result.length === 10 ? 'more' : 'nomore';
+                        // this.loadingType = result.length === 10 ? 'more' : 'nomore';
                         this.patientList = result;
                         this.setPatientList(result)
                     })
@@ -262,7 +285,35 @@
                 if(res){
                     this.setTaskState(res)
                 }
-            }
+            },
+
+			search(res) {
+                const keyWord = res.value.trim()
+                if(keyWord){
+                    this.patientList = this.cachePatientsList.filter(item=>item.Name.includes(keyWord)||item.BedNo.includes(keyWord))
+                }else {
+                    this.patientList = this.cachePatientsList
+                }
+			},
+
+			clear(res) {
+                this.patientList = this.cachePatientsList
+			},
+
+			cancel(res) {
+                this.search(res)
+			},
+
+            blur(res) {
+                const keyWord = res.value.trim()
+                if(keyword){
+                    this.patientList = this.cachePatientsList.filter(item=>{
+                       return  item.Name.includes(keyWord)||item.BedNo.includes(keyWord)
+                    })
+                }else {
+                    this.patientList = this.cachePatientsList
+                }
+			},
 		}
 	};
 </script>
@@ -311,6 +362,10 @@
 		opacity: 1;
 		visibility: visible;
 	}
+    .rf-content {
+        top: 146upx;
+        position: absolute;
+    }
 	.rf-dropdownlist-item {
 		color: #333;
 		height: 70upx;
@@ -324,10 +379,10 @@
 
 		/*screen*/
 		.rf-header-screen {
-            margin-top: 20px;
+            margin-top: 0upx;
 			width: 100%;
 			background: $color-white;
-			position: fixed;
+            position: fixed;
 			z-index: 99;
 			.rf-screen-top{
 				border: none;
@@ -336,13 +391,12 @@
 				justify-content: space-between;
 				font-size: 28upx;
 				color: #333;
-			}
-			.rf-screen-top {
-				height: 88upx;
-				line-height: 88upx;
+                height: 50upx;
+				line-height: 50upx;
 				position: relative;
 				background: $color-white;
 			}
+
 			.rf-top-item {
 				height: 28upx;
 				line-height: 28upx;
@@ -368,4 +422,33 @@
 				vertical-align: middle;
 			}
 		}
+
+        .search-box {
+            width: 100%;
+            padding: 15upx 2.5%;
+            display: flex;
+            justify-content: space-between;
+
+            .mSearch-input-box {
+                width: 100%;
+                padding: 0px;
+                .uni-searchbar__box {
+                    color: black;
+                }
+            }
+
+            .input-box > input {
+                width: 100%;
+                height: 60upx;
+                font-size: 32upx;
+                border: 0;
+                border-radius: 60upx;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                padding: 0 3%;
+                margin: 0;
+                background-color: #ffffff;
+            }
+        }
 </style>

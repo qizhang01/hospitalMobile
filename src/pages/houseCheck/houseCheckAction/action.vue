@@ -365,17 +365,17 @@ export default {
     .topNavRight {
         position: absolute;
         right: 10px;
-        top: 4px;
+        top: 9px;
     }
     .topNavLeft {
         position: absolute;
         left: 0px;
-        top: 4px;
+        top: 8px;
     }
     .topTitle {
         color: white;
         background-color: #0081ff;
-        height: 60upx;
+        height: 80upx;
         display: flex;
         align-items: center;
         justify-content: center;

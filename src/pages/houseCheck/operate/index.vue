@@ -4,9 +4,6 @@
             <view v-if="!isInvolving">
                 <view>排药操作: {{ $store.state.scanCode}}</view>
                 <view class="header-text">
-                    <!-- <text  :class="{ isCurrentStep: currentStep=='排药' }">排药 - </text>
-                    <text  :class="{ isCurrentStep: currentStep=='加药' }">加药 - </text>
-                    <text  :class="{ isCurrentStep: currentStep=='执行' }">执行</text> -->
                     <uni-steps :options="stepList" :active="stepList.findIndex(item=>item.title==currentStep)" />
                 </view>
                 <scroll-view>

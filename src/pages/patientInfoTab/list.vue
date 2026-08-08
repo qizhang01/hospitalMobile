@@ -1,6 +1,5 @@
 <template>
 	<view class="coupon-center">
-
 			<view class="rf-header-screen">
 				<view class="rf-screen-top">
 					<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
