@@ -61,7 +61,7 @@
                         <text class="rf-bolder rf-divider">72岁</text>
                         <text class="rf-bolder margin-left-2">#{{ patientInfo.Wristband }}</text>
                     </view>
-                    <text class="rf-middle rf-bolder">二级</text>
+                    <text class="rf-middle rf-bolder text-blue">{{ patientInfo.NursingClass }}级</text>
                 </view>
                 <view class="rf-dropdownlist-item">
                     <view class="rf-group">
@@ -71,7 +71,7 @@
                         </view>
                         <view class="right-content">
                             <text class="rf-ml rf-middle">入院时间:</text>
-                            <text class="rf-ml rf-middle">{{ patientInfo.AdmissionTime.slice(0,10) }}</text>
+                            <text class="rf-ml rf-middle text-blue">{{ patientInfo.AdmissionTime.slice(0,10) }}</text>
                         </view>
                     </view>
                     <view class="rf-group">
