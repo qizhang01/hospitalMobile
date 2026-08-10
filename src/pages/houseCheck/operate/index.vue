@@ -84,6 +84,7 @@ export default {
            inputValue1: '',
            inputValue2: '',
            isInvolving: false,
+           wristband: '',
            stepList: [{
               title: '排药'
            },{
@@ -99,7 +100,15 @@ export default {
 
     watch: {
         scanCode(newVal) {
-			this.getInfo(newVal)
+            if(/^\d{5,6}$/.test(newVal+'')){
+                //腕带
+                if(this.patientInfo.wristband==newVal){
+                     
+                }
+                this.wristband = newVal
+            }else {
+                this.getInfo(newVal)
+            }
 		},
     },
 
@@ -140,6 +149,9 @@ export default {
                     this.step= res.steps
                     this.stepsCodeList=this.step.map(item=>item.code)
                     this.currentStep = this.step[0].name
+                    uni.setNavigationBarTitle({
+                        title: this.currentStep 
+                    });
                     this.isInvolving = this.step[0].name=='结束'
                 }else {
                     let isSameStep = true
@@ -177,6 +189,11 @@ export default {
         },
 
         operate(){
+            if(this.currentStep.includes('执行')){
+                if(this.patientInfo.Wristband!=this.wristband){
+                    return this.$mHelper.toast('腕带和药品不匹配, 不能执行');
+                }
+            }
             this.loading = true
             const requestList = this.taskList.map(task=>this.$http.post(taskUrl + `/${task.id}/${this.stepsCodeList[0]}`))
             Promise.all(requestList).then(res=>{
