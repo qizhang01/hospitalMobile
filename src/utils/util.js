@@ -12,3 +12,24 @@ export function  getAgeByBirthdate(birthDate){
     const today = new Date()
     return today.getFullYear() - Number(birthDate.slice(0,4))
 }
+
+export function getDiffDays(endDate) {
+    const start = new Date();
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end - start);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
+export function getStandardTime(date){
+    const year = date.getFullYear()
+    const month = get2Digtal(date.getMonth()+1)
+    const day = get2Digtal(date.getDate())
+    return  `${year}-${month}-${day}T00:00:00+08:00`
+}
+
+const get2Digtal=(month)=>{
+    if(month<10){
+        return `0${month}`
+    }
+    return `${month}`
+}

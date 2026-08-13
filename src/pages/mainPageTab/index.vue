@@ -43,7 +43,10 @@
 				<!--下拉选择列表--综合-->
 				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
 					<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in dropdownList" :key="index" @tap.stop="dropdownItem(index)">
-						<text class="rf-ml rf-middle">{{item.name}}</text>
+						<view>
+                            <text class="rf-ml rf-middle rf-margin-right-20">{{item.name}}</text>
+                            <text class="rf-ml rf-middle" :class="'text-' + themeColor.name">{{ item.number }}</text>
+                        </view>
 						<text class="iconfont icongouxuan" :class="'text-' + themeColor.name" v-if="item.selected"></text>
 					</view>
 				</view>
@@ -73,9 +76,11 @@
     import patientInfoList from './patientInfoList'
 	import { mapMutations, mapState} from 'vuex';
     import {computed} from 'vue'
-    import {patientRelationship, patientGroup} from './option.js'
+    import {patientRelationship} from './option.js'
     import {taskStatesUrl, workflowsUrl, suppliesUrl, usersUrl, wardUrl} from '@/api/login'
     import mSearch from '@/components/rf-search/rf-search';
+    import { getDiffDays, getStandardTime } from '@/utils/util'
+
 	export default {
 		components: {
 			rfSearchBar,
@@ -94,7 +99,7 @@
                 selectH: 0,
                 dropdownIndex: 0,
                 patientRelationship,
-                patientGroup,
+                patientGroup: [],
                 dropdownList: [],
                 tabIndex: 1,
                 patientList: [],
@@ -105,18 +110,16 @@
 		onPageScroll(e) {
 			this.scrollTop = e.scrollTop;
 		},
-		onShow() {
-            this.getPatientList();
-            if(uni.getStorageSync('userInfo')){
-                this.$mStore.commit('login', uni.getStorageSync('userInfo'));
-            }
-		},
 
         onLoad(options) {
             this.getSupply();
             this.getTaskState();
             this.getUsers();
             this.getWorkflows()
+            this.getPatientList();
+            if(uni.getStorageSync('userInfo')){
+                this.$mStore.commit('login', uni.getStorageSync('userInfo'));
+            }
         },
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -198,10 +201,7 @@
                         break;
 
                     case '新病人': 
-                        this.patientList = this.cachePatientsList.filter(item=>{
-                            const dayNumber = 3
-                            return new Date().getTime() - new Date(item.AdmissionWardTime).getTime()<3*24*60*60
-                        }) 
+                        this.patientList = this.cachePatientsList.filter(item=>item.isNewPatient) 
                         break;
 
                     case '过敏':
@@ -209,17 +209,8 @@
                         break;
 
                     case '新医嘱': 
-                        this.patientList = this.cachePatientsList.filter(item=>{
-                            const dayNumber = 3
-                            return new Date().getTime() - new Date(item.AdmissionWardTime).getTime()<3*24*60*60
-                        }) 
+                        this.patientList = this.cachePatientsList.filter(item=>item.hasNewDoctorAdvice) 
                         break;
-                    // case 'NewDoctorAdvice': 
-                    //     patientsList.value = cachePatientsList.filter(item=>{
-                    //         const dayNumber = 3
-                    //         return new Date().getTime() - new Date(item.AdmissionWardTime).getTime()<3*24*60*60
-                    //     })  
-                    //     break;
                     case '手术': 
                         this.patientList = this.cachePatientsList.filter(item=>item.SurgeryHistory)
                         break;
@@ -229,7 +220,7 @@
                         break;
 
                     case '发热': 
-                        this.patientList = this.cachePatientsList.filter(item=>item.ArrearFlag) 
+                        this.patientList = this.cachePatientsList.filter(item=>item.isHighTemperature) 
                         break;
 
                     case '静滴静推': 
@@ -247,8 +238,27 @@
                     this.setEmployees(res)
                 }
             },
-            async getPatientList(type="", selectedValue="2901") {
+            async getPatientList(type="") {
                 const userInfo = uni.getStorageSync('userInfo');
+                
+                // 获取新医嘱列表
+                let newDoctorAdviceList = []
+                await Promise.all(userInfo.wards.map(item=>this.$http.get(`/api/ward/${item.id}/orders?from=${encodeURIComponent(getStandardTime(new Date()))}`))).then(data => {
+                    data.flat().forEach(item=>{
+                       if(item){
+                            newDoctorAdviceList.push(item.inpatient)
+                       }
+                    })
+                })
+
+                // 获取高温病人列表
+                let highTemperatureList = []
+                const fromTime = encodeURIComponent(getStandardTime(new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000)))
+                const toTime = encodeURIComponent(getStandardTime(new Date()))
+                await Promise.all(userInfo.wards.map(item=>this.$http.get(`/api/ward/${item.id}/vital?from=${fromTime}&to=${toTime}&name=体温`))).then(data => {
+                    highTemperatureList = data.flat().filter(item=>Number(item.value1)>=40).map(item=>item.inpatient)
+                })
+
                 const requestArr = userInfo && userInfo.wards.map(item=>{
                     return this.$http
                             .get(`${wardUrl}/${item.id}/inpatients`)
@@ -259,7 +269,10 @@
                     Promise.all(requestArr).then(response=>{
                         const result= response.flat().map(item=>({
                             ...item,
-                            Age: new Date().getFullYear()- Number(item.BirthDate.substr(0,4))
+                            Age: new Date().getFullYear()- Number(item.BirthDate.substr(0,4)),
+                            isNewPatient: getDiffDays(item.AdmissionWardTime) <= 3,
+                            hasNewDoctorAdvice: newDoctorAdviceList.includes(item.PatientId),
+                            isHighTemperature: highTemperatureList.includes(item.PatientId)
                         }))
                         this.loading = false;
                         if (type === 'refresh') {
@@ -268,6 +281,7 @@
                         // this.loadingType = result.length === 10 ? 'more' : 'nomore';
                         this.patientList = result;
                         this.setPatientList(result)
+                        this.setPatientGroupList(result)
                     })
                 }
             },
@@ -291,7 +305,60 @@
                     this.setTaskState(res)
                 }
             },
+            setPatientGroupList(patientList){
+                const newPatientNum=  patientList.filter(item=>item.isNewPatient).length
+                
+                const allergyPatientNum= patientList.filter(item=>item.Allergy).length
+                const ArrearFlag = patientList.filter(item=>item.ArrearFlag==1).length
+                const finishNum = patientList.filter(item=>item.DischargeStatus!=='INHOSPITAL').length
+                const surgeryPatientNum = patientList.filter(item=>item.SurgeryHistory).length
+                const newDoctorAdviceNum = patientList.filter(item=>item.hasNewDoctorAdvice).length
+                const highTemperatureNum = patientList.filter(item=>item.isHighTemperature).length
 
+                this.patientGroup=[
+                    {
+                        id: 0,
+                        selected: true,
+                        number: '',
+                        name: '全部标识'
+                    },{
+                        id: 1,
+                        selected: false,
+                        number: newPatientNum,
+                        name: '新病人'
+                    },{
+                        id: 2,
+                        selected: false,
+                        number: allergyPatientNum,
+                        name: '过敏'
+                    },{
+                        id: 3,
+                        selected: false,
+                        number: newDoctorAdviceNum,
+                        name: '新医嘱'
+                    },{
+                        id: 4,
+                        selected: false,
+                        number: surgeryPatientNum,
+                        name: '手术'
+                    },{
+                        id: 5,
+                        selected: false,
+                        number: ArrearFlag,
+                        name: '欠费'
+                    },{
+                        id: 6,
+                        selected: false,
+                        number: highTemperatureNum,
+                        name: '发热'
+                    },{
+                        id: 7,
+                        selected: false,
+                        number: '',
+                        name: '静滴静推'
+                    }
+                ]
+            },
 			search(res) {
                 const keyWord = res.value.trim()
                 if(keyWord){
@@ -311,7 +378,7 @@
 
             blur(res) {
                 const keyWord = res.value.trim()
-                if(keyword){
+                if(keyWord){
                     this.patientList = this.cachePatientsList.filter(item=>{
                        return  item.Name.includes(keyWord)||item.BedNo.includes(keyWord)
                     })
@@ -455,5 +522,8 @@
                 margin: 0;
                 background-color: #ffffff;
             }
+        }
+        .rf-margin-right-20 {
+            margin-right: 20upx;
         }
 </style>
