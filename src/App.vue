@@ -113,32 +113,28 @@ export default {
         },
 
         processScannedCode(code) {
-            console.log('进行业务处理:', code);
-            // TODO: 你的业务逻辑
-            // uni.setStorageSync( 'scanCode', code);
-            
             this.setScanCode(code)
-            this.$mHelper.toast(code);
-            // this.$mRouter.push({ route:'/pages/houseCheck/houseCheckAction/action' });
+    
             const currentRoute = this.getCurrentRoute()
 
-            if(/^\d{5,6}$/.test(code+'')){
+            const stringCode = code + ''
+            if(stringCode.length==5||stringCode.length==6){
                 //病人腕带
-                if(currentRoute!=='/pages/houseCheck/houseCheckAction/action' 
-                    && currentRoute!=='/pages/houseCheck/operate/index'){
+                if(!currentRoute.includes('pages/houseCheck/houseCheckAction/action') 
+                    && !currentRoute.includes('pages/houseCheck/operate/index')){
                     this.$mRouter.push({ route:'/pages/houseCheck/houseCheckAction/action' });
                 }
                 // if(currentRoute!=='/pages/patientInfoTab/patientDetail/index'){
                 //     this.$mRouter.push({ route:'/pages/patientInfoTab/patientDetail/index?Wristband='+ code });
                 // }
-            } else if(/\d{23}/.test(code+'')){
+            } else if(/\d{23}/.test(stringCode)){
                 //瓶贴
-                if(currentRoute!=='/pages/houseCheck/operate/index'){
+                if(!currentRoute.includes('pages/houseCheck/operate/index')){
                     this.$mRouter.push({ route:'/pages/houseCheck/operate/index' });
                 }
-            } else if(/^20\d{15}$/.test(code+'')){
+            } else if(/^20\d{15}$/.test(stringCode)){
                 //包药机
-                if(currentRoute!=='/pages/houseCheck/operate/index'){
+                if(!currentRoute.includes('pages/houseCheck/operate/index')){
                     this.$mRouter.push({ route:'/pages/houseCheck/operate/index' });
                 }
             }else {

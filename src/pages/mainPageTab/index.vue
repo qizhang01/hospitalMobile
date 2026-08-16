@@ -20,7 +20,7 @@
                     cancelButton = 'always'
                     clearButton = 'always'
                     @confirm="search" 
-                    :focus="true" 
+                    :focus="false" 
                     v-model="keyword"
                     @blur="blur"
                     @cancel="cancel" 
@@ -553,3 +553,22 @@
             margin-right: 20upx;
         }
 </style>
+
+
+            <!-- async getFinishedDoctorAdviceList(){
+                Promise.all(tempPatientList.map(item=>this.$http.get(this.getParams(item.PatientId))))
+                .then(data => {
+                    const finishedDoctorAdviceList = data.flat().map(item=>item.inpatient)
+                    const result= tempPatientList.map(item=>({
+                        ...item,
+                        Age: new Date().getFullYear()- Number(item.BirthDate.substr(0,4)),
+                        isNewPatient: getDiffDays(item.AdmissionWardTime) <= 3,
+                        hasNewDoctorAdvice: newDoctorAdviceList.includes(item.PatientId),
+                        isHighTemperature: highTemperatureList.includes(item.PatientId),
+                        isFinishedDoctorAdvice: !finishedDoctorAdviceList.includes(item.PatientId)
+                    }))
+                    this.patientList = result;
+                    this.setPatientList(result)
+                    this.setPatientGroupList(result)
+                })
+            }, -->

@@ -46,6 +46,9 @@
 
                 <view class="center operate-group" v-if="!isNormal">
                     <uni-easyinput  v-model="value" focus placeholder="请输入异常状态" @input="input"></uni-easyinput>
+                </view>
+                
+                <view class="center operate-group">
                     <button type="primary" size="mini" @tap.stop="handleSubmit" style="margin-top: 20upx; width: 60%; height: 54upx;">提交</button>
                 </view>
                 
@@ -71,7 +74,7 @@
                         </view>
                         <view class="right-content">
                             <text class="rf-ml rf-middle">入院时间:</text>
-                            <text class="rf-ml rf-middle text-blue">{{ patientInfo.AdmissionTime.slice(0,10) }}</text>
+                            <text class="rf-ml rf-middle text-blue">{{ patientInfo.AdmissionTime && patientInfo.AdmissionTime.slice(0,10) }}</text>
                         </view>
                     </view>
                     <view class="rf-group">
@@ -102,7 +105,7 @@
                         </view>
                         <view class="right-content">
                             <text class="rf-ml rf-middle">过敏史:</text>
-                            <text class="rf-ml rf-middle">{{ }}</text>
+                            <text class="rf-ml rf-middle">{{ patientInfo.Allergy}}</text>
                         </view>
                     </view>
 
@@ -138,13 +141,12 @@ export default {
     },
 
     watch: {
-        // scanCode: {
-        //     handler(newVal, oldVal){
-        //         this.$mHelper.toast(newVal);
-        //         this.filterById(99451)
-        //     },
-        //     immediate: true
-        // },
+        scanCode: {
+            handler(newVal, oldVal){
+                if(newVal) this.filterById(newVal)
+            },
+            immediate: true
+        },
     },
 
 	components: {
@@ -159,7 +161,7 @@ export default {
             abnormalList,
             isNormal: true,
             isShowDetail: false,
-            patientInfo: this.cachePatientsList? this.cachePatientsList[0]: {}
+            patientInfo: {}
 		};
 	},
 
@@ -169,7 +171,11 @@ export default {
 
 	onLoad(options) {
 		this.onSetInterval();
-        this.patientInfo = JSON.parse(options.patientInfo)
+        if(options.patientInfo) {
+            this.patientInfo = JSON.parse(options.patientInfo)
+        }else {
+            this.patientInfo = this.cachePatientsList? this.cachePatientsList[0]: {}
+        }
 	},
 
     beforeUnmount() {
@@ -231,9 +237,15 @@ export default {
             })
         },
         
-        filterById(id=99451){
-            //99451
-            this.patientInfo = this.cachePatientsList.filter(item=>item.Wristband == id)[0]
+        filterById(id){
+            this.$mHelper.toast(id)
+            const filterResult = this.cachePatientsList.filter(item=>item.Wristband == id)
+            this.$mHelper.toast(filterResult)
+            if(filterResult.length > 0){
+                this.patientInfo = filterResult[0]
+            }else {
+                this.$mHelper.toast('未找到对应的病人信息, 请核对腕带号');
+            }
         },
 
         handleSubmit(){
@@ -241,8 +253,12 @@ export default {
         },
 
         getAgeByBirthdate(birthDate){
-            const today = new Date()
-             return today.getFullYear() - Number(birthDate.slice(0,4))
+            if(birthDate){
+                const today = new Date()
+                return today.getFullYear() - Number(birthDate.slice(0,4))
+            }else {
+                return ''
+            }
         }
 	}
 };
@@ -342,10 +358,6 @@ export default {
     }
     .rf-underline {
         border-bottom: 1px solid gray;
-    }
-    .rf-bolder {
-        font-size: 16px;
-        font-weight: 500;
     }
     .rf-divider {
         border-right: 1px solid gray;
