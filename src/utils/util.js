@@ -27,9 +27,21 @@ export function getStandardTime(date){
     return  `${year}-${month}-${day}T00:00:00+08:00`
 }
 
-const get2Digtal=(month)=>{
+export const get2Digtal=(month)=>{
     if(month<10){
         return `0${month}`
     }
     return `${month}`
+}
+
+export function getNurseClass(classId){
+    if(classId==0){
+        return '特'
+    }else if(classId==1){
+        return '一'
+    }else if(classId==2){
+        return '二'
+    }else if(classId==3){
+        return '三'
+    }
 }

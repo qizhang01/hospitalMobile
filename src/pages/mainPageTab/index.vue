@@ -1,32 +1,32 @@
 <template>
 	<view class="coupon-center">
 		<!--搜索导航栏-->
-		<view class="search-box" :class="'bg-' + themeColor.name">
-			<!-- <mSearch
-				class="mSearch-input-box"
-				:mode="2"
-				button="inside"
-				placeholder="请输入关键字"
-				@search="doSearch(false)"
-				@confirm="doSearch(false)"
-				v-model="keyword"
-			></mSearch> -->
-            <uni-search-bar 
-                class="mSearch-input-box"
-                placeholder="请输入关键字"
-                cancel-text="搜索"
-                cancelButton = 'always'
-                clearButton = 'always'
-                @confirm="search" 
-                :focus="true" 
-                v-model="keyword"
-                @blur="blur"
-				@cancel="cancel" 
-                @clear="clear">
-			</uni-search-bar>
-		</view>
         
-		<view class="rf-header-screen" >
+            <view class="rf-header-screen" >
+                <view class="search-box" :class="'bg-' + themeColor.name">
+                <!-- <mSearch
+                    class="mSearch-input-box"
+                    :mode="2"
+                    button="inside"
+                    placeholder="请输入关键字"
+                    @search="doSearch(false)"
+                    @confirm="doSearch(false)"
+                    v-model="keyword"
+                ></mSearch> -->
+                <uni-search-bar 
+                    class="mSearch-input-box"
+                    placeholder="请输入关键字"
+                    cancel-text="搜索"
+                    cancelButton = 'always'
+                    clearButton = 'always'
+                    @confirm="search" 
+                    :focus="true" 
+                    v-model="keyword"
+                    @blur="blur"
+                    @cancel="cancel" 
+                    @clear="clear">
+                </uni-search-bar>
+            </view>
 			<view class="rf-screen-top">
 				<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" @tap="selectPatientRelationship">
 					<text>{{selectedPatientRelationship}}</text>
@@ -53,7 +53,7 @@
 				<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
             </view>
 		</view>
-        <scroll-view scroll-y="true" class="rf-content">
+        <view scroll-y="true" class="rf-content">
             <patientInfoList :list="patientList"></patientInfoList>
             <rf-load-more
                 :status="loadingType"
@@ -63,7 +63,7 @@
                 :info="errorInfo || '暂无患者信息'"
                 v-if="patientList.length === 0 && !loading"
             ></rf-empty>
-        </scroll-view>
+        </view>
 		<!--页面加载动画-->
 		<rfLoading isFullScreen :active="loading"></rfLoading>
 		<!-- <rf-back-home></rf-back-home> -->
@@ -80,7 +80,8 @@
     import {taskStatesUrl, workflowsUrl, suppliesUrl, usersUrl, wardUrl} from '@/api/login'
     import mSearch from '@/components/rf-search/rf-search';
     import { getDiffDays, getStandardTime } from '@/utils/util'
-
+    import {get2Digtal} from '@/utils/util'
+    
 	export default {
 		components: {
 			rfSearchBar,
@@ -266,13 +267,20 @@
 
                 if(requestArr){
                     this.loading = true
-                    Promise.all(requestArr).then(response=>{
+                    Promise.all(requestArr).then(async response=>{
+                        let finishedDoctorAdviceList = []
+                        await Promise.all(response.flat().map(item=>this.$http.get(this.getParams(item.PatientId))))
+                            .then(data => {
+                                finishedDoctorAdviceList = data.flat().map(item=>item.inpatient)
+                            })
+
                         const result= response.flat().map(item=>({
                             ...item,
                             Age: new Date().getFullYear()- Number(item.BirthDate.substr(0,4)),
                             isNewPatient: getDiffDays(item.AdmissionWardTime) <= 3,
                             hasNewDoctorAdvice: newDoctorAdviceList.includes(item.PatientId),
-                            isHighTemperature: highTemperatureList.includes(item.PatientId)
+                            isHighTemperature: highTemperatureList.includes(item.PatientId),
+                            isFinishedDoctorAdvice: !finishedDoctorAdviceList.includes(item.PatientId)
                         }))
                         this.loading = false;
                         if (type === 'refresh') {
@@ -286,6 +294,13 @@
                 }
             },
             
+            getParams(id){
+                const day = new Date()
+                const fromTime = `${day.getFullYear()}-${get2Digtal(day.getMonth()+1)}-${get2Digtal(day.getDate())}T00:00:00+08:00`
+                const toTime = `${day.getFullYear()}-${get2Digtal(day.getMonth()+1)}-${get2Digtal(day.getDate())}T23:59:59+08:00`
+                return `/api/inpatient/${id}/tasks?from=${encodeURIComponent(fromTime)}&to=${encodeURIComponent(toTime)}&active=true`
+            },
+
             async getSupply(){
                 const res = await this.$http.get(suppliesUrl)
                 if(res){
