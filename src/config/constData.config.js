@@ -28,7 +28,6 @@ export default {
 						'/static/tab-home-rf.png',
 						'/static/tab-cate-rf.png',
 						'/static/tab-notify-rf.png',
-						'/static/tab-cart-rf.png',
 						'/static/tab-my-rf.png'
 					]
 				},
@@ -39,8 +38,7 @@ export default {
 					tabList: [
 						'/static/tab-home-red.png',
 						'/static/tab-cate-red.png',
-						'/static/tab-notify-red.png',
-						'/static/tab-cart-red.png',
+						'/static/tab-notify-red.png',,
 						'/static/tab-my-red.png'
 					]
 				},
@@ -52,7 +50,6 @@ export default {
 						'/static/tab-home-orange.png',
 						'/static/tab-cate-orange.png',
 						'/static/tab-notify-orange.png',
-						'/static/tab-cart-orange.png',
 						'/static/tab-my-orange.png'
 					]
 				},
@@ -64,7 +61,6 @@ export default {
 						'/static/tab-home-yellow.png',
 						'/static/tab-cate-yellow.png',
 						'/static/tab-notify-yellow.png',
-						'/static/tab-cart-yellow.png',
 						'/static/tab-my-yellow.png'
 					]
 				},
@@ -76,7 +72,6 @@ export default {
 						'/static/tab-home-olive.png',
 						'/static/tab-cate-olive.png',
 						'/static/tab-notify-olive.png',
-						'/static/tab-cart-olive.png',
 						'/static/tab-my-olive.png'
 					]
 				},
@@ -88,7 +83,6 @@ export default {
 						'/static/tab-home-green.png',
 						'/static/tab-cate-green.png',
 						'/static/tab-notify-green.png',
-						'/static/tab-cart-green.png',
 						'/static/tab-my-green.png'
 					]
 				},
@@ -100,7 +94,6 @@ export default {
 						'/static/tab-home-cyan.png',
 						'/static/tab-cate-cyan.png',
 						'/static/tab-notify-cyan.png',
-						'/static/tab-cart-cyan.png',
 						'/static/tab-my-cyan.png'
 					]
 				},
@@ -111,7 +104,7 @@ export default {
 					tabList: [
 						'/static/tab-home-blue.png',
 						'/static/tab-cate-blue.png',
-						'/static/tab-cart-blue.png',
+						'/static/tab-notify-blue.png',
 						'/static/tab-my-blue.png'
 					]
 				},
@@ -123,7 +116,6 @@ export default {
 						'/static/tab-home-purple.png',
 						'/static/tab-cate-purple.png',
 						'/static/tab-notify-purple.png',
-						'/static/tab-cart-purple.png',
 						'/static/tab-my-purple.png'
 					]
 				},
@@ -135,7 +127,6 @@ export default {
 						'/static/tab-home-mauve.png',
 						'/static/tab-cate-mauve.png',
 						'/static/tab-notify-mauve.png',
-						'/static/tab-cart-mauve.png',
 						'/static/tab-my-mauve.png'
 					]
 				},
@@ -147,7 +138,6 @@ export default {
 						'/static/tab-home-pink.png',
 						'/static/tab-cate-pink.png',
 						'/static/tab-notify-pink.png',
-						'/static/tab-cart-pink.png',
 						'/static/tab-my-pink.png'
 					]
 				},
@@ -159,7 +149,6 @@ export default {
 						'/static/tab-home-brown.png',
 						'/static/tab-cate-brown.png',
 						'/static/tab-notify-brown.png',
-						'/static/tab-cart-brown.png',
 						'/static/tab-my-brown.png'
 					]
 				},
@@ -171,7 +160,6 @@ export default {
 						'/static/tab-home-grey.png',
 						'/static/tab-cate-grey.png',
 						'/static/tab-notify-grey.png',
-						'/static/tab-cart-grey.png',
 						'/static/tab-my-grey.png'
 					]
 				},
@@ -183,7 +171,6 @@ export default {
 						'/static/tab-home-gray.png',
 						'/static/tab-cate-gray.png',
 						'/static/tab-notify-gray.png',
-						'/static/tab-cart-gray.png',
 						'/static/tab-my-gray.png'
 					]
 				},
@@ -195,7 +182,6 @@ export default {
 						'/static/tab-home-black.png',
 						'/static/tab-cate-black.png',
 						'/static/tab-notify-black.png',
-						'/static/tab-cart-black.png',
 						'/static/tab-my-black.png'
 					]
 				}

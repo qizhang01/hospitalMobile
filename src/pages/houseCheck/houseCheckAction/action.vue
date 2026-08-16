@@ -380,5 +380,6 @@ export default {
         align-items: center;
         justify-content: center;
         position: relative;
+        top: 20px;
     }
 </style>

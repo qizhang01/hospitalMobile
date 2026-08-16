@@ -81,7 +81,9 @@
     import mSearch from '@/components/rf-search/rf-search';
     import { getDiffDays, getStandardTime } from '@/utils/util'
     import {get2Digtal} from '@/utils/util'
-    
+    let newDoctorAdviceList = []
+    let highTemperatureList = []
+
 	export default {
 		components: {
 			rfSearchBar,
@@ -117,6 +119,8 @@
             this.getTaskState();
             this.getUsers();
             this.getWorkflows()
+            this.getNewDoctorAdviceList()
+            this.getHighTempratureList()
             this.getPatientList();
             if(uni.getStorageSync('userInfo')){
                 this.$mStore.commit('login', uni.getStorageSync('userInfo'));
@@ -239,11 +243,11 @@
                     this.setEmployees(res)
                 }
             },
-            async getPatientList(type="") {
+
+            async getNewDoctorAdviceList(){
                 const userInfo = uni.getStorageSync('userInfo');
                 
                 // 获取新医嘱列表
-                let newDoctorAdviceList = []
                 await Promise.all(userInfo.wards.map(item=>this.$http.get(`/api/ward/${item.id}/orders?from=${encodeURIComponent(getStandardTime(new Date()))}`))).then(data => {
                     data.flat().forEach(item=>{
                        if(item){
@@ -251,15 +255,22 @@
                        }
                     })
                 })
-
+            },
+            
+            async getHighTempratureList(){
+                const userInfo = uni.getStorageSync('userInfo');
+                
                 // 获取高温病人列表
-                let highTemperatureList = []
+
                 const fromTime = encodeURIComponent(getStandardTime(new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000)))
                 const toTime = encodeURIComponent(getStandardTime(new Date()))
                 await Promise.all(userInfo.wards.map(item=>this.$http.get(`/api/ward/${item.id}/vital?from=${fromTime}&to=${toTime}&name=体温`))).then(data => {
                     highTemperatureList = data.flat().filter(item=>Number(item.value1)>=40).map(item=>item.inpatient)
                 })
+            },
 
+            async getPatientList(type="") {
+                const userInfo = uni.getStorageSync('userInfo');
                 const requestArr = userInfo && userInfo.wards.map(item=>{
                     return this.$http
                             .get(`${wardUrl}/${item.id}/inpatients`)
@@ -267,12 +278,12 @@
 
                 if(requestArr){
                     this.loading = true
-                    Promise.all(requestArr).then(async response=>{
+                    Promise.all(requestArr).then(response=>{
                         let finishedDoctorAdviceList = []
-                        await Promise.all(response.flat().map(item=>this.$http.get(this.getParams(item.PatientId))))
-                            .then(data => {
-                                finishedDoctorAdviceList = data.flat().map(item=>item.inpatient)
-                            })
+                        // await Promise.all(response.flat().map(item=>this.$http.get(this.getParams(item.PatientId))))
+                        //     .then(data => {
+                        //         finishedDoctorAdviceList = data.flat().map(item=>item.inpatient)
+                        //     })
 
                         const result= response.flat().map(item=>({
                             ...item,

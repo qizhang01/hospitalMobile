@@ -119,20 +119,30 @@ export default {
             
             this.setScanCode(code)
             this.$mHelper.toast(code);
+            // this.$mRouter.push({ route:'/pages/houseCheck/houseCheckAction/action' });
+            const currentRoute = this.getCurrentRoute()
 
-            const currentRoute = getCurrentRoute()
             if(/^\d{5,6}$/.test(code+'')){
                 //病人腕带
-                if(currentRoute!=='/pages/houseCheck/houseCheckAction/action'){
+                if(currentRoute!=='/pages/houseCheck/houseCheckAction/action' 
+                    && currentRoute!=='/pages/houseCheck/operate/index'){
                     this.$mRouter.push({ route:'/pages/houseCheck/houseCheckAction/action' });
                 }
+                // if(currentRoute!=='/pages/patientInfoTab/patientDetail/index'){
+                //     this.$mRouter.push({ route:'/pages/patientInfoTab/patientDetail/index?Wristband='+ code });
+                // }
             } else if(/\d{23}/.test(code+'')){
                 //瓶贴
-                if(currentRoute!=='/pages/houseCheck/houseCheckRecord/record'){
-                    this.$mRouter.push({ route:'/pages/houseCheck/houseCheckRecord/record' });
+                if(currentRoute!=='/pages/houseCheck/operate/index'){
+                    this.$mRouter.push({ route:'/pages/houseCheck/operate/index' });
                 }
             } else if(/^20\d{15}$/.test(code+'')){
                 //包药机
+                if(currentRoute!=='/pages/houseCheck/operate/index'){
+                    this.$mRouter.push({ route:'/pages/houseCheck/operate/index' });
+                }
+            }else {
+                this.$mHelper.toast('二维码无效, 请仔细核对来源');
             }
         },
 
