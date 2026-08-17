@@ -83,7 +83,8 @@
     import {get2Digtal} from '@/utils/util'
     let newDoctorAdviceList = []
     let highTemperatureList = []
-
+    let injectionList = []
+    
 	export default {
 		components: {
 			rfSearchBar,
@@ -229,7 +230,7 @@
                         break;
 
                     case '静滴静推': 
-                        this.patientList = this.cachePatientsList.filter(item=>item.ArrearFlag) 
+                        this.patientList = this.cachePatientsList.filter(item=>item.isInjection) 
                         break;
 
                     default: 
@@ -252,6 +253,9 @@
                     data.flat().forEach(item=>{
                        if(item){
                             newDoctorAdviceList.push(item.inpatient)
+                            if(item.supply==20 || item.supply==27){
+                                injectionList.push(item.inpatient)
+                            }
                        }
                     })
                 })
@@ -291,7 +295,8 @@
                             isNewPatient: getDiffDays(item.AdmissionWardTime) <= 3,
                             hasNewDoctorAdvice: newDoctorAdviceList.includes(item.PatientId),
                             isHighTemperature: highTemperatureList.includes(item.PatientId),
-                            isFinishedDoctorAdvice: !finishedDoctorAdviceList.includes(item.PatientId)
+                            isFinishedDoctorAdvice: !finishedDoctorAdviceList.includes(item.PatientId),
+                            isInjection: injectionList.includes(item.PatientId)
                         }))
                         this.loading = false;
                         if (type === 'refresh') {
@@ -340,7 +345,7 @@
                 const surgeryPatientNum = patientList.filter(item=>item.SurgeryHistory).length
                 const newDoctorAdviceNum = patientList.filter(item=>item.hasNewDoctorAdvice).length
                 const highTemperatureNum = patientList.filter(item=>item.isHighTemperature).length
-
+                const injectionNum = patientList.filter(item=>item.isInjection).length
                 this.patientGroup=[
                     {
                         id: 0,
@@ -380,7 +385,7 @@
                     },{
                         id: 7,
                         selected: false,
-                        number: '',
+                        number: injectionNum,
                         name: '静滴静推'
                     }
                 ]

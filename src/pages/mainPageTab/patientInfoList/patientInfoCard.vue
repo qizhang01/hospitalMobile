@@ -16,7 +16,7 @@
                 <view class="patient-info-status">
                     <text class="item-info rf-bolder">{{ NursingClass}}级</text>
                     <image class="character-icon item-info" :src="noMoney" v-if="patientInfo.ArrearFlag"></image>
-                    <image class="character-icon item-info" :src="finish" style="width: 22px; height: 22px;" ></image>
+                    <!-- <image class="character-icon item-info" :src="finish" style="width: 22px; height: 22px;" ></image> -->
                     <image class="character-icon item-info" :src="newPatient" v-if="patientInfo.isNewPatient"></image>
                     <image class="character-icon item-info" :src="allergy" v-if="patientInfo.Allergy" ></image>
                     <image class="character-icon item-info" :src="notes" v-if="patientInfo.hasNewDoctorAdvice" style="width: 18px; height: 18px;"></image>
@@ -141,13 +141,13 @@ export default {
     }
 }
 .column-1 {
-    width: 150upx;
+    width: 160upx;
 }
 .column-2 {
-    width: 180upx;
+    width: 200upx;
 }
 .column-3 {
-    width: 350upx;
+    width: 320upx;
 }
 .inline {
     margin-right: 10upx;
