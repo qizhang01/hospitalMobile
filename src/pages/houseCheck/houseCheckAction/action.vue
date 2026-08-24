@@ -28,7 +28,7 @@
                     <text>MRN {{ patientInfo.Mrn }}</text>
                 </view>
                 <view class="switch-content center">
-                    <text class="switch-text">{{ checkedText }}</text>
+                    <text class="switch-text">{{ isNormal?'正常':'异常' }}</text>
                     <switch :checked="isNormal" @change="switchChange"/>
 			    </view>
                 <view class="button-group" v-if="!isNormal">
@@ -45,7 +45,7 @@
                 </view>
 
                 <view class="center operate-group" v-if="!isNormal">
-                    <uni-easyinput  v-model="value" focus placeholder="请输入异常状态" @input="input"></uni-easyinput>
+                    <uni-easyinput  v-model="inputVal" focus placeholder="请输入异常状态"></uni-easyinput>
                 </view>
                 
                 <view class="center operate-group">
@@ -132,7 +132,7 @@ import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import {formatTime} from '@/utils/util.js'
 import {abnormalList} from '../option.js'
 import { mapState, watch} from 'vuex';
-import {taskStatesUrl, workflowsUrl, suppliesUrl, usersUrl, wardUrl} from '@/api/login'
+import {inspectUrl} from '@/api/login'
 
 let timer=null
 export default {
@@ -154,10 +154,7 @@ export default {
 	},
 	data() {
 		return {
-            nowTime: '',
-            checked: true,
-            checkedText: '正常',
-            value: '',
+            inputVal: '外出',
             abnormalList,
             isNormal: true,
             isShowDetail: false,
@@ -170,7 +167,6 @@ export default {
     },
 
 	onLoad(options) {
-		this.onSetInterval();
         if(options.patientInfo) {
             this.patientInfo = JSON.parse(options.patientInfo)
         }else {
@@ -195,11 +191,6 @@ export default {
             uni.navigateBack()
         },
 
-        onSetInterval(){
-            timer =setInterval(() => {
-                this.nowTime = formatTime(new Date())
-            }, 1000);
-        },
 
         clearTimer() {
             if (timer) {
@@ -214,14 +205,10 @@ export default {
 
         switchChange() {
             this.isNormal = !this.isNormal
-            if(this.isNormal){
-                this.checkedText = '正常'
-            }else {
-                this.checkedText = '异常'
-            }
         },
 
         handleButtonClick(item){
+            this.inputVal = item.name
             this.abnormalList = this.abnormalList.map(el=>{
                 if(item.id==el.id){
                     return {
@@ -248,8 +235,15 @@ export default {
             }
         },
 
-        handleSubmit(){
-
+        async handleSubmit(){
+            const res = await this.$http.post(inspectUrl,{
+                inpatient: this.patientInfo.PatientId, 
+                state: this.isNormal? 'NORMAL': "ABNORMAL", 
+                remark: this.isNormal? '': this.inputVal
+            })
+            if(res){
+                this.$mHelper.toast('提交成功');
+            }
         },
 
         getAgeByBirthdate(birthDate){

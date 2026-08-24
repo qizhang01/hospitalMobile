@@ -1,12 +1,13 @@
 <template>
     <view class="container">
         <view class="coupon-center">
-            <view v-if="!isInvolving">
-                <view>排药操作: {{ $store.state.scanCode}}</view>
+            <view>
+                <view>排药操作: {{ this.scanCode}}</view>
+                <!-- <view><text v-for="(code, index) in bardcodeList" :key="index">{{ code }}</text></view> -->
                 <view class="header-text">
                     <uni-steps :options="stepList" :active="stepList.findIndex(item=>item.title==currentStep)" />
                 </view>
-                <scroll-view>
+                <scroll-view scroll-y="true" style="height: 500upx">
                     <view v-for="(task, index) in taskList" :key="task.barcode">
                         <view class="progress-info patient-info">
                             <text>{{ task.barcode }}</text>
@@ -33,7 +34,7 @@
                     </view>
                 </scroll-view>
             </view>
-            <view v-else>
+            <view v-if='isInvolving'>
                 <view class="header-text">请填写巡视信息</view>
                 <uni-section title="滴速 (滴/分)"  type="line" class="input-area">
                     <uni-easyinput class="uni-mt-5" trim="all" v-model="inputValue1" placeholder="请输入内容" type='number'></uni-easyinput>
@@ -44,16 +45,16 @@
             </view>
         </view>
         <view class="operate-group" v-if='!isInvolving'>
-            <text>可继续扫描或者继续排药</text>
-            <button type="primary" class="confirm-button" @tap.stop="operate" v-if="!isOneFlowEnd">
+            <text class="cu-load">可继续扫描或者继续排药</text>
+            <button type="primary" class="confirm-button" @tap.stop="operate" v-if="!isOneFlowEnd" :disabled="disabled">
                 {{currentStep}}{{ "("+count+')' }}
             </button>
         </view>
         <view class="single-line-group" v-else>
-            <button type="primary"  @tap.stop="finish" size="mini" style="height: 50upx; width: 200upx;">
+            <button type="primary"  @tap.stop="finish"  style="width: 200upx;">
                 拔针完成
             </button>
-            <button  @tap.stop="save" size="mini" style="height: 50upx; width: 200upx;">
+            <button  @tap.stop="save"  style="width: 200upx;">
                 保存滴速
             </button>
         </view>
@@ -85,31 +86,39 @@ export default {
            inputValue2: '',
            isInvolving: false,
            wristband: '',
-           stepList: [{
-              title: '排药'
-           },{
-            title: '加药'
-           },{
-            title: '执行'
-           }]
+           stepList: []
 		};
 	},
     computed: {
-        ...mapState(['cachePatientsList', 'scanCode']),
-    },
-
-    watch: {
-        scanCode(newVal) {
-            if(/^\d{5,6}$/.test(newVal+'')){
-                //腕带
-                if(this.patientInfo.wristband==newVal){
-                     
+        ...mapState(['cachePatientsList', 'scanCode','workflows']),
+        disabled(){
+            if(this.currentStep.includes('执行')){
+                if(this.patientInfo.Wristband!=this.wristband){
+                    return true
                 }
-                this.wristband = newVal
-            }else {
-                this.getInfo(newVal)
             }
-		},
+            return false
+        }
+    },
+     
+    watch: {
+        scanCode: {
+            handler(newVal, oldVal){
+                if(newVal) {
+                    const stringCode = newVal + ''
+                    if(stringCode.length==5||stringCode.length==6){
+                        //腕带
+                        if(this.patientInfo.wristband==stringCode){
+                            
+                        }
+                        this.wristband = stringCode
+                    }else {
+                        this.getInfo(stringCode)
+                    }
+                }
+            },
+            immediate: true
+        }
     },
 
 	onLoad(options) {
@@ -127,19 +136,30 @@ export default {
             this.loading = true
             const res = await this.$http.get(taskUrl + `?code=${code}`)
             if(res){
+                this.loading = false
                 this.handleResponse(res)
+                this.stepList = this.getStepList( this.workflows.get(res.workflow))
             }
         },
         
+        getStepList(stepString){
+            const steps = stepString.split('->')
+            return steps.map(item=>{
+                return {
+                    title: item=='配药'?'加药': item
+                }
+            })
+        },
         handleResponse(res){
                 if(this.bardcodeList.includes(res.barcode)){
                     return this.$mHelper.toast('请不要重复扫码.');
                 }
                 if(this.patientInfo && !this.isOneFlowEnd){
-                    if(this.patientInfo.PatientId!==res.inpatient){
+                    if(this.patientInfo.PatientId!=res.inpatient){
                         return this.$mHelper.toast('扫描的二维码不是同一个人, 请核对.');
                     }
                 }else {
+                    this.$mHelper.toast(res.inpatient);
                     this.isOneFlowEnd = false
                     this.taskList = []
                     this.patientInfo = this.cachePatientsList.filter(item=> item.PatientId==res.inpatient)[0]
@@ -166,7 +186,6 @@ export default {
                 }
                 this.taskList = [...this.taskList, res]
                 this.bardcodeList.push(res.barcode)
-                this.loading = false
                 this.count++
         },
 
@@ -181,19 +200,19 @@ export default {
         
         handleSumbitSuccess(){
             this.isOneFlowEnd = true
-            this.step = [],
-            this.stepsCodeList=[],
+            this.step = []
+            this.stepsCodeList=[]
             this.bardcodeList = []
             this.count = 0
             this.loading = false
         },
 
         operate(){
-            if(this.currentStep.includes('执行')){
-                if(this.patientInfo.Wristband!=this.wristband){
-                    return this.$mHelper.toast('腕带和药品不匹配, 不能执行');
-                }
-            }
+            // if(this.currentStep.includes('执行')){
+            //     if(this.patientInfo.Wristband!=this.wristband){
+            //         return this.$mHelper.toast('腕带和药品不匹配, 不能执行');
+            //     }
+            // }
             this.loading = true
             const requestList = this.taskList.map(task=>this.$http.post(taskUrl + `/${task.id}/${this.stepsCodeList[0]}`))
             Promise.all(requestList).then(res=>{
@@ -216,7 +235,8 @@ export default {
         async save(){
             this.loading = true
             const res = await this.$http.post(taskUrl + `/${this.taskList[0].id}/round`,{
-                drop_per_min: this.inputValue1
+                drop_per_min: this.inputValue1,
+                remark: this.inputValue2
             })
             if(res){
                 this.$mHelper.toast('保存成功');

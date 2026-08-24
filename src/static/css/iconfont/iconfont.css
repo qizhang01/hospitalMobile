@@ -1108,3 +1108,10 @@
   content: "\e61b";
 }
 
+.uniui-checkbox-filled:before {
+    content: "\e62c";
+}
+
+.uniui-search:before {
+    content: "\e654";
+}

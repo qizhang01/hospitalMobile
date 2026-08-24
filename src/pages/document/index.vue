@@ -15,7 +15,7 @@
 		<view
 			class="category-list"
 			@touchmove.stop.prevent="moveHandle"
-			v-if="(styleCateType === 'one_two_three_cover' || styleCateType === 'one_two_three_text') && documentList.length > 0">
+			>
 			<!-- 左侧分类导航 -->
 			<scroll-view scroll-y="true" class="left">
 				<view
