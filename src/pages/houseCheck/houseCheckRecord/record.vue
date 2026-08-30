@@ -1,26 +1,40 @@
 <template>
 	<view class="coupon-center">
-			<view class="rf-header-screen">
-				<view class="rf-screen-top">
-					<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
-						<text>{{selectedName}}</text>
-						<text class="iconfont" :class="tabIndex==0?'iconshang':'iconxia'"></text>
-					</view>
-					<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
-						<text>{{ selectedGroupName }}</text>
-						<text class="iconfont" :class="tabIndex==1?'iconshang':'iconxia'"></text>
-					</view>
-					<!--下拉选择列表--综合-->
-					<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
-						<view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in typeList" :key="index" @tap.stop="dropdownItem" :data-index="index" v-if="tabIndex==1">
-							<text class="rf-ml rf-middle">{{item.name}}</text>
-							<text class="iconfont icongouxuan" :class="'text-' + themeColor.name" v-if="item.selected"></text>
-						</view>
-                        <periodSelect :buttonList="dateList" v-if="tabIndex==0" @handleSelect ="handleSelect"  @period-button-click="handlePeriodButtonClick"></periodSelect>
-					</view>
-					<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
-				</view>
-			</view>
+        <view class="rf-header-screen">
+            <view class="rf-screen-top">
+                <view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" data-index="0" @tap="screen">
+                    <text>{{selectedTimeName}}</text>
+                    <text class="iconfont" :class="tabIndex==0?'iconshang':'iconxia'"></text>
+                </view>
+                <view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="screen" data-index="1">
+                    <text>{{ selectedGroupName }}</text>
+                    <text class="iconfont" :class="tabIndex==1?'iconshang':'iconxia'"></text>
+                </view>
+                <!--下拉选择列表--综合-->
+                <view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
+                    <view class="rf-dropdownlist-item rf-icon-middle" :class="[item.selected?'rf-bold':'']" v-for="(item,index) in typeList" :key="index" @tap.stop="dropdownItem" :data-index="index" v-if="tabIndex==1">
+                        <text class="rf-ml rf-middle">{{item.name}}</text>
+                        <text class="iconfont icongouxuan" :class="'text-' + themeColor.name" v-if="item.selected"></text>
+                    </view>
+                    <periodSelect :buttonList="dateList" v-if="tabIndex==0" @handleSelect ="handleSelect"  @period-button-click="handlePeriodButtonClick"></periodSelect>
+                </view>
+                <view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
+            </view>
+        </view>
+        <scroll-view scroll-y="true" class="patient-list_container">
+            <view class="line-header" :class="[`bg-${themeColor.name}`]"">
+                <text>床号/姓名</text>
+                <text>性别/年龄</text>
+                <text>护理级别/MRN</text>
+                <text>状态</text>
+                <text>操作</text>
+            </view>
+            <lineCell v-for="(item, index) in patientList" :key="index" :patientObj="item"></lineCell>
+            <rf-empty
+                info="暂无患者信息"
+                v-if="patientList.length === 0 && !loading"
+            ></rf-empty>
+        </scroll-view>
 	</view>
 </template>
 
@@ -29,30 +43,34 @@ import rfLoadMore from '@/components/rf-load-more/rf-load-more';
 import { mapMutations, mapState } from 'vuex';
 import {typeList, dateList} from './option.js'
 import periodSelect from '@/pages/lifeSignQuery/components/periodSelect.vue';
+import lineCell from '../../coms/lineCell.vue';
+import {getInspectRecordUrl} from '@/api/login'
 
+let cacheList = []
 export default {
-	components: {
-		rfLoadMore,
+    computed: mapState(['cachePatientsList']),
+    components: {
+        lineCell,
+        rfLoadMore,
         periodSelect
-	},
+    },
 	data() {
 		return {
             loadingType: 'nomore',
 			loading: false,
 			selectH: 0,
-			selectedName: "今日",
+			selectedTimeName: "今日",
 			selectedGroupName: "全部",
 			tabIndex: 0,
             typeList,
-            dateList
+            dateList,
+            patientList: [],
 		};
 	},
-    computed: {
-        ...mapState(['patientList','scanCode']),
-    },
+
 
     onShow() {
-
+        this.getInspectList()
     },
 
 	onLoad(options) {
@@ -72,8 +90,6 @@ export default {
 	},
 
 	methods: {
-		...mapMutations(['setPatientInfo']),
-  
 		navTo(route) {
 			// this.$mRouter.push({ route });
 		},
@@ -81,6 +97,30 @@ export default {
 		hideDropdownList() {
 			this.selectH = 0
 		},
+        
+        getInspectList(){
+            const userInfo = uni.getStorageSync('userInfo');
+            Promise.all(userInfo.wards.map(item=>this.$http.get(getInspectRecordUrl(item.id))))
+            .then(data=>{
+
+                let mergeList= data.flat().map(item=>{
+                    const filterItem = this.cachePatientsList.filter(el=>{
+                        return el.PatientId == item.inpatient
+                    })
+                    if(filterItem.length>0){
+                        return {
+                            ...item,
+                            ...filterItem[0],
+                        }
+                    }else {
+                        return item
+                    }
+                })
+                this.patientList = mergeList
+                cacheList = mergeList
+            })
+        },
+
 
 		screen(e) {
 			let index = parseInt(e.currentTarget.dataset.index, 10);
@@ -102,10 +142,18 @@ export default {
 
 			this.typeList = arr;
 			this.selectH = 0;
+            this.patientList = cacheList.filter(item=>{
+                if(this.selectedGroupName=='正常'){
+                    return item.state=='NORMAL'
+                }else if(this.selectedGroupName=='异常'){
+                    return item.state=='ABNORMAL'
+                }else {
+                    return item
+                }
+            })
 		},
 
         handleSelect(){
-            
             this.selectH = 0;
         },
 
@@ -127,9 +175,19 @@ export default {
 <style lang="scss">
 
     page {
+        height: 100%;
         background: white;
     }
-
+    .patient-list_container {
+        padding-top: 80upx;
+    }
+    .line-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-left: 16upx;
+        padding-right: 16upx;
+    }
 	.rf-dropdownlist {
 		width: 100%;
 		position: absolute;
@@ -194,8 +252,8 @@ export default {
 			justify-content: space-between;
 			font-size: 28upx;
 			color: #333;
-			height: 88upx;
-			line-height: 88upx;
+			height: 70upx;
+			line-height: 70upx;
 			position: relative;
 			background: $color-white;
 		}

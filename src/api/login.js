@@ -21,9 +21,18 @@ const wardUrl = mainUrl + '/api/ward'
 const inpatientUrl= mainUrl + '/api/inpatient'
 
 const inspectUrl = mainUrl + '/api/inspect'
+
+
+const vitalsUrl = mainUrl + '/api/vitals'
+const eventUrl = mainUrl + '/api/event'
+
+const getInspectRecordUrl=(wardId)=>{
+    return mainUrl +`/api/ward/${wardId}/inspect`
+}
 const getInpatientTasksById =(id)=>{
     return `${mainUrl}/api/inpatient/${id}/tasks`
 }
+
 
 export {
 	loginUrl,
@@ -39,5 +48,8 @@ export {
     wardUrl,
     vitalUrl,
     inpatientUrl,
-    getInpatientTasksById
+    getInpatientTasksById,
+    getInspectRecordUrl,
+    vitalsUrl,
+    eventUrl
 };

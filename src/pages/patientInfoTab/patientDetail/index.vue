@@ -14,7 +14,7 @@
 			<view class="tempature">
 					<image :src="appServiceQr" class="img"></image>
 			        <view class="topic-text">体温单</view>
-					<button class="button">录入</button>
+					<button class="button" @tap.stop="navToCharacterInput">录入</button>
 					<button class = "button" @tap.stop="navToLifeSignQuery" type="primary">查询</button>
 			</view>
 			<view class="document">
@@ -35,7 +35,7 @@
 			</view>
 		</view>
 		<view class="block">
-			<view class="timeRecord">
+			<view class="timeRecord" @tap.stop="navToTimeRecord">
                 时间记录
 			</view>
             <button class = "button" @tap.stop="navToWard" type="primary">病房巡视</button>
@@ -79,6 +79,10 @@ export default {
         navToWard(){
             this.navTo(`/pages/houseCheck/houseCheckAction/action?patientInfo=${JSON.stringify(this.patientInfo)}`)
         },
+        
+        navToCharacterInput() {
+            this.navTo(`/pages/patientInfoTab/input/characterInput?patientInfo=${JSON.stringify(this.patientInfo)}`)
+        },
 
 		getAgeFromBirthDate( birthDate ){
 			return new Date().getFullYear()- Number(birthDate.substr(0,4));
@@ -87,9 +91,7 @@ export default {
         initData(Wristband){
             const selectedPatient = this.cachePatientsList.filter(item=> item.Wristband==Wristband)[0]
 			this.setPatientInfo(
-				{...selectedPatient,
-					age: this.getAgeFromBirthDate(selectedPatient.BirthDate)
-				}
+                selectedPatient
 			)
         }
 	}
@@ -125,11 +127,6 @@ page {
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 10px;
-}
-.button{
-	font-size: 14px;
-	height: 32px;
-	line-height: 32px;
 }
 .item{
 	display: flex;

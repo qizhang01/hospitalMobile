@@ -1,13 +1,22 @@
 <template>
 	<view class="container">
-        <view class="group" @tap.stop="handleClick1">
+        <!-- <view class="group" @tap.stop="handleClick1">
             <image
                 class="portrait"
                 src="/static/tab-home-blue.png"
                 mode="aspectFit"
             ></image>
             <text>排药操作</text>
+        </view> -->
+        <view class="group" @tap.stop="navToLifeSignSurvey">
+            <image
+                class="portrait"
+                src="/static/tab-home-blue.png"
+                mode="aspectFit"
+            ></image>
+            <text>体征待测</text>
         </view>
+
         <view class="group" @tap.stop="handleClick2">
             <image
                 class="portrait"
@@ -102,9 +111,15 @@ export default {
                 timer = null;
             }
 		},
-        handleClick1(){
+        // handleClick1(){
+        //     uni.navigateTo({
+        //         url: '/pages/houseCheck/operate/index'
+        //     })
+        // },
+
+        navToLifeSignSurvey(){
             uni.navigateTo({
-                url: '/pages/houseCheck/operate/index'
+                url: '/pages/patientInfoTab/lifeSignSurvey/index'
             })
         },
 

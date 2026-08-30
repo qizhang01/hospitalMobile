@@ -107,7 +107,7 @@ export default {
 				// { icon: 'icongonggao', url: '/pages/lifeSignQuery/index', title: "体征查询", color: '#ff6b81' },
 				{ icon: 'iconweibo', url: '/pages/document/index', title: "文书", color: '#ff6b81' },
 				{ icon: 'iconread', url: '/pages/temperature/index', title: "体温单", color: '#ff6b81' },
-                { icon: 'iconbangzhu', url: '/pages/patientInfoTab/lifeSignSurvey/index', title: "体征待测", color: '#ff6b81' },
+                { icon: 'iconbangzhu', url: '/pages/houseCheck/operate/index', title: "流程操作", color: '#ff6b81' },
 			];
 		}
   },

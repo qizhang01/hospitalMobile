@@ -9,8 +9,14 @@
             <text class="cell">{{patientObj.Age}}</text>
         </view>
         <view class="line-cell_column">
-            <text class="cell">#</text>
+            <text class="cell">{{ patientObj.nursing_class }}级</text>
             <text class="cell">{{patientObj.Mrn}}</text>
+        </view>
+        <view class="line-cell_column" @tap="handleOnTap">
+            <text v-if="patientObj.state" :class="{ 'text-blue': patientObj.state=='NORMAL' }">
+                {{ patientObj.state=='NORMAL'? '正常': patientObj.remark }}
+            </text>
+            <text v-else class="text-red-color">未巡视</text>
         </view>
         <view class="line-cell_column" @tap.stop="handleOnTap">
             <text class="iconfont iconyou"></text>
@@ -36,10 +42,13 @@
 		},
 
 		methods: {
+
             handleOnTap(){
-                uni.navigateTo({
-                    url: `/pages/patientInfoTab/input/characterInput?patientInfo=${JSON.stringify(this.patientObj)}`
-                })
+                if(this.patientObj.state){
+                    uni.navigateTo({
+                        url: `/pages/houseCheck/houseCheckAction/action?patientInfo=${JSON.stringify(this.patientObj)}`
+                    })
+                }
             }
         }
 	};
@@ -54,6 +63,8 @@
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid gray;
+    padding-left: 16upx;
+    padding-right: 16upx;
 }
 .line-cell_column {
     display: flex;
