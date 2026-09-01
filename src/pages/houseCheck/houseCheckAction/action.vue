@@ -13,7 +13,7 @@
                 <!-- <view class="rf-top-item rf-icon-ml">
                     <text>{{ nowTime }}</text>
                 </view> -->
-                <view>扫描结果1: {{ scanCode}}</view>
+                <!-- <view>扫描结果1: {{ this.scanCode}}</view> -->
                 <!-- <view>扫描结果2: {{ $store.state.scanCode}}</view> -->
             </view>
 			<view class="content">
@@ -173,8 +173,6 @@ export default {
 	onLoad(options) {
         if(options.patientInfo) {
             this.patientInfo = JSON.parse(options.patientInfo)
-        }else {
-            this.patientInfo = this.cachePatientsList? this.cachePatientsList[0]: {}
         }
 	},
 
@@ -234,9 +232,7 @@ export default {
         },
         
         filterById(id){
-            this.$mHelper.toast(id)
             const filterResult = this.cachePatientsList.filter(item=>item.Wristband == id)
-            this.$mHelper.toast(filterResult)
             if(filterResult.length > 0){
                 this.patientInfo = filterResult[0]
             }else {
@@ -273,9 +269,9 @@ export default {
     .container {
         background: white;
     }
-    // page {
-    //     background: white;
-    // }
+    .content {
+        margin-top: 50upx;
+    }
     .center {
         display: flex;
         justify-content: center;

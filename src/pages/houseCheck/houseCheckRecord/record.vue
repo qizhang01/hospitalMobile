@@ -23,11 +23,11 @@
         </view>
         <scroll-view scroll-y="true" class="patient-list_container">
             <view class="line-header" :class="[`bg-${themeColor.name}`]"">
-                <text>床号/姓名</text>
-                <text>性别/年龄</text>
-                <text>护理级别/MRN</text>
-                <text>状态</text>
-                <text>操作</text>
+                <text style="width: 50px; text-align: center;">姓名</text>
+                <text style="width: 50px; text-align: center;">年龄</text>
+                <text style="width: 100px; text-align: center;">护理级别/MRN</text>
+                <text style="width: 50px; text-align: center;">状态</text>
+                <text style="width: 50px; text-align: center;">操作</text>
             </view>
             <lineCell v-for="(item, index) in patientList" :key="index" :patientObj="item"></lineCell>
             <rf-empty
