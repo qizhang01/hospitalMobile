@@ -84,7 +84,7 @@
     let newDoctorAdviceList = []
     let highTemperatureList = []
     let injectionList = []
-    
+    let allergyMap = new Map()
 	export default {
 		components: {
 			rfSearchBar,
@@ -122,7 +122,10 @@
             this.getWorkflows()
             this.getNewDoctorAdviceList()
             this.getHighTempratureList()
-            this.getPatientList();
+            this.getAllergyList()
+            setTimeout(()=>{
+                this.getPatientList()
+            }, 1000)
             if(uni.getStorageSync('userInfo')){
                 this.$mStore.commit('login', uni.getStorageSync('userInfo'));
             }
@@ -266,11 +269,52 @@
                 
                 // 获取高温病人列表
 
-                const fromTime = encodeURIComponent(getStandardTime(new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000)))
+                const fromTime = encodeURIComponent(getStandardTime(new Date(new Date().getTime() - 24 * 60 * 60 * 1000)))
                 const toTime = encodeURIComponent(getStandardTime(new Date()))
-                await Promise.all(userInfo.wards.map(item=>this.$http.get(`/api/ward/${item.id}/vital?from=${fromTime}&to=${toTime}&name=体温`))).then(data => {
+                await Promise.all(userInfo.wards.map(item=>this.$http.get(`/api/ward/${item.id}/vitals?from=${fromTime}&to=${toTime}&name=体温`))).then(data => {
                     highTemperatureList = data.flat().filter(item=>Number(item.value1)>=40).map(item=>item.inpatient)
                 })
+            },
+
+            
+            async getAllergyList(){
+                const userInfo = uni.getStorageSync('userInfo');
+                const wardsArr = userInfo.wards
+                // 获取过敏病人列表
+
+                await Promise.all(wardsArr.map(item=>this.$http.get(`/api/ward/${item.id}/vitals?name=药物过敏1`))).then(data => {
+                    data.flat().forEach(item=>{
+                        if(allergyMap.get(item.inpatient)){
+                            allergyMap.get(item.inpatient).push(item.text1)
+                        }else {
+                            allergyMap.set(item.inpatient, [item.text1])
+                        }
+                    })
+                })
+
+                await Promise.all(wardsArr.map(item=>this.$http.get(`/api/ward/${item.id}/vitals?name=药物过敏2`))).then(data => {
+                    data.flat().forEach(item=>{
+                        if(allergyMap.get(item.inpatient)){
+                            allergyMap.get(item.inpatient).push(item.text1)
+                        }else {
+                            allergyMap.set(item.inpatient, [item.text1])
+                        }
+                    })
+                })
+            },
+
+            async getSurgeryList(patientList){
+
+                // 获取手术病人列表
+                let surgeryList = []
+                await Promise.all(patientList.map(item=>this.$http.get(`/api/event?inpatient=${item.PatientId}`))).then(data => {
+                    data.flat().forEach(el=>{
+                        if(el.name=='手术'){
+                            surgeryList.push(el.inpatient)
+                        }
+                    })
+                })
+                return surgeryList;
             },
 
             async getPatientList(type="") {
@@ -279,34 +323,45 @@
                     return this.$http
                             .get(`${wardUrl}/${item.id}/inpatients`)
                 })
-
+                let result = []
                 if(requestArr){
                     this.loading = true
-                    Promise.all(requestArr).then(response=>{
+                    await Promise.all(requestArr).then(response=>{
                         let finishedDoctorAdviceList = []
                         // await Promise.all(response.flat().map(item=>this.$http.get(this.getParams(item.PatientId))))
                         //     .then(data => {
                         //         finishedDoctorAdviceList = data.flat().map(item=>item.inpatient)
                         //     })
 
-                        const result= response.flat().map(item=>({
+                        result= response.flat().map(item=>({
                             ...item,
                             Age: new Date().getFullYear()- Number(item.BirthDate.substr(0,4)),
-                            isNewPatient: getDiffDays(item.AdmissionWardTime) <= 3,
+                            isNewPatient: getDiffDays(item.AdmissionWardTime) <= 1,
                             hasNewDoctorAdvice: newDoctorAdviceList.includes(item.PatientId),
                             isHighTemperature: highTemperatureList.includes(item.PatientId),
                             isFinishedDoctorAdvice: !finishedDoctorAdviceList.includes(item.PatientId),
-                            isInjection: injectionList.includes(item.PatientId)
+                            isInjection: injectionList.includes(item.PatientId),
+                            Allergy: allergyMap.get(item.PatientId)
                         }))
-                        this.loading = false;
+                        
                         if (type === 'refresh') {
                             uni.stopPullDownRefresh();
                         }
                         // this.loadingType = result.length === 10 ? 'more' : 'nomore';
-                        this.patientList = result;
-                        this.setPatientList(result)
-                        this.setPatientGroupList(result)
                     })
+                    
+                    const res = await this.getSurgeryList(result)
+                    result.map(item=>{
+                        if(res.includes(item.PatientId)){
+                            item.SurgeryHistory = true
+                        }else {
+                            item.SurgeryHistory = false
+                        }
+                    })
+                    this.loading = false;
+                    this.patientList = result;
+                    this.setPatientList(result)
+                    this.setPatientGroupList(result)
                 }
             },
             

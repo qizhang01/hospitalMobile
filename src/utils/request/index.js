@@ -49,6 +49,11 @@ http.interceptor.response(
             uni.navigateTo({
                 url: '/pages/login/login'
             })
+        }else {
+            // uni.showToast({
+            //     title: '加载失败，请检查网络',
+            //     icon: 'none' 
+            // });
         }
 		return Promise.reject(error);
 	}

@@ -44,7 +44,7 @@
                     </button>
                 </view>
 
-                <view class="center operate-group" v-if="!isNormal">
+                <view class="center operate-group" v-if="!isNormal && abnormalVal=='其他'">
                     <uni-easyinput  v-model="inputVal" focus placeholder="请输入异常状态"></uni-easyinput>
                 </view>
                 
@@ -143,7 +143,10 @@ export default {
     watch: {
         scanCode: {
             handler(newVal, oldVal){
-                if(newVal) this.filterById(newVal)
+                if(newVal) {
+                    this.resetStatus()
+                    this.filterById(newVal)
+                }
             },
             immediate: true
         },
@@ -154,11 +157,12 @@ export default {
 	},
 	data() {
 		return {
-            inputVal: '外出',
+            inputVal: '',
             abnormalList,
             isNormal: true,
             isShowDetail: false,
-            patientInfo: {}
+            patientInfo: {},
+            abnormalVal: '外出'
 		};
 	},
 
@@ -191,6 +195,11 @@ export default {
             uni.navigateBack()
         },
 
+        resetStatus(){
+            this.inputVal=''
+            this.isNormal=true
+            this.isShowDetail=false
+        },
 
         clearTimer() {
             if (timer) {
@@ -208,7 +217,7 @@ export default {
         },
 
         handleButtonClick(item){
-            this.inputVal = item.name
+            this.abnormalVal = item.name
             this.abnormalList = this.abnormalList.map(el=>{
                 if(item.id==el.id){
                     return {
@@ -239,7 +248,7 @@ export default {
             const res = await this.$http.post(inspectUrl,{
                 inpatient: this.patientInfo.PatientId, 
                 state: this.isNormal? 'NORMAL': "ABNORMAL", 
-                remark: this.isNormal? '': this.inputVal
+                remark: this.isNormal? '': this.inputVal? this.inputVal: this.abnormalVal
             })
             if(res){
                 this.$mHelper.toast('提交成功');

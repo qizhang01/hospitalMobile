@@ -36,7 +36,7 @@
     import card from './lifeSignCard.vue'
     import buttonGroup from './components/buttonGroup.vue'
     import periodSelect from './components/periodSelect.vue';
-    import {mockData, typeOption, timeOption} from './data'
+    import {typeOption, timeOption} from './data'
     import {taskUrl, vitalUrl} from '@/api/login'
 
 	export default {
@@ -47,7 +47,7 @@
 		},
 		data() {
 			return {
-                dataList: mockData,
+                dataList: [],
                 typeOption,
                 timeOption,
 				loading: true,

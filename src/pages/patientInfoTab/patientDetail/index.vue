@@ -20,7 +20,7 @@
 			<view class="document">
 					<image :src="appServiceQr" class="img"></image>
 			        <view class="topic-text">文书</view>
-					<button class="button">录入</button>
+					<button class="button" @tap.stop="navToDocumentPage">录入</button>
 					<button class = "button" type="primary">查询</button>
 			</view>
 			<view class="other">
@@ -71,7 +71,9 @@ export default {
         navToLifeSignQuery(){
             this.navTo(`/pages/lifeSignQuery/index?inpatient=${this.patientInfo.PatientId}`)
         },
-
+        navToDocumentPage(){
+            this.navTo(`/pages/document/index?patientInfo=${JSON.stringify(this.patientInfo)}`)
+        },
         navToTimeRecord(){
             this.navTo(`/pages/patientInfoTab/timeRecord/index?patientInfo=${JSON.stringify(this.patientInfo)}`)
         },

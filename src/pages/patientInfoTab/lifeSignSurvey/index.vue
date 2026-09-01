@@ -1,37 +1,44 @@
 <template>
-	<view class="rf-index">
-		<view class="rf-header-screen" >
-			<view class="rf-screen-top">
-				<view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" @tap="selectQueryType">
-					<text>{{selectedType}}</text>
-					<text class="iconfont" :class="tabIndex==0?'iconshang':'iconxia'"></text>
-				</view>
-				<view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="selectTypeItem">
-					<text>{{ selectedTypeItem}}</text>
-					<text class="iconfont" :class="tabIndex==1?'iconshang':'iconxia'"></text>
-				</view>
-				<!--下拉选择列表--综合-->
-				<view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
-                    <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1" @buttonItemClick="handleTypeClick"></buttonGroup>
-                    <timeSelect :buttonList="timeOption" v-else="dropdownIndex==2" @timeItemClick="handleTimeItemClick"></timeSelect>
-				</view>
-				<view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
-				<!--下拉选择列表--综合-->
-			</view>
-		</view>
-        <scroll-view scroll-y="true" class="patient-list_container">
-            <view class="line-header">
-                <text>床号/姓名</text>
-                <text>性别/年龄</text>
-                <text>MRN</text>
-                <text></text>
+	<view class="container">
+        <view>
+            <view class="rf-header-screen" >
+                <view class="rf-screen-top">
+                    <view class="rf-top-item rf-icon-ml" :class="[tabIndex==0? `text-${themeColor.name} rf-bold`:'']" @tap="selectQueryType">
+                        <text>{{selectedType}}</text>
+                        <text class="iconfont" :class="tabIndex==0?'iconshang':'iconxia'"></text>
+                    </view>
+                    <view class="rf-top-item" :class="[tabIndex == 1?`text-${themeColor.name} rf-bold`:'']" @tap="selectTypeItem">
+                        <text>{{ selectedTypeItem}}</text>
+                        <text class="iconfont" :class="tabIndex==1?'iconshang':'iconxia'"></text>
+                    </view>
+                    <!--下拉选择列表--综合-->
+                    <view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
+                        <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1" @buttonItemClick="handleTypeClick"></buttonGroup>
+                        <timeSelect :buttonList="timeOption" v-else="dropdownIndex==2" @timeItemClick="handleTimeItemClick"></timeSelect>
+                    </view>
+                    <view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
+                    <!--下拉选择列表--综合-->
+                </view>
             </view>
-            <lineCell v-for="(item, index) in cachePatientsList" :key="index" :patientObj="item"></lineCell>
-        </scroll-view>
-		<!--页面加载动画-->
-		<!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
-		<rf-back-top :scrollTop="scrollTop"></rf-back-top>
-		<!-- <rf-back-home></rf-back-home> -->
+            <scroll-view scroll-y="true" class="patient-list_container">
+                <view class="line-header" :class="[`bg-${themeColor.name}`]"">
+                    <text>床号/姓名</text>
+                    <text>性别/年龄</text>
+                    <text>MRN</text>
+                    <text></text>
+                </view>
+                <lineCell v-for="(item, index) in dataList" :key="index" :patientObj="item"></lineCell>
+            </scroll-view>
+            <!--页面加载动画-->
+            <!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
+            <rf-back-top :scrollTop="scrollTop"></rf-back-top>
+        </view>
+        <view class="operate-group">
+            <button type="primary" class="confirm-button" @tap.stop="refresh">
+                刷新
+            </button>
+        </view>
+        
 	</view>
 </template>
 
@@ -41,8 +48,8 @@
     import buttonGroup from '../../lifeSignQuery/components/buttonGroup.vue';
     import timeSelect from '../../lifeSignQuery/components/timeSelect.vue';
 	import { mapMutations, mapState } from 'vuex';
+    import { getStandardTime } from '@/utils/util'
 	export default {
-
         computed: mapState(['cachePatientsList']),
 		components: {
             lineCell,
@@ -51,7 +58,7 @@
 		},
 		data() {
 			return {
-                dataList: mockData,
+                dataList: [],
                 typeOption,
                 timeOption,
 				loading: true,
@@ -66,10 +73,10 @@
 		onPageScroll(e) {
 			this.scrollTop = e.scrollTop;
 		},
+
 		onShow() {
-
+            this.getTempatureNoSurveyList()
 		},
-
 
 		// 下拉刷新
 		onPullDownRefresh() {
@@ -79,11 +86,8 @@
 		onReachBottom() {
 
 		},
-		methods: {
-			// 顶部tab点击
-			tabClick({ id }) {
-			},
 
+		methods: {
 			// 数据初始化
 			initData() {
 
@@ -93,17 +97,22 @@
 			navTo(route) {
 				this.$mRouter.push({ route });
 			},
+            
+            refresh(){
+                this.getTempatureNoSurveyList()
+            },
 
-			// 首页参数赋值
-			initIndexData(data) {
-
-				uni.setStorageSync('search', this.search);
-				this.hotSearchDefault = data.search.hot_search_default || '请输入关键字';
-				uni.setStorage({
-					key: 'hotSearchDefault',
-					data: data.search.hot_search_default
-				});
-			},
+            getTempatureNoSurveyList(){
+                const fromTime = encodeURIComponent(getStandardTime(new Date()))
+                const userInfo = uni.getStorageSync('userInfo');
+                
+                // 获取新医嘱列表
+                Promise.all(userInfo.wards.map(item=>this.$http.get(`/api/ward/${item.id}/vitals?from=${fromTime}&name=体温`)))
+                .then(data=>{
+                    const hasDataList = data.flat().map(item=> item.inpatient)
+                    this.dataList = this.cachePatientsList.filter(item=> !hasDataList.includes(item.PatientId))
+                })
+            },
 
             selectQueryType(){
                 this.selectH = 1
@@ -146,6 +155,7 @@
 <style lang="scss">
 	page {
 		background-color: $page-color-base;
+        height: 100%;
 	}
 	.rf-dropdownlist {
 		width: 100%;
@@ -233,9 +243,16 @@
         .patient-list_container {
             padding-top: 110upx;
             .line-header {
-                background-color: gray;
                 height: 50upx;
+                color: white;
                 line-height: 50upx;
             }
+            height:900upx;
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
         }
 </style>

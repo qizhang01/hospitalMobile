@@ -5,7 +5,7 @@
 			<view class="login-top" :class="'bg-' + themeColor.name">
 				<view class="desc">
 					<view class="title">Hi~</view>
-					<text>{{ appName }}欢迎您</text>
+					<text @tap="open">{{ appName }}欢迎您</text>
 				</view>
 			</view>
 			<view class="login-type-content">
@@ -63,6 +63,19 @@
 				{{ appName }} 版权所有
 			</view> -->
 		</view>
+        <uni-popup ref="popup" type="bottom" border-radius="10px 10px 0 0">
+            <view class="setting-content">
+                <view>
+                    <text>设置地址(比如https://hispital.us.to:8080/)</text>
+                    <input
+                        style="margin-top: 20upx;"
+                        v-model="serviceAdress"
+                        placeholder="请输入服务器地址"
+                    />
+                </view>
+                <button @click="close" type="primary" style="width: 100%;">提交</button>
+            </view>
+        </uni-popup>
 	</view>
 </template>
 <script>
@@ -82,10 +95,11 @@ export default {
 				employee_no: '',
 				password: ''
 			},
-
+            serviceAdress: uni.getStorageSync('serviceAdress') || '',
 			btnLoading: false,
 			loginBg: this.$mAssetsPath.loginBg,
 			appName: this.$mSettingConfig.appName,
+            clickTimes: 0
 		};
 	},
 	onShow() {
@@ -110,6 +124,10 @@ export default {
 		},
 		// 登录
 		async toLogin() {
+            if(this.serviceAdress.trim() === ''){
+                this.$mHelper.toast('请设置服务器地址')
+                return
+            }
 			this.btnLoading = true;
             const params = {
                 employee_no: this.loginParams.employee_no,
@@ -129,7 +147,20 @@ export default {
 				});
 		},
 
+        open(){
+            // 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
+            this.clickTimes++
+            if(this.clickTimes >= 5){
+                this.$refs.popup.open('top')
+            }
+        },
 
+        close() {
+            const tempStr = this.serviceAdress.trim()
+            const address = tempStr[tempStr.length - 1]=='/' ? tempStr.substring(0, tempStr.length - 1): tempStr
+            uni.setStorageSync('serviceAdress', address)
+			this.$refs.popup.close()
+		}
 	}
 };
 </script>
@@ -137,6 +168,15 @@ export default {
 page {
 	background: $color-white;
 }
+.setting-content {
+    background: $color-white;
+    height: 100vh;
+    padding: 20upx;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .login-type-2 {
 	width: 100%;
 	position: relative;

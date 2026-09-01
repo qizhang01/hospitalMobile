@@ -1,3 +1,7 @@
+const getMainUrl = ()=>{
+    return uni.getStorageSync('serviceAdress')
+}
+
 export default class Request {
 	config = {
 		header: {
@@ -45,8 +49,9 @@ export default class Request {
 				: options.sslVerify;
 		// #endif
 		return new Promise((resolve, reject) => {
+            const mainUrl = process.env.NODE_ENV === 'development'? '': getMainUrl()
 			 uni.request({
-				url: options.url,
+				url: mainUrl + options.url,
 				data: options.data,
 				header: options.header,
 				method: options.method,
@@ -106,3 +111,20 @@ export default class Request {
 	}
 	// #endif
 }
+
+
+
+// fail: function(error) {
+//     uni.showToast({
+//         title: '加载失败，请检查网络',
+//         icon: 'none' 
+//     })
+
+//     if (error.errMsg.indexOf('network') !== -1) {
+//         console.error('网络错误');
+//     } else if (error.errMsg.indexOf('timeout') !== -1) {
+//         console.error('请求超时');
+//     } else {
+//         console.error('其他错误');
+//     }
+// },

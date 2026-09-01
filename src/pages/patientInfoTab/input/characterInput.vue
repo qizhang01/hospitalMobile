@@ -4,7 +4,7 @@
                 <uni-section title="当前患者:" type="line">
                     <view class="uni-list-cell-db">
                         <picker @change="patientChange" :value="patientIndex" :range="patientRange">
-                            <view v-if="patientInfo">
+                            <view v-if="patientInfo" style="margin-left: 6px;">
                                 <text class="item rf-bolder">{{ patientInfo.Name }} |</text>
                                 <text class="item rf-bolder">{{ patientInfo.BedNo }}床 |</text>
                                 <text class="item rf-bolder">{{ patientInfo.PhysiSexName }} |</text>
@@ -190,10 +190,10 @@
                 <uni-card>
                     <view class="single-line">
                         <view class="single-item">
-                            <uni-easyinput v-model="painValue1" placeholder="疼痛评分" type="number"></uni-easyinput>
+                            <uni-easyinput v-model="painValue1" placeholder="疼痛评分" type="number" max="9"></uni-easyinput>
                         </view>
                         <view class="single-item">
-                            <uni-easyinput v-model="painValue2" placeholder="疼痛缓解" type="number"></uni-easyinput>
+                            <uni-easyinput v-model="painValue2" placeholder="疼痛缓解" type="number" max="9"></uni-easyinput>
                         </view>
                     </view>
                 </uni-card>
@@ -248,6 +248,7 @@
                     </view>
                     <view class="single-line">
                         <view class="single-item">
+                            <uni-easyinput v-model="pulseConditionValue" placeholder="请输入内容"></uni-easyinput>
                         </view>
                     </view>
                 </uni-card>
@@ -267,6 +268,11 @@
                             {{ item }}
                         </button>
                     </view>
+                    <view class="single-line">
+                        <view class="single-item">
+                            <uni-easyinput v-model="tongueValue" placeholder="请输入内容"></uni-easyinput>
+                        </view>
+                    </view>
                 </uni-card>
             </uni-section>
             
@@ -282,6 +288,11 @@
                             >
                             {{ item }}
                         </button>
+                    </view>
+                    <view class="single-line">
+                        <view class="single-item">
+                            <uni-easyinput v-model="allergy1Value" placeholder="请输入内容" ></uni-easyinput>
+                        </view>
                     </view>
                 </uni-card>
             </uni-section>
@@ -300,6 +311,12 @@
                             {{ item }}
                         </button>
                     </view>
+                    <view class="single-line">
+                        <view class="single-item">
+                            <uni-easyinput v-model="allergy2Value" placeholder="请输入内容" ></uni-easyinput>
+                        </view>
+                    </view>
+         
                 </uni-card>
             </uni-section> 
 
@@ -365,7 +382,8 @@
                         </button>
                     </view>
                     <view class="single-line">
-                        <view class="single-item">                                
+                        <view class="single-item"> 
+                            <uni-easyinput v-model="otherValue" placeholder="请输入内容" ></uni-easyinput>                               
                         </view>
                     </view>
                 </uni-card>
@@ -384,10 +402,6 @@
                             {{index==1? '↑': index==2? '↓': ''}}
                             {{  item }}
                         </button>
-                    </view>
-                    <view class="single-line">
-                        <view class="single-item">
-                        </view>
                     </view>
                 </uni-card>
             </uni-section>
@@ -486,6 +500,7 @@ export default {
             eventNameIndex: -1,
             otherIndex: 0,
             diGaoXinIndex: 0,
+            patientIndex: 0,
 
             temperatureValue1: '',
             temperatureValue2: '',
@@ -501,8 +516,13 @@ export default {
             in24HValue: '',
             out24HValue: '',
             weightValue: '',
+            otherValue: '',
             pipeValue: '',
             erectionHeartRateValue: '',
+            tongueValue: '',
+            pulseConditionValue: '',
+            allergy1Value: '',
+            allergy2Value: '',
 
             timeValue: this.getStandTime(new Date())
 		};
@@ -695,22 +715,22 @@ export default {
                 })
             }
 
-            if(this.pulseConditionIndex>-1){
+            if(this.pulseConditionValue){
                 result.push({
                     inpatient,
                     unit: '',
                     planned_time,
-                    text1: this.pulseCondition[this.pulseConditionIndex], 
+                    text1: this.pulseConditionValue, 
                     name: nameMap.pulseCondition
                 })
             }
 
-            if(this.tongueConditionIndex>-1){
+            if(this.tonguevalue){
                 result.push({
                     inpatient,
                     unit: '',
                     planned_time,
-                    text1: this.tongueCondition[this.tongueConditionIndex], 
+                    text1: this.tonguevalue, 
                     name: nameMap.tongueCondition
                 })
             }
@@ -765,22 +785,22 @@ export default {
                 })
             }
 
-            if(this.allergy1Index>0){
+            if(this.allergy1Value){
                 result.push({
                     inpatient,
                     unit: '',
                     planned_time,
-                    text1: this.allergy[this.allergy1Index], 
+                    text1: this.allergy1Value, 
                     name: nameMap.drugAllergy+'1'
                 })
             }
 
-            if(this.allergy2Index>0){
+            if(this.allergy2Value){
                 result.push({
                     inpatient,
                     unit: '',
                     planned_time,
-                    text1: this.allergy[this.allergy2Index],
+                    text1: this.allergy2Value,
                     name: nameMap.drugAllergy+2
                 })
             }
@@ -795,12 +815,12 @@ export default {
                 })
             }
 
-            if(this.otherSelectValue){
+            if(this.otherValue){
                 result.push({
                     inpatient,
                     unit: '',
                     planned_time,
-                    text1: this.otherSelectValue, 
+                    text1: this.otherValue, 
                     name: nameMap.other
                 })
             }
@@ -815,7 +835,7 @@ export default {
             //     })
             // }
 
-            if(result.length>0 && this.climateIndex>-1){
+            if(this.climateIndex>-1){
                 result.push({
                     inpatient,
                     unit: '',
@@ -885,7 +905,13 @@ export default {
 
         handleClickOther(index){
             this.otherIndex = index
+            if(index==0){
+                this.otherValue = ''
+            }else{
+                this.otherValue = this.other[index]
+            }
         },
+
         handleClickDigaoxin(index){
             this.diGaoXinIndex = index
         },
@@ -895,19 +921,31 @@ export default {
         },
 
         handleClickPulseCondition(index){
-             this.pulseConditionIndex = index
+            this.pulseConditionIndex = index
+            this.pulseConditionValue = this.pulseCondition[this.pulseConditionIndex]
         },
 
         handleClickTongueCondition(index){
             this.tongueConditionIndex = index
+            this.tongueValue = this.tongueCondition[this.tongueConditionIndex]  
         },
 
         handleClickAllergy1(index){
             this.allergy1Index = index
+            if(index==0){
+                this.allergy1Value = ''
+            }else {
+                this.allergy1Value = this.allergy[this.allergy1Index]
+            }
         },
 
         handleClickAllergy2(index){
             this.allergy2Index = index
+            if(index==0){
+                this.allergy2Value = ''}
+            else {
+                this.allergy2Value = this.allergy[this.allergy2Index]
+            }
         },
 
         handleClickClimate(index){
@@ -932,7 +970,7 @@ page {
 }
 .patient-info {
     position: fixed;
-    top: 44px;
+    top: 0px;
     left: 0px;
     z-index: 100;
     width: 100%;

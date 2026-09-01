@@ -44,7 +44,7 @@
 		methods: {
 
             handleOnTap(){
-                if(this.patientObj.state){
+                if(!this.patientObj.state){
                     uni.navigateTo({
                         url: `/pages/houseCheck/houseCheckAction/action?patientInfo=${JSON.stringify(this.patientObj)}`
                     })
