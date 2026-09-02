@@ -2,12 +2,12 @@
     <view class="container">
         <view class="coupon-center">
             <view>
-                <view>排药操作: {{ this.scanCode}}</view>
+                <!-- <view>排药操作: {{ this.scanCode}}</view> -->
                 <!-- <view><text v-for="(code, index) in bardcodeList" :key="index">{{ code }}</text></view> -->
                 <view class="header-text">
                     <uni-steps :options="stepList" :active="stepList.findIndex(item=>item.title==currentStep)" />
                 </view>
-                <scroll-view scroll-y="true" style="height: 500upx">
+                <scroll-view scroll-y="true" style="height: 76vh;">
                     <view v-for="(task, index) in taskList" :key="task.barcode">
                         <view class="progress-info patient-info">
                             <text>{{ task.barcode }}</text>
@@ -45,9 +45,12 @@
             </view>
         </view>
         <view class="operate-group" v-if='!isInvolving'>
-            <text class="cu-load">可继续扫描或者继续排药</text>
-            <button type="primary" class="confirm-button" @tap.stop="operate" v-if="!isOneFlowEnd" :disabled="disabled">
-                {{currentStep}}{{ "("+count+')' }}
+            <text class="cu-warning" v-if="currentStep=='执行'">
+                该药品还未执行, 请扫描病人腕带, 核对患者并执行
+            </text>
+            <text v-else class="cu-load">可继续扫描或者继续排药</text>
+            <button type="primary" class="confirm-button" @tap.stop="operate" v-if="currentStep" :disabled="disabled">
+                {{currentStep}}{{ "("+taskList.length+')' }}
             </button>
         </view>
         <view class="single-line-group" v-else>
@@ -76,12 +79,9 @@ export default {
            patientInfo:  null,
            taskList : [],
            loading: true,
-           count: 0,
-           step: [],
            stepsCodeList: [],
-           bardcodeList: [],
+           bardcodeList: [],  //判断是否重复扫码
            currentStep: '',
-           isOneFlowEnd: false,
            inputValue1: '',
            inputValue2: '',
            isInvolving: false,
@@ -107,11 +107,11 @@ export default {
                 if(newVal) {
                     const stringCode = newVal + ''
                     if(stringCode.length==5||stringCode.length==6){
-                        //腕带
-                        if(this.patientInfo.wristband==stringCode){
-                            
-                        }
                         this.wristband = stringCode
+                        //腕带
+                        if(this.patientInfo.wristband==stringCode&&this.taskList.length>0){
+                            this.operate()
+                        }   
                     }else {
                         this.getInfo(stringCode)
                     }
@@ -122,7 +122,7 @@ export default {
     },
 
 	onLoad(options) {
-        this.getInfo()
+        // this.getInfo()
 	},
 
     beforeUnmount() {
@@ -130,7 +130,6 @@ export default {
 	},
 
 	methods: {
-		...mapMutations(['setPatientInfo']),
 
         async getInfo(code='00249175632026072008001'){
             this.loading = true
@@ -150,43 +149,41 @@ export default {
                 }
             })
         },
+
         handleResponse(res){
                 if(this.bardcodeList.includes(res.barcode)){
                     return this.$mHelper.toast('请不要重复扫码.');
                 }
-                if(this.patientInfo && !this.isOneFlowEnd){
+                if(this.patientInfo ){
                     if(this.patientInfo.PatientId!=res.inpatient){
                         return this.$mHelper.toast('扫描的二维码不是同一个人, 请核对.');
                     }
                 }else {
-                    this.$mHelper.toast(res.inpatient);
-                    this.isOneFlowEnd = false
+                    // this.$mHelper.toast(res.inpatient);
                     this.taskList = []
                     this.patientInfo = this.cachePatientsList.filter(item=> item.PatientId==res.inpatient)[0]
                 }
 
-                if(this.step.length==0){
-                    this.step= res.steps
-                    this.stepsCodeList=this.step.map(item=>item.code)
-                    this.currentStep = this.step[0].name
+                if(!this.currentStep){
+                    this.stepsCodeList=res.steps.map(item=>item.code)
+                    this.currentStep = res.steps[0].name
                     uni.setNavigationBarTitle({
                         title: this.currentStep 
                     });
-                    this.isInvolving = this.step[0].name=='结束'
+                    this.isInvolving = this.currentStep=='结束'
                 }else {
-                    let isSameStep = true
-                    res.steps.forEach(item=>{
-                        if(!this.stepsCodeList.includes(item.code)){
-                            isSameStep = false
-                        }
-                    })
+                    let isSameStep = this.currentStep == res.steps[0].name
+                    // res.steps.forEach(item=>{
+                    //     if(!this.stepsCodeList.includes(item.code)){
+                    //         isSameStep = false
+                    //     }
+                    // })
                     if(!isSameStep){
                         return this.$mHelper.toast('此药品暂时不能执行此操作');
                     }
                 }
                 this.taskList = [...this.taskList, res]
                 this.bardcodeList.push(res.barcode)
-                this.count++
         },
 
         getAgeByBirthdate(birthDate){
@@ -199,23 +196,24 @@ export default {
         },
         
         handleSumbitSuccess(){
-            this.isOneFlowEnd = true
-            this.step = []
+            this.wristband = ''
+            this.patientInfo=null
             this.stepsCodeList=[]
             this.bardcodeList = []
-            this.count = 0
+            this.currentStep = ''
             this.loading = false
         },
 
         operate(){
-            // if(this.currentStep.includes('执行')){
-            //     if(this.patientInfo.Wristband!=this.wristband){
-            //         return this.$mHelper.toast('腕带和药品不匹配, 不能执行');
-            //     }
-            // }
+            if(this.currentStep.includes('执行')){
+                if(this.patientInfo.Wristband!=this.wristband){
+                    return this.$mHelper.toast('腕带和药品不匹配, 不能执行');
+                }
+            }
             this.loading = true
             const requestList = this.taskList.map(task=>this.$http.post(taskUrl + `/${task.id}/${this.stepsCodeList[0]}`))
             Promise.all(requestList).then(res=>{
+                this.$mHelper.toast('操作成功');
                 this.handleSumbitSuccess()
             }).catch((err)=>{
                 this.$mHelper.toast(err);
@@ -306,5 +304,8 @@ page {
 }
 .input-area {
     padding: 0upx 20upx;
+}
+.cu-warning {
+    color: #007aff;
 }
 </style>
