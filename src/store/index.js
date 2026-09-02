@@ -22,7 +22,8 @@ const store = new Vuex.Store({
         supply: null,
         taskState: null,
         employees: null,
-        workflows: null
+        workflows: null,
+        taskList: []
 	},
 	getters: {
 
@@ -65,6 +66,10 @@ const store = new Vuex.Store({
 
         workflows: state=>{
             return state.workflows
+        },
+
+        taskList: state=>{
+            return state.taskList
         }
 	},
 	mutations: {
@@ -129,10 +134,17 @@ const store = new Vuex.Store({
                 map.set(item.id, item.steps)
             })
             state.workflows = map
+        },
+
+        addTaskList(state, data) {
+            state.taskList = [...state.taskList, data ]
+        },
+
+        clearTaskList(state) {
+            state.taskList = []
         }
 	},
 	actions: {
-
 		networkStateChange({ commit }, info) {
 			commit('setNetworkState', info);
 		},

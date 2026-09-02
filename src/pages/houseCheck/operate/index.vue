@@ -7,8 +7,8 @@
                 <view class="header-text">
                     <uni-steps :options="stepList" :active="stepList.findIndex(item=>item.title==currentStep)" />
                 </view>
-                <scroll-view scroll-y="true" style="height: 76vh;">
-                    <view v-for="(task, index) in taskList" :key="task.barcode">
+                <scroll-view scroll-y="true" style="height: 74vh;">
+                    <view v-for="(task, index) in this.taskList" :key="task.barcode">
                         <view class="progress-info patient-info">
                             <text>{{ task.barcode }}</text>
                             <view>
@@ -50,7 +50,7 @@
             </text>
             <text v-else class="cu-load">可继续扫描或者继续排药</text>
             <button type="primary" class="confirm-button" @tap.stop="operate" v-if="currentStep" :disabled="disabled">
-                {{currentStep}}{{ "("+taskList.length+')' }}
+                {{currentStep}}{{ "("+this.taskList.length+')' }}
             </button>
         </view>
         <view class="single-line-group" v-else>
@@ -77,7 +77,6 @@ export default {
 	data() {
 		return {
            patientInfo:  null,
-           taskList : [],
            loading: true,
            stepsCodeList: [],
            bardcodeList: [],  //判断是否重复扫码
@@ -90,7 +89,7 @@ export default {
 		};
 	},
     computed: {
-        ...mapState(['cachePatientsList', 'scanCode','workflows']),
+        ...mapState(['cachePatientsList', 'scanCode','workflows', 'taskList']),
         disabled(){
             if(this.currentStep.includes('执行')){
                 if(this.patientInfo.Wristband!=this.wristband){
@@ -122,7 +121,7 @@ export default {
     },
 
 	onLoad(options) {
-        // this.getInfo()
+        // this.getInfo('00249175632026072008001')
 	},
 
     beforeUnmount() {
@@ -131,7 +130,7 @@ export default {
 
 	methods: {
 
-        async getInfo(code='00249175632026072008001'){
+        async getInfo(code){
             this.loading = true
             const res = await this.$http.get(taskUrl + `?code=${code}`)
             if(res){
@@ -159,8 +158,7 @@ export default {
                         return this.$mHelper.toast('扫描的二维码不是同一个人, 请核对.');
                     }
                 }else {
-                    // this.$mHelper.toast(res.inpatient);
-                    this.taskList = []
+                    this.$mStore.commit('clearTaskList');                   
                     this.patientInfo = this.cachePatientsList.filter(item=> item.PatientId==res.inpatient)[0]
                 }
 
@@ -173,16 +171,13 @@ export default {
                     this.isInvolving = this.currentStep=='结束'
                 }else {
                     let isSameStep = this.currentStep == res.steps[0].name
-                    // res.steps.forEach(item=>{
-                    //     if(!this.stepsCodeList.includes(item.code)){
-                    //         isSameStep = false
-                    //     }
-                    // })
                     if(!isSameStep){
                         return this.$mHelper.toast('此药品暂时不能执行此操作');
                     }
                 }
-                this.taskList = [...this.taskList, res]
+    
+                this.$mStore.commit('addTaskList', res);
+                this.$mHelper.toast('添加任务成功')
                 this.bardcodeList.push(res.barcode)
         },
 

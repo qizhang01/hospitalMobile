@@ -124,7 +124,7 @@ export default {
 		},
 		// 登录
 		async toLogin() {
-            if(this.serviceAdress.trim() === ''){
+            if(this.serviceAdress.trim() === '' && process.env.NODE_ENV !== 'development'){
                 this.$mHelper.toast('请设置服务器地址')
                 return
             }
