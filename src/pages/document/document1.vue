@@ -1,14 +1,5 @@
 <template>
 	<view>
-		<view class="input-box">
-        <input
-            @tap.stop=""
-            disabled={false}
-            :value="hotSearchDefault || '请输入关键字'"
-            style="color:#888;"
-            placeholder-style="color:#ccc;"
-        />
-		</view>
         <uni-section title="单选" type="line">
 			<view class="uni-px-5 uni-pb-5">
 				<uni-data-checkbox v-model="radio1" :localdata="sex"></uni-data-checkbox>

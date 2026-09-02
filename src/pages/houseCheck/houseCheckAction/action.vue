@@ -124,6 +124,7 @@
             <view class="rf-dropdownlist-mask" :class="[isShowDetail?'rf-mask-show':'']" @tap="toggleShow">
                 
             </view>
+            <rfLoading isFullScreen :active="loading"></rfLoading>
 	</view>
 </template>
 
@@ -157,6 +158,7 @@ export default {
 	},
 	data() {
 		return {
+            loading: false,
             inputVal: '',
             abnormalList,
             isNormal: true,

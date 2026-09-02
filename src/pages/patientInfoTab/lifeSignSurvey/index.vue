@@ -30,7 +30,7 @@
                 <lineCell v-for="(item, index) in dataList" :key="index" :patientObj="item"></lineCell>
             </scroll-view>
             <!--页面加载动画-->
-            <!-- <rfLoading isFullScreen :active="loading"></rfLoading> -->
+            <rfLoading isFullScreen :active="loading"></rfLoading>
             <rf-back-top :scrollTop="scrollTop"></rf-back-top>
         </view>
         <view class="operate-group">
@@ -103,6 +103,7 @@
             },
 
             getTempatureNoSurveyList(){
+                this.loading = true
                 const fromTime = encodeURIComponent(getStandardTime(new Date()))
                 const userInfo = uni.getStorageSync('userInfo');
                 
@@ -111,6 +112,9 @@
                 .then(data=>{
                     const hasDataList = data.flat().map(item=> item.inpatient)
                     this.dataList = this.cachePatientsList.filter(item=> !hasDataList.includes(item.PatientId))
+                    this.loading = false
+                }).catch(err=>{
+                    this.loading = false
                 })
             },
 

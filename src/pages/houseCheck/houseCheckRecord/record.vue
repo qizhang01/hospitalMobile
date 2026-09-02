@@ -35,6 +35,7 @@
                 v-if="patientList.length === 0 && !loading"
             ></rf-empty>
         </scroll-view>
+        <rfLoading isFullScreen :active="loading"></rfLoading>
 	</view>
 </template>
 
@@ -57,7 +58,7 @@ export default {
 	data() {
 		return {
             loadingType: 'nomore',
-			loading: false,
+			loading: true,
 			selectH: 0,
 			selectedTimeName: "今日",
 			selectedGroupName: "全部",
@@ -99,6 +100,7 @@ export default {
 		},
         
         getInspectList(){
+            this.loading = true
             const userInfo = uni.getStorageSync('userInfo');
             Promise.all(userInfo.wards.map(item=>this.$http.get(getInspectRecordUrl(item.id))))
             .then(data=>{
@@ -118,6 +120,7 @@ export default {
                 })
                 this.patientList = mergeList
                 cacheList = mergeList
+                this.loading = false
             })
         },
 
