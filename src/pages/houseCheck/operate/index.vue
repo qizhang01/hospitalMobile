@@ -8,14 +8,16 @@
                     <uni-steps :options="stepList" :active="stepList.findIndex(item=>item.title==currentStep)" />
                 </view>
                 <scroll-view scroll-y="true" style="height: 76vh;">
-                    <view v-for="(task, index) in this.taskList" :key="task.barcode">
-                        <view class="progress-info patient-info">
-                            <text>{{ task.barcode }}</text>
-                            <view>
-                                <text style="margin-right: 16upx;">{{ task.freq }}</text>
-                                <text>{{ task.plan_time.slice(0, 16).replace('T', ' ') }}</text>
-                            </view>
+                    <uni-card :is-shadow="false" style="margin: 15px 8px; padding:0px">
+                        <view class="" v-if="patientInfo">
+                            <text class="item">{{ patientInfo.Name }} |</text>
+                            <text class="item">{{ patientInfo.BedNo }}床 |</text>
+                            <text class="item">{{ patientInfo.PhysiSexName }} |</text>
+                            <text class="item">{{ getAgeByBirthdate(patientInfo.BirthDate) }} |</text>
+                            <text>MRN {{ patientInfo.Mrn }}</text>
                         </view>
+                    </uni-card>
+                    <uni-card  v-for="(task, index) in this.taskList" :key="task.barcode" :title="task.barcode" :extra="task.freq + ' ' + task.plan_time.slice(0, 16).replace('T', ' ')" style="margin: 15px 8px; padding:0px">
                         <view
                             class="progress-info"
                             v-for="(item, index) in task.medicines"
@@ -24,14 +26,8 @@
                             <text>{{ item.order_name }}</text>
                             <text>{{ item.quantity }}{{ item.unit }}</text>
                         </view>
-                    </view>
-                    <view class="center patient-info" v-if="patientInfo">
-                        <text class="item">{{ patientInfo.Name }} |</text>
-                        <text class="item">{{ patientInfo.BedNo }}床 |</text>
-                        <text class="item">{{ patientInfo.PhysiSexName }} |</text>
-                        <text class="item">{{ getAgeByBirthdate(patientInfo.BirthDate) }} |</text>
-                        <text>MRN {{ patientInfo.Mrn }}</text>
-                    </view>
+                    </uni-card>
+
                 </scroll-view>
             </view>
             <view v-if='isInvolving'>
@@ -270,25 +266,10 @@ page {
 .drug-info {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid gray;
-    height: 90upx;
-    padding: 0 30upx;
     align-items: center;
+    color: #007aff;
 }
 
-.patient-info {
-    display: flex;
-    border-bottom: 1px solid gray;
-    height: 90upx;
-    padding: 0 30upx;
-    align-items: center;
-    .item {
-        margin-right: 10upx;
-    }
-}
-.patient-info  {
-    background-color: rgb(105, 98, 98, 0.1);
-}
 .container {
     display: flex;
     flex-direction: column;
