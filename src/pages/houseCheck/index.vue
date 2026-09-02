@@ -82,22 +82,8 @@ export default {
 
 	methods: {
 		...mapMutations(['setPatientInfo']),
-		// 数据初始化
-		initData() {
-			this.getCouponList();
-		},
-  
 
-		// 获取收货地址列表
-		async getCouponList() {
-		},
 
-		navTo(route) {
-			// this.$mRouter.push({ route });
-		},
-
-		input(){
-		},
 
         onSetInterval(){
             timer =setInterval(() => {
@@ -111,11 +97,6 @@ export default {
                 timer = null;
             }
 		},
-        // handleClick1(){
-        //     uni.navigateTo({
-        //         url: '/pages/houseCheck/operate/index'
-        //     })
-        // },
 
         navToLifeSignSurvey(){
             uni.navigateTo({
