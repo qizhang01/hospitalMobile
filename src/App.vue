@@ -9,20 +9,20 @@
     let isProcessingScan = false;
 
 export default {
-    computed: mapState(['userInfo']),
 
 	async onLaunch() {
 		await this.initData();
+        
         this.checkLogin();
         if (uni.getSystemInfoSync().platform === 'android'){
             this.initScanner();
             this.listenToLaserScan();
         }
+        // this.handleNetListener()
 	},
 
     onShow() {
-        // 页面显示时，开始监听激光扫码事件
-        // this.listenToLaserScan();
+
     },
 
     onHide() {
@@ -45,9 +45,19 @@ export default {
 
 	methods: {
 		...mapMutations(['setScanCode']),
+         
+        handleNetListener(){
+            uni.onNetworkStatusChange(function (res) {
+                if(res.isConnected){
+                    uni.showToast('网络连接成功');
+                }else {
+                    uni.showToast('网络连接失败');
+                }
+            });
+        },
 
         checkLogin(){
-            if(this.userInfo){
+            if(this.$mStore.getters.hasLogin){
                 uni.navigateTo({
                     url: '/pages/mainPageTab/index'
                 })
@@ -152,10 +162,10 @@ export default {
 
 
             // 不同PDA的广播Action不同，需要查设备文档或设置菜单
-            intentFilter.addAction("com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED"); //Summi
+            // intentFilter.addAction("com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED"); //Summi
             // 示例2：Seuic Action  Mexxen
             intentFilter.addAction("com.android.server.scannerservice.broadcast");
-
+            intentFilter.addAction("com.android.server.aa");
 
             // 3. 创建“广播接收器”，并定义“听到广播后做什么”（onReceive）
             const context = plus.android.importClass('android.content.Context');
@@ -231,7 +241,6 @@ export default {
 // 导入colorUI
 @import '/static/css/colorui/main.css';
 @import '/static/css/colorui/icon.css';
-@import '/static/css/colorui/animation.css';
 // 导入阿里巴巴矢量图标库
 @import './static/css/iconfont/iconfont.css';
 @import './static/css/reset.scss';

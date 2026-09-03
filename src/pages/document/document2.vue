@@ -24,7 +24,7 @@ import uniSection from '@dcloudio/uni-ui/lib/uni-section/uni-section.vue'
 import uniEasyinput from '@dcloudio/uni-ui/lib/uni-easyinput/uni-easyinput.vue'
 import uniDatetimePicker from '@dcloudio/uni-ui/lib/uni-datetime-picker/uni-datetime-picker.vue'
   export default {
-		name: 'document2',
+	name: 'document2',
     components: {
         uniDataSelect,
         uniSection,
@@ -37,9 +37,9 @@ import uniDatetimePicker from '@dcloudio/uni-ui/lib/uni-datetime-picker/uni-date
         single: '',
         value: 1,
         range: [
-          { value: 0, text: "篮球" },
-          { value: 1, text: "足球" },
-          { value: 2, text: "游泳" },
+          { value: 0, text: "咳嗽" },
+          { value: 1, text: "呕吐" },
+          { value: 2, text: "高温" },
         ],
       };
     },

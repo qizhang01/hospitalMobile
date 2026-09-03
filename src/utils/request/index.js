@@ -12,7 +12,6 @@ http.setConfig(config => {
 	// config.baseUrl = 'https://infusion.us.to:8443'; /* 根域名不同 */
 	config.header = {
 		...config.header,
-		API_KEY: "bpQ7]qnAzwe1,HQ74Zt4V(cRf2v[m,",
 	};
 	return config;
 });
@@ -50,12 +49,13 @@ http.interceptor.response(
                 url: '/pages/login/login'
             })
         }else {
-            // uni.showToast({
-            //     title: '加载失败，请检查网络',
-            //     icon: 'none' 
-            // });
+            uni.showToast({
+                title: error.data.message || '请求失败',
+                icon: 'none' ,
+                duration: 20000
+            });
+            return Promise.reject(error);
         }
-		return Promise.reject(error);
 	}
 );
 

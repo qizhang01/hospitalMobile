@@ -2,8 +2,8 @@
 	<view class="recharge">
 		<view class="block">
 			<view class="title">
-				<text class="cell-title">床位号: {{ patientInfo.BedNo }}</text>
-				<text>{{ patientInfo.Name }}</text>
+				<text class="cell-title rf-bolder">床位号: {{ patientInfo.BedNo }}</text>
+				<text class="rf-bolder">{{ patientInfo.Name }}</text>
 				<text class="at_least">{{ patientInfo.NursingClass }}级</text>
 				<text>{{ patientInfo.age }}岁</text>
 				<text>{{ patientInfo.PhysiSexName }}</text>

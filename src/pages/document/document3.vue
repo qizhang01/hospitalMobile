@@ -28,9 +28,9 @@ import uniDatetimePicker from '@dcloudio/uni-ui/lib/uni-datetime-picker/uni-date
         inputValue: '',
         single: '',
         range: [
-          { value: 0, text: "篮球" },
-          { value: 1, text: "足球" },
-          { value: 2, text: "游泳" },
+            { value: 0, text: "选项1" },
+            { value: 1, text: "选项2" },
+            { value: 2, text: "选项3" },
         ],
       };
     },

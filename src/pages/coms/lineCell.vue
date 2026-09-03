@@ -1,8 +1,8 @@
 <template>
 	<view class="line-cell">
         <view class="line-cell_column" style="width: 50px; text-align: center;">
-            <text class="cell">{{patientObj.BedNo}}</text>
-            <text class="cell">{{patientObj.Name}}</text>
+            <text class="cell rf-bolder">{{patientObj.BedNo}}</text>
+            <text class="cell rf-bolder">{{patientObj.Name}}</text>
         </view>
         <view class="line-cell_column" style="width: 50px; text-align: center;">
             <text class="cell">{{patientObj.PhysiSexName}}</text>
@@ -13,10 +13,10 @@
             <text class="cell">{{patientObj.Mrn}}</text>
         </view>
         <view class="line-cell_column" @tap="handleOnTap" style="width: 50px; text-align: center;">
-            <text v-if="patientObj.state" :class="{ 'text-blue': patientObj.state=='NORMAL' }">
+            <text v-if="patientObj.state" :class="{ 'text-blue': patientObj.state=='NORMAL' }" class="rf-bolder">
                 {{ patientObj.state=='NORMAL'? '正常': patientObj.remark }}
             </text>
-            <text v-else class="text-red-color">未巡视</text>
+            <text v-else class="text-red-color rf-bolder">未巡视</text>
         </view>
         <view class="line-cell_column" @tap.stop="handleOnTap" style="width: 50px; text-align: center;">
             <text class="iconfont iconyou"></text>

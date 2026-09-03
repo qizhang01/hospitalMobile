@@ -64,13 +64,13 @@
                         <text class="rf-bolder rf-divider">72岁</text>
                         <text class="rf-bolder margin-left-2">#{{ patientInfo.Wristband }}</text>
                     </view>
-                    <text class="rf-middle rf-bolder text-blue">{{ patientInfo.NursingClass }}级</text>
+                    <text class="rf-middle rf-bolder text-blue">{{ patientInfo.NursingClass==0? '特级' : patientInfo.NursingClass+'级' }}</text>
                 </view>
                 <view class="rf-dropdownlist-item">
                     <view class="rf-group">
                         <view class="left-content">
                             <text class="rf-ml rf-middle">护理级别:</text>
-                            <text class="rf-ml rf-middle">{{ patientInfo.NursingClass }}</text>
+                            <text class="rf-ml rf-middle">{{ patientInfo.NursingClass==0? '特级' : patientInfo.NursingClass+'级' }}</text>
                         </view>
                         <view class="right-content">
                             <text class="rf-ml rf-middle">入院时间:</text>
@@ -103,12 +103,13 @@
                             <text class="rf-ml rf-middle">费用合计:</text>
                             <text class="rf-ml rf-middle">{{ patientInfo.TotalCost }}</text>
                         </view>
-                        <view class="right-content">
-                            <text class="rf-ml rf-middle">过敏史:</text>
-                            <text class="rf-ml rf-middle">{{ patientInfo.Allergy}}</text>
+                    </view>
+                    <view class="rf-group">
+                        <view >
+                            <text class="rf-ml rf-middle" style="color: #f3a73f;">过敏史:</text>
+                            <text class="rf-middle" style="color: #f3a73f;">{{ Allergy }}</text>
                         </view>
                     </view>
-
                     <view class="rf-group">
                         <view>
                             <text class="rf-ml rf-middle">诊断:</text>
@@ -139,6 +140,9 @@ let timer=null
 export default {
     computed: {
         ...mapState(['cachePatientsList','scanCode']),
+        Allergy(){
+            return Array.from(new Set(this.patientInfo.Allergy)).join(', ')
+        },
     },
 
     watch: {

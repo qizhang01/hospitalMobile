@@ -8,22 +8,22 @@
                     <uni-steps :options="stepList" :active="stepList.findIndex(item=>item.title==currentStep)" />
                 </view>
                 <scroll-view scroll-y="true" style="height: 76vh;">
-                    <uni-card :is-shadow="false" style="margin: 15px 8px; padding:0px">
+                    <uni-card :is-shadow="false" style="margin: 15px 8px; padding:0px" :class="'bg-' + themeColor.name">
                         <view class="" v-if="patientInfo">
-                            <text class="item">{{ patientInfo.Name }} |</text>
-                            <text class="item">{{ patientInfo.BedNo }}床 |</text>
+                            <text class="item rf-bolder">{{ patientInfo.Name }} |</text>
+                            <text class="item rf-bolder">{{ patientInfo.BedNo }}床 |</text>
                             <text class="item">{{ patientInfo.PhysiSexName }} |</text>
                             <text class="item">{{ getAgeByBirthdate(patientInfo.BirthDate) }} |</text>
                             <text>MRN {{ patientInfo.Mrn }}</text>
                         </view>
                     </uni-card>
-                    <uni-card  v-for="(task, index) in this.taskList" :key="task.barcode" :title="task.barcode" :extra="task.freq + ' ' + task.plan_time.slice(0, 16).replace('T', ' ')" style="margin: 15px 8px; padding:0px">
+                    <uni-card  v-for="(task, index) in this.taskList" :key="task.barcode" :title="task.barcode" :extra="task.freq + ' ' + task.plan_time.slice(5, 16).replace('T', ' ')" style="margin: 15px 8px; padding:0px">
                         <view
                             class="progress-info"
                             v-for="(item, index) in task.medicines"
                             :key="index"
                         >   
-                            <text>{{ item.order_name }}</text>
+                            <text class="rf-bolder">{{ item.order_name }}</text>
                             <text>{{ item.quantity }}{{ item.unit }}</text>
                         </view>
                     </uni-card>
@@ -112,7 +112,7 @@ export default {
 
                             this.$mHelper.toast('腕带和药品不匹配, 不能执行');
 
-                        }else if( this.patientInfo.wristband==stringCode){
+                        }else if( this.patientInfo.wristband==stringCode && this.currentStep=='结束'){
                             this.operate()
                         }
                     }else {
@@ -141,7 +141,6 @@ export default {
             if(res){
                 this.loading = false
                 this.handleResponse(res)
-                this.stepList = this.getStepList( this.workflows.get(res.workflow))
             }
         },
         
@@ -162,12 +161,10 @@ export default {
             if(!res.steps || res.steps.length==0){
                 return this.$mHelper.toast('该药品已经执行完毕, 请勿重复操作.');
             }
-
-            if(this.patientInfo ){
-                if(this.patientInfo.PatientId!=res.inpatient){
-                    return this.$mHelper.toast('扫描的二维码不是同一个人, 请核对.');
-                }
-            }else {
+            
+            if(this.patientInfo && this.patientInfo.PatientId!=res.inpatient && this.currentStep!='收药'){
+                return this.$mHelper.toast('扫描的二维码不是同一个人, 请核对.');
+            }else if(!this.patientInfo){ 
                 this.$mStore.commit('clearTaskList');                   
                 this.patientInfo = this.cachePatientsList.filter(item=> item.PatientId==res.inpatient)[0]
             }
@@ -182,12 +179,13 @@ export default {
             }else {
                 let isSameStep = this.currentStep == res.steps[0].name
                 if(!isSameStep){
-                    return this.$mHelper.toast('此药品暂时不能执行此操作');
+                    return this.$mHelper.toast('此药品流程与已有药品流程不同，暂时不能执行此操作');
                 }
             }
 
             this.$mStore.commit('addTaskList', res);
             this.bardcodeList.push(res.barcode)
+            this.stepList = this.getStepList( this.workflows.get(res.workflow))
         },
 
         getAgeByBirthdate(birthDate){
@@ -209,9 +207,6 @@ export default {
         },
 
         operate(){
-            if(!this.currentStep.includes('执行')){
-                return this.$mHelper.toast('该药品暂时不能执行此操作');
-            }
             this.loading = true
             
             const requestList = this.taskList.map(task=>this.$http.post(taskUrl + `/${task.id}/${this.stepsCodeList[0]}`))

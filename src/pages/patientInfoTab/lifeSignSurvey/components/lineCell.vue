@@ -2,7 +2,7 @@
 	<view class="line-cell">
         <view class="line-cell_column">
             <text class="cell">{{patientObj.BedNo}}</text>
-            <text class="cell">{{patientObj.Name}}</text>
+            <text class="cell rf-bolder">{{patientObj.Name}}</text>
         </view>
         <view class="line-cell_column">
             <text class="cell">{{patientObj.PhysiSexName}}</text>

@@ -45,13 +45,13 @@ uniDataSelect,
 					value: 1
 				}],
 				hobby: [{
-					text: '足球',
+					text: '正常/卧床休息',
 					value: 0
 				}, {
-					text: '篮球',
+					text: '虚弱乏力',
 					value: 1
 				}, {
-					text: '游泳',
+					text: '平衡失调/不平衡',
 					value: 2
 				}],
 		};

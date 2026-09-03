@@ -917,7 +917,11 @@ export default {
         },
 
         handleClickEventName(index){
-            this.eventNameIndex = index
+            if(this.eventNameIndex == index){
+                this.eventNameIndex = -1
+            }else {
+                this.eventNameIndex = index
+            }
         },
 
         handleClickPulseCondition(index){

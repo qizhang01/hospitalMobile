@@ -30,7 +30,7 @@
 				>
 					<view class="carrier">
 						<view class="title">
-							<text class="cell-title">床位号: {{ item.BedNo }}</text>
+							<text class="cell-title rf-bolder">床位号: {{ item.BedNo }}</text>
 						</view>
 						<view class="term">
 							<text>{{ item.Name }}</text>
