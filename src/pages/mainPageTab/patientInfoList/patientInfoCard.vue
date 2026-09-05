@@ -14,7 +14,7 @@
             </view>
             <view class="patient-info-content column-3">
                 <view class="patient-info-status">
-                    <text class="item-info rf-bolder">{{ NursingClass}}级</text>
+                    <text class="item-info rf-bolder">{{ patientInfo.NursingClass?patientInfo.NursingClass: '三级护理'}}</text>
                     <image class="character-icon item-info" :src="noMoney" v-if="patientInfo.ArrearFlag"></image>
                     <!-- <image class="character-icon item-info" :src="finish" style="width: 22px; height: 22px;" ></image> -->
                     <image class="character-icon item-info" :src="newPatient" v-if="patientInfo.isNewPatient"></image>
@@ -72,9 +72,6 @@ export default {
 
 	},
     computed: {
-        NursingClass() {
-            return getNurseClass(this.patientInfo.NursingClass)
-        },
         AdmissionWardTime() {
             return this.patientInfo.AdmissionWardTime ? this.patientInfo.AdmissionWardTime.replace(/[TZ]/g, ' ') : ''
         }

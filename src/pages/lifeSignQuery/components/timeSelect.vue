@@ -33,26 +33,28 @@
 		data() {
 			return {
                 selectedDate: '',
-                timeItem: this.buttonList[0]
+                timeItem: this.buttonList[0].name
 			};
 		},
 		methods: {
             handleButtonClick(item){
-                this.selectedDate = ''
-                this.buttonList = this.buttonList.map(button=>{
-                    if(button.id==item.id){
-                        this.timeItem = button
-                        return {
-                            ...button,
-                            selected: true
-                        }
-                    }else {
-                        return {
-                            ...button,
-                            selected: false
-                        }
-                    }
-                })
+                // this.selectedDate = ''
+                // this.buttonList = this.buttonList.map(button=>{
+                //     if(button.id==item.id){
+                //         this.timeItem = button
+                //         return {
+                //             ...button,
+                //             selected: true
+                //         }
+                //     }else {
+                //         return {
+                //             ...button,
+                //             selected: false
+                //         }
+                //     }
+                // })
+                this.$emit('buttonClick', item)
+                this.timeItem = item.name
             },
 
             confirm(){

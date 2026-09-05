@@ -14,19 +14,19 @@
                     <!--下拉选择列表--综合-->
                     <view class="rf-dropdownlist" :class="[selectH>0?'rf-dropdownlist-show':'']">
                         <buttonGroup :buttonList="typeOption" v-if="dropdownIndex==1" @buttonItemClick="handleTypeClick"></buttonGroup>
-                        <timeSelect :buttonList="timeOption" v-else="dropdownIndex==2" @timeItemClick="handleTimeItemClick"></timeSelect>
+                        <timeSelect :buttonList="timeOption" v-else="dropdownIndex==2" @timeItemClick="handleTimeItemClick" @buttonClick="handleButtonClick"></timeSelect>
                     </view>
                     <view class="rf-dropdownlist-mask" :class="[selectH>0?'rf-mask-show':'']" @tap.stop="hideDropdownList"></view>
                     <!--下拉选择列表--综合-->
                 </view>
-            </view>
-            <scroll-view scroll-y="true" class="patient-list_container">
                 <view class="line-header" :class="[`bg-${themeColor.name}`]"">
                     <text>床号/姓名</text>
                     <text>性别/年龄</text>
                     <text>MRN</text>
                     <text></text>
                 </view>
+            </view>
+            <scroll-view scroll-y="true" class="patient-list_container">
                 <lineCell v-for="(item, index) in dataList" :key="index" :patientObj="item"></lineCell>
             </scroll-view>
             <!--页面加载动画-->
@@ -64,7 +64,7 @@
 				loading: true,
 				scrollTop: 0,
                 selectedType: '体温待测',
-                selectedTypeItem: '10:00',
+                selectedTypeItem: '2:00',
                 selectH: 0,
                 dropdownIndex: 0,
                 tabIndex: 1,
@@ -128,19 +128,13 @@
                 this.dropdownIndex = 3
             },
 
-            handleTimeItemClick(payload){
-                this.hideDropdownList()
-            },
-
-            handleTypeClick(playLoad){
-                this.selectH = 0
-                this.selectedType = playLoad.name
-                this.typeOption = this.typeOption.map(item=>{
-                    if(item.name==playLoad.name){
-                         return {
-                            ...item,
-                            selected: true
-                         }
+            handleButtonClick(payload){
+                this.timeOption = this.timeOption.map(item=>{
+                    if(item.id==payload.id){
+                        return {
+                        ...item,
+                        selected: true
+                        }
                     }else {
                         return {
                             ...item,
@@ -148,6 +142,17 @@
                         }
                     }
                 })
+            },
+            
+            handleTimeItemClick(payload){
+                this.selectedTypeItem = payload.timeItem
+                this.hideDropdownList()
+            },
+
+            handleTypeClick(playLoad){
+                this.selectH = 0
+                this.selectedType = playLoad.name
+                this.hideDropdownList()
             },
 
             hideDropdownList(){
@@ -245,13 +250,13 @@
             justify-content: space-between;
         }
         .patient-list_container {
-            padding-top: 110upx;
+            padding-top: 130upx;
             .line-header {
                 height: 50upx;
                 color: white;
                 line-height: 50upx;
             }
-            height:900upx;
+            height:76vh;
         }
         .container{
             display: flex;

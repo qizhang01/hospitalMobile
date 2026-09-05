@@ -437,8 +437,8 @@ import uniDataSelect from '@dcloudio/uni-ui/lib/uni-data-select/uni-data-select.
 import uniSection from '@dcloudio/uni-ui/lib/uni-section/uni-section.vue'
 import uniEasyinput from '@dcloudio/uni-ui/lib/uni-easyinput/uni-easyinput.vue'
 import uniDatetimePicker from '@dcloudio/uni-ui/lib/uni-datetime-picker/uni-datetime-picker.vue'
-import { mapMutations, mapState } from 'vuex';
-import {vitalsUrl, eventUrl, getInpatientTasksById} from '@/api/login'
+import { mapState } from 'vuex';
+import {vitalsUrl, eventUrl} from '@/api/login'
 
 import {temperature, pulseList, breatheWay, allergy, pulseCondition,weight,
     tongueCondition,climate, other, diGaoXin, eventName, stoolOptions, urinateOptions} from './option.js'
@@ -462,8 +462,7 @@ export default {
 	data() {
 		return {
             patientInfo:  null,
-            medicines: [],
-            loading: true,
+            loading: false,
             timePeriodValue: 1, 
             range: [ '02:00',
                     '06:00',
@@ -530,8 +529,6 @@ export default {
 
 	onLoad(options) {
         this.patientInfo = JSON.parse(options.patientInfo)
-        if(this.patientInfo)
-        this.getInfo(this.patientInfo.PatientId)
 	},
 
 	methods: {
@@ -545,15 +542,6 @@ export default {
                 return `0${month}`
             }
             return `${month}`
-        },
-
-        async getInfo(inpatient){
-            this.loading = true
-            const res = await this.$http.get(getInpatientTasksById(inpatient))
-            if(res){
-                this.medicines = res
-                this.loading = false
-            }
         },
 
         change(e) {
@@ -965,7 +953,7 @@ export default {
 <style lang="scss">
 
 page {
-    background: white;
+    background-color: $page-color-base;
     height: 100%;
 }
 
@@ -983,8 +971,9 @@ page {
 }
 
 .input-container {
-    margin-top: 150px;
+    margin-top: 120px;
     padding-bottom: 20px;
+    background-color: $page-color-base;
 }
 
 .option-list {
