@@ -1,14 +1,14 @@
 <template>
-	<view>
-        <view
-            class="info"
-            v-for="(item, index) in sheetList"
-            :key="index"
-        >   
-            <uni-card :title="item.fill_at.slice(0, 16).replace('T', ' ')" :extra="item.fill_by">
+    <view class="recharge">
+		<view class="block">
+            <uni-card  v-for="(item, index) in sheetList" :key="index" :title="item.fill_at.slice(0, 16).replace('T', ' ')"  :extra="item.fill_by">
                 <text>{{ item.name }}</text>
             </uni-card>
-        </view>
+		</view>
+        <rf-empty
+            :info="暂无文书信息"
+            v-if="sheetList.length === 0 && !pageLoading"
+        ></rf-empty>
 		<!--加载动画-->
 		<rfLoading isFullScreen :active="pageLoading"></rfLoading>
 	</view>
@@ -44,4 +44,11 @@ export default {
 page {
 	background-color: #f1f1f1;
 }
+.block {
+	padding:10px 0px;
+	margin-bottom: 4px;
+}
+
 </style>
+
+

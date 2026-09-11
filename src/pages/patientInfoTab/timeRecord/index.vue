@@ -1,32 +1,29 @@
 <template>
     <view class="container">
         <view class="coupon-center">
-            <view class="center patient-info" v-if="patientInfo">
-                <text class="item">{{ patientInfo.Name }} |</text>
-                <text class="item">{{ patientInfo.BedNo }}床 |</text>
-                <text class="item">{{ patientInfo.PhysiSexName }} |</text>
-                <text class="item">{{ getAgeByBirthdate(patientInfo.BirthDate) }} |</text>
-                <text>MRN {{ patientInfo.Mrn }}</text>
-            </view>
+            <uni-card :is-shadow="true" style="margin: 15px 8px; padding:0px" :class="'bg-' + themeColor.name">
+                <view class="" v-if="patientInfo">
+                    <text class="item rf-bolder">{{ patientInfo.Name }} |</text>
+                    <text class="item rf-bolder">{{ patientInfo.BedNo }}床 |</text>
+                    <text class="item">{{ patientInfo.PhysiSexName }} |</text>
+                    <text class="item">{{ getAgeByBirthdate(patientInfo.BirthDate) }} |</text>
+                    <text>MRN {{ patientInfo.Mrn }}</text>
+                </view>
+            </uni-card>
             <scroll-view>
                 <view
                     class="progress-info"
                     v-for="(item, index) in medicines"
                     :key="index"
                 >   
-                    <view class="header-text">
-                        <text v-for="(el, i) in item.steps" :key="el">
-                            {{ (i==item.steps.length-1)? el.name: el.name+ '-' }}
-                        </text>
-                    </view>
-                    <view class="topic single-line">
-                        <text>{{ item.plan_time.slice(0, 16).replace('T', ' ') }}</text>
-                        <text>{{ item.group }}</text>
-                    </view>
-                    <view v-for="(el, i) in item.medicines " :key="el.id" class="single-line">
-                        <text>{{ el.order_name }}</text>
-                        <text>{{ el.quantity }}{{ el.unit }}</text>
-                    </view>
+                    <uni-section :title="item.steps && item.steps[0].name" type="line">
+                        <uni-card :title="item.plan_time.slice(0, 16).replace('T', ' ')" :extra="item.group+''">
+                                <view v-for="(el, i) in item.medicines " :key="el.id" class="single-line">
+                                    <text>{{ el.order_name }}</text>
+                                    <text>{{ el.quantity }}{{ el.unit }}</text>
+                                </view>
+                        </uni-card>
+                    </uni-section>
                 </view>
             </scroll-view>
         </view>
@@ -67,7 +64,7 @@ export default {
             this.loading = true
             const res = await this.$http.get(getInpatientTasksById(inpatient))
             if(res){
-                this.medicines = res
+                this.medicines = res.reverse()
                 this.loading = false
             }
         },
@@ -102,7 +99,6 @@ page {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border-bottom: 1px solid gray;
 
     .topic {
         background-color: rgb(105, 98, 98, 0.2);

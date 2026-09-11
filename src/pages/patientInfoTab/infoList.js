@@ -19,21 +19,3 @@ export const selectList = [{
     name: "中药医嘱",
     selected: false,
 }]
-
-
-export const groupList = [{
-   id: 1,
-   name: "肿瘤科",
-   value: "2901",
-   selected: true
-},{
-    id: 2,
-   name: "肠胃科",
-      value: "2903",
-   selected: false
-},{
-    id: 3,
-   name: "肝胆科",
-    value: "2906",
-   selected: false
-}]

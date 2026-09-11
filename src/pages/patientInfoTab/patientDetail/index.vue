@@ -21,7 +21,7 @@
 					<image :src="appServiceQr" class="img"></image>
 			        <view class="topic-text">文书</view>
 					<button class="button" @tap.stop="navToDocumentPage">录入</button>
-					<button class = "button" type="primary">查询</button>
+					<button class = "button" type="primary" @tap.stop="navToDocumentDetail">查询</button>
 			</view>
 			<view class="other">
                 <view class="item" @tap.stop="navTo('/pages/patientInfoTab/originAdvice/index')">	
@@ -85,7 +85,9 @@ export default {
         navToCharacterInput() {
             this.navTo(`/pages/patientInfoTab/input/characterInput?patientInfo=${JSON.stringify(this.patientInfo)}`)
         },
-
+        navToDocumentDetail(){
+            this.navTo(`/pages/patientInfoTab/sheetList/index?patientInfo=${JSON.stringify(this.patientInfo)}`)
+        },
 		getAgeFromBirthDate( birthDate ){
 			return new Date().getFullYear()- Number(birthDate.substr(0,4));
 		},
