@@ -12,13 +12,11 @@
 		</view>
 		<view class="block">
 			<view class="tempature">
-					<image :src="appServiceQr" class="img"></image>
 			        <view class="topic-text">体温单</view>
 					<button class="button" @tap.stop="navToCharacterInput">录入</button>
 					<button class = "button" @tap.stop="navToLifeSignQuery" type="primary">查询</button>
 			</view>
 			<view class="document">
-					<image :src="appServiceQr" class="img"></image>
 			        <view class="topic-text">文书</view>
 					<button class="button" @tap.stop="navToDocumentPage">录入</button>
 					<button class = "button" type="primary" @tap.stop="navToDocumentDetail">查询</button>
@@ -137,6 +135,7 @@ page {
 	align-items: center;
 }
 .topic-text {
-    width: 100upx;
+    width: 120upx;
+    margin-left: 50upx;
 }
 </style>
