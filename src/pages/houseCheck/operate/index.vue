@@ -7,25 +7,31 @@
                     <uni-steps :options="stepList" :active="stepList.findIndex(item=>item.title==currentStep)" />
                 </view>
                 <scroll-view scroll-y="true" style="height: 76vh;">
-                    <uni-card :is-shadow="true" style="margin: 15px 8px; padding:0px" :class="'bg-' + themeColor.name">
-                        <view class="" v-if="patientInfo">
-                            <text class="item rf-bolder">{{ patientInfo.Name }} |</text>
-                            <text class="item rf-bolder">{{ patientInfo.BedNo }}床 |</text>
-                            <text class="item">{{ patientInfo.PhysiSexName }} |</text>
-                            <text class="item">{{ getAgeByBirthdate(patientInfo.BirthDate) }} |</text>
-                            <text>MRN {{ patientInfo.Mrn }}</text>
-                        </view>
-                    </uni-card>
-                    <uni-card  v-for="(task, index) in this.taskList" :key="task.barcode" :title="task.barcode" :extra="task.freq + ' ' + task.plan_time.slice(5, 16).replace('T', ' ')" style="margin: 15px 8px; padding:0px">
-                        <view
-                            class="progress-info"
-                            v-for="(item, index) in task.medicines"
-                            :key="index"
-                        >   
-                            <text class="rf-bolder">{{ item.order_name }}</text>
-                            <text>{{ item.quantity }}{{ item.unit }}</text>
-                        </view>
-                    </uni-card>
+                    <view v-for="(item, index) in this.taskList">
+                        <uni-card :is-shadow="true" style="margin: 15px 8px; padding:0px" :class="'bg-' + themeColor.name">
+                            <view class="" >
+                                <text class="item rf-bolder">{{ item.patientInfo.BedNo }}床 |</text>
+                                <text class="item rf-bolder">{{ item.patientInfo.Name }}</text>
+                                <!-- <text class="item rf-bolder">{{ item.patientInfo.BedNo }}床 |</text> -->
+                                <!-- <text class="item">{{ item.patientInfo.PhysiSexName }} |</text>
+                                <text class="item">{{ getAgeByBirthdate(item.patientInfo.BirthDate) }} |</text>
+                                <text>MRN {{ item.patientInfo.Mrn }}</text> -->
+                            </view>
+                        </uni-card>
+                        <uni-card  v-for="(task, index) in item.task" :key="task.barcode" :title="task.barcode" :extra="task.freq + '  ' + task.plan_time.slice(5, 16).replace('T', ' ')" style="margin: 15px 8px; padding:0px">
+                            <view
+                                class="progress-info"
+                                v-for="(item, index) in task.medicines"
+                                :key="index"
+                            >   
+                                <text class="rf-bolder">{{ item.order_name }}</text>
+                                <view>
+                                    <text >{{ item.dosage }}{{ item.dosage_unit }}</text>
+                                    <text style="margin-left: 10upx;">{{ item.quantity }}{{ item.unit }}</text>
+                                </view>
+                            </view>
+                        </uni-card>
+                    </view>
                 </scroll-view>
             </view>
             <view class="operate-group">
@@ -34,7 +40,7 @@
                 </text>
                 <text v-else class="cu-load">可继续扫描或者继续排药</text>
                 <button type="primary" class="confirm-button" @tap.stop="operate" v-if="currentStep" :disabled="disabled">
-                    {{currentStep}}{{ "("+this.taskList.length+')' }}
+                    {{currentStep}}{{ "("+taskLength+')' }}
                 </button>
             </view>
         </view>
@@ -83,7 +89,6 @@ export default {
            isInvolving: false,
            Wristband: '',
            stepList: [],
-           isInformAllergy: false
 		};
 	},
     computed: {
@@ -95,6 +100,14 @@ export default {
                 }
             }
             return false
+        },
+
+        taskLength(){
+            let len = 0
+            for(let i=0; i<this.taskList.length; i++ ){
+                len = len + this.taskList[i].task.length
+            }
+            return len
         }
     },
      
@@ -133,7 +146,8 @@ export default {
 
 	onLoad(options) {
         this.$mStore.commit('clearTaskList'); 
-        // this.getInfo('00249772902026091023001')
+        // this.getInfo('00249178272026091308001')
+        // this.getInfo('20260407113431315')
 	},
 
     mounted() {
@@ -166,27 +180,27 @@ export default {
             if(!res.steps || res.steps.length==0){
                 return this.$mHelper.toast('该药品已经执行完毕, 请勿重复操作.');
             }
-            
             if(this.patientInfo && this.patientInfo.PatientId!=res.inpatient && this.currentStep!='收药'){
                 return this.$mHelper.toast('扫描的二维码不是同一个人, 请核对.');
-            }else if(!this.patientInfo){                   
+            }
+            
+            if(!this.patientInfo && this.currentStep!='收药'){                   
                 this.patientInfo = this.cachePatientsList.filter(item=> item.PatientId==res.inpatient)[0]
 
-                this.$mHelper.toast(this.patientInfo.Wristband)
-
                 if(this.patientInfo.Allergy && this.patientInfo.Allergy.length>0){
-                    if(!this.isInformAllergy) {
-                        uni.vibrateLong({
-                            success: function () {
-                                this.$mHelper.toast('该患者有药品过敏记录');
-                            },
-                            fail: function (err) {
-                                console.log('震动失败', err);
-                            }
-                        });
-                    }
-                    this.isInformAllergy = true
+                    uni.vibrateLong({
+                        success: function () {
+                            this.$mHelper.toast('该患者有药品过敏记录');
+                        },
+                        fail: function (err) {
+                            console.log('震动失败', err);
+                        }
+                    });
                 }
+            }
+
+            if(this.currentStep=='收药'){
+                this.patientInfo = this.cachePatientsList.filter(item=> item.PatientId==res.inpatient)[0]
             }
 
             if(!this.currentStep){
@@ -203,8 +217,14 @@ export default {
                     return this.$mHelper.toast('此药品流程与已有药品流程不同，暂时不能执行此操作');
                 }
             }
+            
+            const data = {
+                patientInfo: this.patientInfo,
+                type: this.currentStep=='收药'? 'diffPatient': 'samePatient',
+                task: res
+            }
 
-            this.$mStore.commit('addTaskList', res);
+            this.$mStore.commit('addTaskList', data);
             this.bardcodeList.push(res.barcode)
             this.stepList = this.getStepList( this.workflows.get(res.workflow))
         },
@@ -231,7 +251,6 @@ export default {
             this.bardcodeList = []
             this.loading = false
             this.stepList=[]
-            this.isInformAllergy = false
             this.currentStep = ''
         },
 

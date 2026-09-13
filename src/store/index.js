@@ -137,7 +137,42 @@ const store = new Vuex.Store({
         },
 
         addTaskList(state, data) {
-            state.taskList = [...state.taskList, data ]
+            if(data.type=='samePatient'){
+                if(state.taskList[0]){
+                    state.taskList = [{
+                        patientInfo: data.patientInfo,
+                        task: [...state.taskList[0].task, data.task]
+                    }]
+                }else {
+                    state.taskList = [{
+                        patientInfo: data.patientInfo,
+                        task: [data.task]
+                    }]
+                }
+            }else {
+                const isExisted = false
+                const result = []
+                state.taskList.forEach(item=>{
+                    if(item.patientInfo.PatientId==data.patientInfo.PatientId){
+                        isExisted = true
+                        result.push({
+                            patientInfo: data.patientInfo,
+                            task: [...item.task, data.task]
+                        })
+                    }else {
+                        result.push(item)
+                    }
+                })
+
+                if(!isExisted){
+                    result.push({
+                        patientInfo: data.patientInfo,
+                        task: [data.task]
+                    })
+                }
+
+                state.taskList  = result
+            }
         },
 
         clearTaskList(state) {
