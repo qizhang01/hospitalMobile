@@ -55,6 +55,7 @@
                     保存滴速
                 </button>
             </view>
+            <!-- <uni-icons type="checkbox-filled" size="30" color=""></uni-icons> -->
         </view>
 
         <rfLoading isFullScreen :active="loading"></rfLoading>
@@ -131,11 +132,11 @@ export default {
     },
 
 	onLoad(options) {
+        this.$mStore.commit('clearTaskList'); 
         // this.getInfo('00249772902026091023001')
 	},
 
-    beforeUnmount() {
-        this.$mStore.commit('clearTaskList'); 
+    mounted() {
 	},
 
 	methods: {
@@ -300,7 +301,6 @@ page {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #007aff;
 }
 
 .container {
