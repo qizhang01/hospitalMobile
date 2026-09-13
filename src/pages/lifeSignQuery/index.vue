@@ -67,9 +67,9 @@
         onLoad(options){
             this.inpatient = options.inpatient
             if(options.inpatient){
-                const dates = this.getDatesByDaylong(3)
-                const fromTime = `${dates[dates.length -1]}T00:00:00+08:00`
-                const toTime = `${dates[0]}T00:00:00+08:00`
+                const {from, to} = this.getDatesByDaylong(3)
+                const fromTime = `${from}T00:00:00+08:00`
+                const toTime = `${to}T23:59:59+08:00`
                 this.getVitalByPatientId(options.inpatient, fromTime, toTime)
             }
         },
@@ -111,13 +111,13 @@
             handleSelect(date){
                 let fromTime, toTime
                 if(typeof date ==='number'){
-                    const dates = this.getDatesByDaylong(date)
-                    fromTime = `${dates[dates.length -1]}T00:00:00+08:00`
-                    toTime = `${dates[0]}T00:00:00+08:00`
+                    const {from, to} = this.getDatesByDaylong(date)
+                    fromTime = `${from}T00:00:00+08:00`
+                    toTime = `${to}T23:59:59+08:00`
                     this.selectedTypeItem = this.getOptionTextByNumber(date)
                 }else {
                     fromTime = date.startDate? `${date.startDate}T00:00:00+08:00`: null
-                    toTime = date.endDate? `${date.endDate}T00:00:00+08:00`: null
+                    toTime = date.endDate? `${date.endDate}T23:59:59+08:00`: null
                 }
                 this.getVitalByPatientId(this.inpatient, fromTime, toTime)
 
@@ -161,13 +161,17 @@
 
             getDatesByDaylong(dayLong) {
                 let currentDate = new Date();
-                let dates = [];
-                for (let i=0; i<dayLong; i++){
-                    let date = new Date();
-                    date.setDate(currentDate.getDate() -i);
-                    dates.push(date);
+
+                const toTime = `${currentDate.getFullYear()}-${this.get2Digtal(currentDate.getMonth()+1)}-${this.get2Digtal(currentDate.getDate())}`
+
+                let firtDay = new Date();
+                firtDay.setDate(firtDay.getDate() -dayLong);
+                const fromTime = `${firtDay.getFullYear()}-${this.get2Digtal(firtDay.getMonth()+1)}-${this.get2Digtal(firtDay.getDate())}`
+                
+                return {
+                    from: fromTime,
+                    to: toTime
                 }
-                return dates.map(item=> `${item.getFullYear()}-${this.get2Digtal(item.getMonth()+1)}-${this.get2Digtal(item.getDate())}`);
             },
 
             get2Digtal(month){

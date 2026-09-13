@@ -19,7 +19,8 @@
                     </view>
                 </uni-section>
                 <uni-section title="选择时间" type="line">
-                    <uni-datetime-picker type="date" :clear-icon="false" v-model="timeValue" @maskClick="maskClick" />
+                    <!-- <uni-datetime-picker type="date" :clear-icon="false" v-model="timeValue" @maskClick="maskClick" /> -->
+                    <uni-datetime-picker type="datetime" v-model="timeValue" @change="changeLog" />
                     <!-- <uni-data-select
                         v-if="range && range.length>0"
                         v-model="timePeriodValue"
@@ -30,10 +31,11 @@
                     <view class="uni-list">
                         <view class="uni-list-cell">
                             <view class="uni-list-cell-left">
-                                当前选择时段
+                                <text style="margin-right: 12upx;">当前时段</text>
+                                <switch checked @change="switch1Change" />
                             </view>
                             <view class="uni-list-cell-db">
-                                <picker @change="change" :value="timePeriodValue" :range="range">
+                                <picker @change="change" :value="timePeriodValue" :range="range" :disabled="!this.swithStatus">
                                     <view class="uni-input">{{range[timePeriodValue]}}</view>
                                 </picker>
                             </view>
@@ -523,7 +525,8 @@ export default {
             allergy1Value: '',
             allergy2Value: '',
 
-            timeValue: this.getStandTime(new Date())
+            timeValue: this.getStandTime(new Date()),
+            swithStatus : true
 		};
 	},
 
@@ -532,11 +535,19 @@ export default {
 	},
 
 	methods: {
-        
-        getStandTime(day){
-             return `${day.getFullYear()}-${this.get2Digtal(day.getMonth()+1)}-${this.get2Digtal(day.getDate())}`
+        switch1Change(e) {
+            this.swithStatus = e.detail.value
+            if(!e.detail.value){
+                this.timePeriodValue = null
+            }else {
+                this.timePeriodValue = 1
+            }
         },
 
+        getStandTime(day){
+            return `${day.getFullYear()}-${this.get2Digtal(day.getMonth()+1)}-${this.get2Digtal(day.getDate())}`
+        },
+        
         get2Digtal(month){
             if(month<10){
                 return `0${month}`
@@ -590,7 +601,14 @@ export default {
                 diGaoXin: '地高辛',
                 event: '事件'
             }
-            let planned_time = this.timeValue+ 'T'+ this.range[this.timePeriodValue] +':00+08:00'
+            let planned_time = ''
+            if(this.swithStatus){
+                planned_time = this.timeValue+ 'T'+ this.range[this.timePeriodValue] +':00+08:00'
+            }else {
+                const splitArr = this.timeValue.split(' ')
+                planned_time =splitArr[0] + 'T'+splitArr[1]+'+08:00'
+            }
+
 
             const inpatient = this.patientInfo.PatientId
             const result = []
@@ -955,6 +973,10 @@ export default {
 page {
     background-color: $page-color-base;
     height: 100%;
+}
+
+.uni-list-cell-left  {
+    margin-left: 0px;
 }
 
 .header-text {

@@ -1,9 +1,9 @@
 <template>
     <view>   
         <uni-card :title="getPlanned_time(infomation[0].planned_time)" :extra="getNameByRecordBy(infomation[0].record_by)">
-            <text v-for="(v, index) in infomation" :key="key" class="life-sign_item uni-body">
+            <view v-for="(v, index) in infomation" :key="key" class="life-sign_item uni-body">
                 {{ v.name }}: <text style="color: #0081ff; margin-left: 10upx;">{{ getValue(v) }}</text>
-            </text>
+            </view>
         </uni-card>
     </view>
 </template>

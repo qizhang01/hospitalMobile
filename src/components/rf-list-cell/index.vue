@@ -106,7 +106,7 @@ export default {
 	}
 	.cell-tit {
 		flex: 1;
-		font-size: $font-base;
+		font-size: $font-lg;
 		color: $font-color-dark;
 		margin-right: 10upx;
 	}
