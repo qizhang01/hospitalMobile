@@ -146,7 +146,7 @@ export default {
 
 	onLoad(options) {
         this.$mStore.commit('clearTaskList'); 
-        this.getInfo('00249376672026091408001')
+        // this.getInfo('00249376672026091408001')
         // this.getInfo('20260407113431315')
 	},
 
