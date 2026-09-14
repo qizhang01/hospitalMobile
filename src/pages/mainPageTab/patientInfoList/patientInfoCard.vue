@@ -58,7 +58,6 @@
 
 
 <script>
-import {getNurseClass} from '@/utils/util'
 
 export default {
 	name: 'rfProductList',

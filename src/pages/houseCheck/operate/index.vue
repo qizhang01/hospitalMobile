@@ -204,7 +204,6 @@ export default {
             }
 
             if(!this.currentStep){
-                this.$mHelper.toast(res.steps[0].name);
                 this.stepsCodeList=res.steps.map(item=>item.code)
                 this.currentStep = res.steps[0].name
                 uni.setNavigationBarTitle({
@@ -214,7 +213,7 @@ export default {
             }else {
                 let isSameStep = this.currentStep == res.steps[0].name
                 if(!isSameStep){
-                    return this.$mHelper.toast('此药品流程与已有药品流程不同，暂时不能执行此操作');
+                    return this.$mHelper.toast(`状态: ${res.steps[0].name}, 与目前流程不符`);
                 }
             }
             
@@ -256,8 +255,8 @@ export default {
 
         operate(){
             this.loading = true
-            
-            const requestList = this.taskList.map(task=>this.$http.post(taskUrl + `/${task.id}/${this.stepsCodeList[0]}`))
+            const allTaskList = this.taskList.map(item=>item.task).flat()
+            const requestList = allTaskList.map(task=>this.$http.post(taskUrl + `/${task.id}/${this.stepsCodeList[0]}`))
             Promise.all(requestList).then(res=>{
                 this.$mHelper.toast(`${this.currentStep}成功`);
                 this.handleSumbitSuccess()
@@ -269,7 +268,7 @@ export default {
 
         async finish(){
             this.loading = true
-            const res = await this.$http.post(taskUrl + `/${this.taskList[0].id}/finish`)
+            const res = await this.$http.post(taskUrl + `/${this.taskList[0].task.id}/finish`)
             if(res){
                 this.$mHelper.toast('拔针完成');
                 this.reset()
@@ -279,7 +278,7 @@ export default {
         
         async save(){
             this.loading = true
-            const res = await this.$http.post(taskUrl + `/${this.taskList[0].id}/inspect`,{
+            const res = await this.$http.post(taskUrl + `/${this.taskList[0].task.id}/inspect`,{
                 drop_per_min: this.inputValue1,
                 remark: this.inputValue2
             })

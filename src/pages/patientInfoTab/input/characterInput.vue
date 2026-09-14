@@ -441,7 +441,7 @@ import uniEasyinput from '@dcloudio/uni-ui/lib/uni-easyinput/uni-easyinput.vue'
 import uniDatetimePicker from '@dcloudio/uni-ui/lib/uni-datetime-picker/uni-datetime-picker.vue'
 import { mapState } from 'vuex';
 import {vitalsUrl, eventUrl} from '@/api/login'
-
+import {getTimePeriodByHour}  from '@/utils/util'
 import {temperature, pulseList, breatheWay, allergy, pulseCondition,weight,
     tongueCondition,climate, other, diGaoXin, eventName, stoolOptions, urinateOptions} from './option.js'
 
@@ -465,7 +465,7 @@ export default {
 		return {
             patientInfo:  null,
             loading: false,
-            timePeriodValue: 1, 
+            timePeriodValue: getTimePeriodByHour(), 
             range: [ '02:00',
                     '06:00',
                     '10:00',
@@ -540,7 +540,7 @@ export default {
             if(!e.detail.value){
                 this.timePeriodValue = null
             }else {
-                this.timePeriodValue = 1
+                this.timePeriodValue = getTimePeriodByHour()
             }
         },
 

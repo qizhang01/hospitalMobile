@@ -34,14 +34,18 @@ export const get2Digtal=(month)=>{
     return `${month}`
 }
 
-export function getNurseClass(classId){
-    if(classId==0){
-        return '特'
-    }else if(classId==1){
-        return '一'
-    }else if(classId==2){
-        return '二'
-    }else if(classId==3){
-        return '三'
+export function getTimePeriodByHour(){
+    const hour = new Date().getHours()
+    if(hour>=0 && hour<4){
+        return 0
+    }else if(hour>=4&&hour<8){
+        return 1
+    }else if(hour>=8&&hour<12){
+        return 2
+    }else if(hour>=12&&hour<16){
+        return 3
+    }else if(hour>=16&&hour<20){
+        return 4
     }
+    return 5
 }
