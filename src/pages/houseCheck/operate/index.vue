@@ -146,7 +146,7 @@ export default {
 
 	onLoad(options) {
         this.$mStore.commit('clearTaskList'); 
-        // this.getInfo('00249178272026091308001')
+        this.getInfo('00249376672026091408001')
         // this.getInfo('20260407113431315')
 	},
 
@@ -268,7 +268,7 @@ export default {
 
         async finish(){
             this.loading = true
-            const res = await this.$http.post(taskUrl + `/${this.taskList[0].task.id}/finish`)
+            const res = await this.$http.post(taskUrl + `/${this.taskList[0].task[0].id}/finish`)
             if(res){
                 this.$mHelper.toast('拔针完成');
                 this.reset()
@@ -278,7 +278,7 @@ export default {
         
         async save(){
             this.loading = true
-            const res = await this.$http.post(taskUrl + `/${this.taskList[0].task.id}/inspect`,{
+            const res = await this.$http.post(taskUrl + `/${this.taskList[0].task[0].id}/inspect`,{
                 drop_per_min: this.inputValue1,
                 remark: this.inputValue2
             })
