@@ -92,7 +92,7 @@ export default {
 		};
 	},
     computed: {
-        ...mapState(['cachePatientsList', 'scanCode','workflows', 'taskList']),
+        ...mapState(['cachePatientsList', 'scanCode','workflows', 'taskList', 'taskStateMap']),
         disabled(){
             if(this.currentStep.includes('执行')){
                 if(this.patientInfo.Wristband!=this.Wristband){
@@ -116,18 +116,18 @@ export default {
             async handler(newVal, oldVal){
                 if(newVal) {
                     const stringCode = newVal + ''
-                    if(stringCode.length==5||stringCode.length==6){
+                    if(/^WD(\d{5,6})/.test(stringCode)){
                         this.Wristband = stringCode
                         //腕带
                         if(this.taskList.length==0){
 
                             return this.$mHelper.toast('请先扫描药品二维码');
 
-                        } else if(this.patientInfo.Wristband!=stringCode) {
+                        } else if(this.patientInfo.Wristband!=stringCode.slice(2)) {
                             
                             this.$mHelper.toast(`患者是${this.patientInfo.Wristband}, 扫描的是${stringCode}, 腕带和药品不匹配, 不能执行`);
 
-                        }else if( this.patientInfo.Wristband==stringCode){
+                        }else if( this.patientInfo.Wristband==stringCode.slice(2)){
                             if(this.currentStep=='执行'){
                                 //首先查询是否有正在执行中的药品，有的话先结束
                                 await this.getExcutingInfo(this.patientInfo.PatientId)
@@ -180,6 +180,9 @@ export default {
             if(!res.steps || res.steps.length==0){
                 return this.$mHelper.toast('该药品已经执行完毕, 请勿重复操作.');
             }
+            if(this.currentStep=='执行'){
+                return this.$mHelper.toast('执行状态下，只能允许操作一个二维码');
+            }
             if(this.patientInfo && this.patientInfo.PatientId!=res.inpatient && this.currentStep!='收药'){
                 return this.$mHelper.toast('扫描的二维码不是同一个人, 请核对.');
             }
@@ -213,7 +216,7 @@ export default {
             }else {
                 let isSameStep = this.currentStep == res.steps[0].name
                 if(!isSameStep){
-                    return this.$mHelper.toast(`状态: ${res.steps[0].name}, 与目前流程不符`);
+                    return this.$mHelper.toast(`状态: ${this.taskStateMap.get(res.state).name}, 不能进行此操作`);
                 }
             }
             

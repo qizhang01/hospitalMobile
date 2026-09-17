@@ -20,7 +20,7 @@ const store = new Vuex.Store({
         scanCode: '',
         cachePatientsList: [],
         supply: null,
-        taskState: null,
+        taskStateMap: null,
         employees: null,
         workflows: null,
         taskList: []
@@ -117,7 +117,11 @@ const store = new Vuex.Store({
             state.supply = supplyMap
         },
         setTaskState(state, taskState) {
-            state.taskState = taskState
+            const map = new Map()
+            taskState.forEach(item=>{
+                map.set(item.id, item)
+            })
+            state.taskStateMap = map
         },
    
         setEmployees(state, employees) {

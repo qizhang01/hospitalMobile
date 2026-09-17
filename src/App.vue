@@ -18,7 +18,7 @@ export default {
             this.initScanner();
             this.listenToLaserScan();
         }
-        // this.handleNetListener()
+        this.handleNetListener()
 	},
 
     onShow() {
@@ -49,7 +49,7 @@ export default {
         handleNetListener(){
             uni.onNetworkStatusChange(function (res) {
                 if(res.isConnected){
-                    uni.showToast('网络连接成功');
+                    // uni.showToast('网络连接成功');
                 }else {
                     uni.showToast('网络连接失败');
                 }
@@ -79,14 +79,8 @@ export default {
 					selectedIconPath
 				});
 			});
-			// 获取页面设置配置
-			const token = uni.getStorageSync('accessToken');
 			// 获取系统title高度
 			await this.initSystemInfo();
-
-			if (this.$mStore.getters.hasLogin) {
-
-			}
 		},
 		// 初始化系统信息
 		initSystemInfo() {
@@ -128,7 +122,7 @@ export default {
             const currentRoute = this.getCurrentRoute()
 
             const stringCode = code + ''
-            if(stringCode.length==5||stringCode.length==6){
+            if(/^WDx?(\d{5,6})/.test(stringCode)){
                 //病人腕带
                 if(!currentRoute.includes('pages/houseCheck/houseCheckAction/action') 
                     && !currentRoute.includes('pages/houseCheck/operate/index')){
@@ -162,7 +156,7 @@ export default {
 
 
             // 不同PDA的广播Action不同，需要查设备文档或设置菜单
-            // intentFilter.addAction("com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED"); //Summi
+            intentFilter.addAction("com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED"); //Summi
             // 示例2：Seuic Action  Mexxen
             intentFilter.addAction("com.android.server.scannerservice.broadcast");
             intentFilter.addAction("com.android.server.aa");

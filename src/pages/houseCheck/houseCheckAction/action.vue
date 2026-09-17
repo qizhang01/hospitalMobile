@@ -150,7 +150,7 @@ export default {
             handler(newVal, oldVal){
                 if(newVal) {
                     this.resetStatus()
-                    this.filterById(newVal)
+                    this.filterById(newVal.slice(2))
                 }
             },
             immediate: true
