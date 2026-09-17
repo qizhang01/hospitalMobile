@@ -55,7 +55,7 @@
             </uni-section>
             <view class="single-line-group" >
                 <button type="primary"  @tap.stop="finish"  style="width: 200upx;">
-                    拔针完成
+                    结束
                 </button>
                 <button  @tap.stop="save"  style="width: 200upx;">
                     保存滴速
@@ -82,7 +82,6 @@ export default {
            patientInfo:  null,
            loading: false,
            stepsCodeList: [],
-           bardcodeList: [],  //判断是否重复扫码
            currentStep: '',
            inputValue1: '',
            inputValue2: '',
@@ -117,17 +116,13 @@ export default {
                 if(newVal) {
                     const stringCode = newVal + ''
                     if(/^WD(\d{5,6})/.test(stringCode)){
-                        this.Wristband = stringCode
+                        this.Wristband = stringCode.slice(2)
                         //腕带
                         if(this.taskList.length==0){
-
                             return this.$mHelper.toast('请先扫描药品二维码');
-
-                        } else if(this.patientInfo.Wristband!=stringCode.slice(2)) {
-                            
-                            this.$mHelper.toast(`患者是${this.patientInfo.Wristband}, 扫描的是${stringCode}, 腕带和药品不匹配, 不能执行`);
-
-                        }else if( this.patientInfo.Wristband==stringCode.slice(2)){
+                        } else if(this.patientInfo.Wristband!=this.Wristband) {   
+                            this.$mHelper.toast(`腕带不是此患者`);
+                        }else if( this.patientInfo.Wristband==this.Wristband){
                             if(this.currentStep=='执行'){
                                 //首先查询是否有正在执行中的药品，有的话先结束
                                 await this.getExcutingInfo(this.patientInfo.PatientId)
@@ -147,7 +142,6 @@ export default {
 	onLoad(options) {
         this.$mStore.commit('clearTaskList'); 
         // this.getInfo('00249376672026091408001')
-        // this.getInfo('20260407113431315')
 	},
 
     mounted() {
@@ -174,9 +168,6 @@ export default {
         },
 
         handleResponse(res){
-            if(this.bardcodeList.includes(res.barcode)){
-                return this.$mHelper.toast('请不要重复扫码.');
-            }
             if(!res.steps || res.steps.length==0){
                 return this.$mHelper.toast('该药品已经执行完毕, 请勿重复操作.');
             }
@@ -186,7 +177,16 @@ export default {
             if(this.patientInfo && this.patientInfo.PatientId!=res.inpatient && this.currentStep!='收药'){
                 return this.$mHelper.toast('扫描的二维码不是同一个人, 请核对.');
             }
-            
+
+            const idList = []
+            this.taskList.forEach(item=>{
+                const tempList = item.task.map(el=>el.id)
+                idList.push(...tempList)
+            })
+            if(idList.includes(res.id)){
+                return this.$mHelper.toast('该药品已经在列表中');
+            }
+
             if(!this.patientInfo && this.currentStep!='收药'){                   
                 this.patientInfo = this.cachePatientsList.filter(item=> item.PatientId==res.inpatient)[0]
 
@@ -227,7 +227,6 @@ export default {
             }
 
             this.$mStore.commit('addTaskList', data);
-            this.bardcodeList.push(res.barcode)
             this.stepList = this.getStepList( this.workflows.get(res.workflow))
         },
 
@@ -250,7 +249,6 @@ export default {
             this.Wristband = ''
             this.patientInfo=null
             this.stepsCodeList=[]
-            this.bardcodeList = []
             this.loading = false
             this.stepList=[]
             this.currentStep = ''
@@ -298,7 +296,7 @@ export default {
                 const id = filterItem[0].id
                 await this.$http.post(taskUrl + `/${id}/finish`)
             }
-        },
+        }
 	}
 };
 </script>

@@ -166,12 +166,12 @@ export default {
             broadcastReceiver = plus.android.implements('io.dcloud.feature.internal.reflect.BroadcastReceiver', {
                 onReceive: (context, intent) => {
                     // 防重复处理
-                    if (isProcessingScan) {
-                        return;
-                    }
-                    isProcessingScan = true;
-                    // 设置一个短时间后重置标志，例如150毫秒
-                    setTimeout(() => { isProcessingScan = false; }, 150);
+                    // if (isProcessingScan) {
+                    //     return;
+                    // }
+                    // isProcessingScan = true;
+                    // // 设置一个短时间后重置标志，例如150毫秒
+                    // setTimeout(() => { isProcessingScan = false; }, 150);
 
                     // 4. 从Intent中提取扫码数据
                     // ！！！这里的数据Key也需要根据PDA型号调整 ！！！
